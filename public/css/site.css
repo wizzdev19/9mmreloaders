@@ -446,3 +446,102 @@ legend { font-size: 14px; font-weight: 700; padding: 0 6px; }
   .steps { grid-template-columns: 1fr; }
   .hero-search-row { flex-direction: column; }
 }
+
+/* =========================================================================
+   Home page colour.
+   A flat six colour palette, no gradients. Every pair below was checked for
+   contrast: text on a coloured field is at least 4.5:1, and the large hero
+   heading is far above that.
+   ========================================================================= */
+
+:root {
+  --accent-light: #e2714b;   /* rust, lightened for use on the dark hero */
+  --steel: #1f3a5f;
+  --steel-bg: #e9eef6;
+  --brass: #7a5c0f;
+  --brass-bg: #faf2dc;
+  --forest: #1f5c3d;
+  --forest-bg: #e8f2ec;
+  --rust-bg: #fbece6;
+  --teal: #14545c;
+  --teal-bg: #e6f1f2;
+  --clay: #6d3218;
+  --clay-bg: #f7ede8;
+}
+
+/* ------------------------------------------------------------ dark hero */
+
+.hero-dark { background: var(--ink); border-bottom: 4px solid var(--accent); color: #fff; }
+.hero-dark h1 { color: #fff; }
+.hero-dark .hero-eyebrow { color: var(--accent-light); }
+.hero-dark p.lede { color: #ced5dc; }
+.hero-dark .hero-search { border-top-color: #333b44; }
+.hero-dark .hero-search label { color: #aeb7c0; }
+.hero-dark .hero-figure { background: var(--paper); border-color: #333b44; }
+.hero-dark .hero-figure figcaption { color: var(--ink-2); border-top-color: var(--line); }
+.hero-dark .hero-figure a { color: var(--steel); }
+.hero-dark .btn-secondary { background: transparent; color: #fff; border-color: #6d7883; }
+.hero-dark .hero-search-row .btn-secondary { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.hero-dark .hero-search-row .btn-secondary:hover { background: var(--bg-2); }
+.hero-dark .btn-secondary:hover { background: #232930; color: #fff; border-color: #96a1ab; }
+.hero-dark :focus-visible { outline-color: #8ab4f8; }
+
+.hero-dark .factbar { border: 0; background: transparent; gap: 12px; }
+.hero-dark .factbar div {
+  background: #1c2127; border: 1px solid #333b44; border-left: 4px solid var(--accent);
+  padding: 14px 16px;
+}
+.hero-dark .factbar div:nth-child(2) { border-left-color: var(--steel-bg); }
+.hero-dark .factbar div:nth-child(3) { border-left-color: #c9a227; }
+.hero-dark .factbar div:nth-child(4) { border-left-color: #4f9e75; }
+.hero-dark .factbar dt { color: #a8b1ba; }
+.hero-dark .factbar dd { color: #fff; }
+
+/* --------------------------------------------------- colour coded tiles */
+
+.tile { border-top: 3px solid var(--line-strong); }
+.tile:hover { border-top-color: var(--accent); }
+
+.tile-c1 { border-top-color: var(--accent); }
+.tile-c1:hover { background: var(--rust-bg); border-color: var(--accent); }
+.tile-c2 { border-top-color: var(--steel); }
+.tile-c2:hover { background: var(--steel-bg); border-color: var(--steel); }
+.tile-c3 { border-top-color: var(--forest); }
+.tile-c3:hover { background: var(--forest-bg); border-color: var(--forest); }
+.tile-c4 { border-top-color: var(--brass); }
+.tile-c4:hover { background: var(--brass-bg); border-color: var(--brass); }
+.tile-c5 { border-top-color: var(--teal); }
+.tile-c5:hover { background: var(--teal-bg); border-color: var(--teal); }
+.tile-c6 { border-top-color: var(--clay); }
+.tile-c6:hover { background: var(--clay-bg); border-color: var(--clay); }
+
+/* --------------------------------------------------------------- panels */
+
+.section-alt { background: var(--steel-bg); border-color: #cfd9e8; }
+.section-tint { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+.section-head h2 { border-left: 4px solid var(--accent); padding-left: 12px; }
+.section-alt .section-head h2 { border-left-color: var(--steel); }
+
+/* ---------------------------------------------------------------- steps */
+
+.steps li { border-top-width: 3px; }
+.steps li:nth-child(1) { border-top-color: var(--accent); }
+.steps li:nth-child(2) { border-top-color: var(--steel); }
+.steps li:nth-child(3) { border-top-color: var(--brass); }
+.steps li:nth-child(4) { border-top-color: var(--forest); }
+.steps li::before { color: var(--paper); background: var(--ink); display: inline-block; padding: 3px 9px; border-radius: var(--radius); }
+.steps li:nth-child(1)::before { background: var(--accent); }
+.steps li:nth-child(2)::before { background: var(--steel); }
+.steps li:nth-child(3)::before { background: var(--brass); }
+.steps li:nth-child(4)::before { background: var(--forest); }
+
+/* ------------------------------------------------------------------ faq */
+
+.faq-item { border-left-color: var(--steel); }
+.faq-item:nth-child(even) { border-left-color: var(--accent); }
+
+/* --------------------------------------------------------- notes on home */
+
+.note-legal { border-left: 4px solid var(--accent); background: var(--rust-bg); }
+.home-note-plain { border-left: 4px solid var(--steel); background: var(--steel-bg); }

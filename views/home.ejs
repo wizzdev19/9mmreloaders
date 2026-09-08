@@ -1,6 +1,6 @@
 <%- include('partials/head') %>
 
-<section class="hero">
+<section class="hero hero-dark">
   <div class="wrap">
     <div class="hero-grid">
       <div class="hero-copy">
@@ -85,8 +85,8 @@
       <a class="btn btn-secondary btn-sm" href="/calibers">All <%= stats.caliberCount %> calibers</a>
     </div>
     <div class="grid grid-4">
-      <% calibers.forEach(function (c) { %>
-        <a class="tile" href="/calibers/<%= c.caliber_slug %>">
+      <% calibers.forEach(function (c, i) { %>
+        <a class="tile tile-c<%= (i % 6) + 1 %>" href="/calibers/<%= c.caliber_slug %>">
           <strong><%= c.caliber %></strong>
           <span><%= c.n %> listing<%= c.n === 1 ? '' : 's' %></span>
         </a>
@@ -105,7 +105,7 @@
     </div>
     <div class="grid grid-4">
       <% ranges.concat(parts).forEach(function (c) { %>
-        <a class="tile" href="/collections/<%= c.slug %>">
+        <a class="tile <%= c.grp === 'Parts' ? 'tile-c4' : 'tile-c2' %>" href="/collections/<%= c.slug %>">
           <strong><%= c.name %></strong>
           <span><%= c.product_count %> listing<%= c.product_count === 1 ? '' : 's' %></span>
         </a>
@@ -114,7 +114,7 @@
   </div>
 </section>
 
-<section class="section section-alt">
+<section class="section section-tint">
   <div class="wrap">
     <div class="section-head">
       <div>
@@ -203,7 +203,7 @@
           <a href="/compliance">compliance notice</a> before you place an order.
         </p>
       </div>
-      <div class="note">
+      <div class="note home-note-plain">
         <h3>What this catalogue does not do</h3>
         <p>
           It does not take payment, publish reviews or ratings, or print a specification the stock record

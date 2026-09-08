@@ -45,7 +45,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | `data/business.json` | Single source of truth for business identity. Fill this in |
 | `data/product-overrides.json` | Client supplied product titles and descriptions |
 | `data/reports/` | Generated content gap report and ingest statistics |
-| `docs/` | Security audit, SEO implementation, keyword map, client action list |
+| `docs/` | Security audit, SEO implementation, keyword map, design notes, client action list |
 
 ## Scripts
 
