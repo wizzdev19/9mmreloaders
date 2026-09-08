@@ -1,0 +1,55 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Cookie policy</h1>
+    <p class="meta-updated">Every cookie this site can set is listed below. There are no others.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <h2>Required cookies</h2>
+    <p>These are set because the site cannot work without them. They carry no advertising identifier.</p>
+    <table>
+      <thead><tr><th scope="col">Name</th><th scope="col">Purpose</th><th scope="col">Lifetime</th><th scope="col">Set by</th></tr></thead>
+      <tbody>
+        <tr><td><code>cart</code></td><td>Holds the item identifiers and quantities in your order request</td><td>14 days</td><td>This site</td></tr>
+        <tr><td><code>csrf</code></td><td>A random token that proves a form submission came from this site and not another one</td><td>4 hours</td><td>This site</td></tr>
+        <tr><td><code>cc</code></td><td>Records your answer to the cookie banner so it stops appearing</td><td>6 months</td><td>This site</td></tr>
+        <tr><td><code>agenotice</code></td><td>Records that you dismissed the eligibility notice</td><td>6 months</td><td>This site</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Optional measurement cookies</h2>
+    <% if (analyticsConfigured) { %>
+      <p>
+        Audience measurement is configured for this site. It is loaded only after you press
+        <q>Allow measurement cookies</q> in the banner. If you choose required cookies only, no measurement
+        script is downloaded at all, so nothing is sent to the provider.
+      </p>
+    <% } else { %>
+      <p>
+        No measurement or analytics tool is installed on this site at the moment. The banner still asks,
+        because if the shop turns one on later the answer you already gave is respected from the first page
+        view rather than after the fact.
+      </p>
+    <% } %>
+
+    <h2>Advertising and tracking</h2>
+    <p>
+      There are no advertising cookies, no social media pixels, no session recording and no fingerprinting
+      scripts on this site. The content security policy served with every page blocks scripts from any origin
+      other than this one, so a third party tag cannot be added by accident.
+    </p>
+
+    <h2>Changing your answer</h2>
+    <p>
+      Delete the <code>cc</code> cookie in your browser settings and the banner will ask again on your next
+      visit. Blocking all cookies in your browser will stop the basket from remembering items and will stop
+      forms from submitting, because the security token cannot be stored.
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

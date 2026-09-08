@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= meta.title %></title>
+<meta name="description" content="<%= meta.description %>">
+<link rel="canonical" href="<%= meta.canonical %>">
+<% if (meta.robots) { %><meta name="robots" content="<%= meta.robots %>"><% } %>
+<% if (meta.prev) { %><link rel="prev" href="<%= meta.prev %>"><% } %>
+<% if (meta.next) { %><link rel="next" href="<%= meta.next %>"><% } %>
+<meta name="theme-color" content="#14171a">
+<meta property="og:type" content="<%= meta.ogType || 'website' %>">
+<meta property="og:title" content="<%= meta.title %>">
+<meta property="og:description" content="<%= meta.description %>">
+<meta property="og:url" content="<%= meta.canonical %>">
+<meta property="og:site_name" content="<%= brand %>">
+<% if (meta.image) { %><meta property="og:image" content="<%= meta.image %>">
+<meta name="twitter:card" content="summary_large_image"><% } else { %>
+<meta name="twitter:card" content="summary"><% } %>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="alternate icon" href="/favicon.ico" sizes="32x32">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="stylesheet" href="/css/site.css?v=<%= assetVersion %>">
+<% (jsonLd || []).forEach(function (node) { %>
+<script type="application/ld+json" nonce="<%= nonce %>"><%- jsonForScript(node) %></script>
+<% }); %>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<%- include('header') %>
+<main id="main" tabindex="-1">

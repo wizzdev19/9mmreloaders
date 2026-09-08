@@ -1,0 +1,166 @@
+<%- include('partials/head') %>
+<%- include('partials/breadcrumbs', { trail: trail }) %>
+
+<div class="wrap">
+  <div class="pdp">
+    <div>
+      <div class="gallery-main" id="gallery-main">
+        <% if (images.length) { %>
+          <img id="gallery-image" src="/img/products/<%= images[0].filename %>"
+               alt="<%= product.name %><%= product.caliber ? ', ' + product.caliber : '' %>"
+               width="<%= images[0].width || 640 %>" height="<%= images[0].height || 480 %>"
+               fetchpriority="high" decoding="async">
+        <% } else { %>
+          <p class="meta-updated">No photograph has been supplied for this SKU.</p>
+        <% } %>
+      </div>
+
+      <% if (images.length > 1) { %>
+        <ul class="gallery-thumbs" id="gallery-thumbs">
+          <% images.forEach(function (img, i) { %>
+            <li>
+              <a href="/img/products/<%= img.filename %>"
+                 data-full="/img/products/<%= img.filename %>"
+                 <%= i === 0 ? 'aria-current="true"' : '' %>>
+                <img src="/img/products/<%= img.filename %>" alt="View image <%= i + 1 %> of <%= product.name %>"
+                     width="68" height="52" loading="lazy" decoding="async">
+              </a>
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </div>
+
+    <div class="pdp-info">
+      <h1><%= product.name %></h1>
+      <p class="pdp-meta">
+        <span>SKU <%= product.sku %></span>
+        <span><%= product.product_class %></span>
+        <% if (product.model) { %><span>Glock <%= product.model %></span><% } %>
+      </p>
+
+      <p class="pdp-price">
+        <% if (product.price_cents != null) { %>$<%= money(product.price_cents) %><% } else { %>Price on request<% } %>
+        <% if (product.compare_cents) { %><span class="price-was">$<%= money(product.compare_cents) %></span><% } %>
+      </p>
+      <p>
+        <span class="badge <%= product.in_stock ? 'badge-stock' : 'badge-out' %>">
+          <%= product.in_stock ? 'Listed as available' : 'Not currently available' %>
+        </span>
+      </p>
+
+      <p><%= product.summary %></p>
+
+      <div class="pdp-buy">
+        <form action="/cart/add" method="post">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="productId" value="<%= product.id %>">
+          <div class="qty-row">
+            <% if (variants.length) { %>
+              <div class="field">
+                <label for="variant"><%= variants[0].a1_name || 'Option' %></label>
+                <select id="variant" name="variantId">
+                  <% variants.forEach(function (v) { %>
+                    <option value="<%= v.id %>"><%= v.label %><%= v.price_cents ? ' ($' + money(v.price_cents) + ')' : '' %></option>
+                  <% }); %>
+                </select>
+              </div>
+            <% } %>
+            <div class="field">
+              <label for="qty">Quantity</label>
+              <input type="number" id="qty" name="qty" value="1" min="1" max="5" step="1" inputmode="numeric">
+            </div>
+            <button type="submit" class="btn btn-primary"<%= product.in_stock ? '' : ' disabled' %>>
+              Add this <%= product.product_class.toLowerCase() %> to my order request
+            </button>
+          </div>
+          <p class="meta-updated">
+            Adding an item starts an order request. It does not take payment and it does not reserve the
+            firearm. A member of staff confirms eligibility and the transfer route before anything is charged.
+          </p>
+        </form>
+      </div>
+
+      <table class="spectable">
+        <caption>Specification held against this SKU</caption>
+        <tbody>
+          <tr><th scope="row">Item type</th><td><%= product.product_class %></td></tr>
+          <% if (product.model) { %><tr><th scope="row">Model</th><td>Glock <%= product.model %></td></tr><% } %>
+          <% if (product.generation) { %><tr><th scope="row">Generation</th><td><%= product.generation %></td></tr><% } %>
+          <% if (product.caliber) { %><tr><th scope="row">Caliber</th><td><%= product.caliber %></td></tr><% } %>
+          <% if (product.barrel_in) { %><tr><th scope="row">Barrel length</th><td><%= product.barrel_in %> in</td></tr><% } %>
+          <% if (product.capacity) { %><tr><th scope="row">Magazine capacity</th><td><%= product.capacity %></td></tr><% } %>
+          <% if (product.optic_cut) { %><tr><th scope="row">Optic</th><td><%= product.optic_cut %></td></tr><% } %>
+          <% if (product.attr1_name && product.attr1_values) { %><tr><th scope="row"><%= product.attr1_name %></th><td><%= product.attr1_values %></td></tr><% } %>
+          <% if (product.attr2_name && product.attr2_values) { %><tr><th scope="row"><%= product.attr2_name %></th><td><%= product.attr2_values %></td></tr><% } %>
+          <tr><th scope="row">SKU</th><td><%= product.sku %></td></tr>
+          <tr><th scope="row">Availability</th><td><%= product.in_stock ? 'Listed as available' : 'Not currently available' %></td></tr>
+        </tbody>
+      </table>
+
+      <p class="meta-updated">
+        Fields left out of the table are not recorded in the supplier data for this SKU. Nothing is
+        estimated or filled in on its behalf.
+      </p>
+    </div>
+  </div>
+
+  <div class="section">
+    <% if (clientCopy) { %>
+      <div class="prose">
+        <h2>Product description</h2>
+        <%- clientCopy %>
+      </div>
+    <% } else { %>
+      <div class="note note-pending">
+        <h3>Description pending</h3>
+        <p>
+          The supplier feed for this SKU contains promotional copy that could not be verified, so it has
+          not been published. The specification table above comes straight from the stock record. A written
+          description appears here once the shop supplies one.
+        </p>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="section">
+    <div class="grid grid-2">
+      <div class="note note-legal">
+        <h3>Before you order</h3>
+        <p>
+          Eligibility to buy this item depends on your age, your background check and the law where you
+          live. Read the <a href="/compliance">compliance notice</a> and the
+          <a href="/shipping-and-transfer-policy">transfer policy</a> first.
+        </p>
+      </div>
+      <div class="note">
+        <h3>Questions about this SKU</h3>
+        <p>
+          Ask about condition, availability or transfer options for SKU <%= product.sku %> using the
+          <a href="/contact?sku=<%= encodeURIComponent(product.sku) %>">contact form</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <% if (related.length) { %>
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <h2>Other <%= product.model ? 'Glock ' + product.model : 'catalogue' %> listings</h2>
+        <p>Same model, different configuration or finish.</p>
+      </div>
+      <% if (primaryCategory) { %>
+        <a class="btn btn-secondary btn-sm" href="/collections/<%= primaryCategory.slug %>">All <%= primaryCategory.name %></a>
+      <% } %>
+    </div>
+    <div class="grid grid-4">
+      <% related.forEach(function (p) { %>
+        <%- include('partials/product-card', { p: p, eager: false }) %>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<%- include('partials/footer') %>

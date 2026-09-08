@@ -1,0 +1,122 @@
+<%- include('partials/head') %>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <h1><%= stats.total %> Glock pistols, slides and triggers listed</h1>
+        <p class="lede">
+          Factory, factory colored, custom build and optic ready configurations across
+          <%= stats.modelCount %> Glock models. Every listing carries the caliber, barrel length,
+          magazine capacity, SKU and price held against that stock record.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/glock-pistols-for-sale">Browse all <%= stats.total %> listings</a>
+          <a class="btn btn-secondary" href="/shipping-and-transfer-policy">How a firearm order is completed</a>
+        </div>
+      </div>
+      <% if (featured) { %>
+      <figure class="hero-figure">
+        <img src="/img/products/<%= featured.primary_image %>" alt="<%= featured.name %>" width="520" height="390" fetchpriority="high" decoding="async">
+        <figcaption>
+          <a href="/product/<%= featured.slug %>"><%= featured.name %></a>
+          <% if (featured.caliber) { %> &middot; <%= featured.caliber %><% } %>
+          <% if (featured.price_cents != null) { %> &middot; $<%= money(featured.price_cents) %><% } %>
+        </figcaption>
+      </figure>
+      <% } %>
+    </div>
+
+    <dl class="factbar">
+      <div><dt>Listings in catalogue</dt><dd><%= stats.total %></dd></div>
+      <div><dt>Glock models covered</dt><dd><%= stats.modelCount %></dd></div>
+      <div><dt>Calibers listed</dt><dd><%= stats.caliberCount %></dd></div>
+      <div><dt>Price range</dt><dd>$<%= money(stats.minPrice) %> to $<%= money(stats.maxPrice) %></dd></div>
+    </dl>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Browse by Glock model</h2>
+        <p>Model pages group every configuration of that frame size, including colored and custom versions.</p>
+      </div>
+      <a class="btn btn-secondary btn-sm" href="/models">See all <%= stats.modelCount %> models</a>
+    </div>
+    <div class="grid grid-4">
+      <% topModels.forEach(function (c) { %>
+        <a class="tile" href="/collections/<%= c.slug %>">
+          <strong><%= c.name %></strong>
+          <span><%= c.product_count %> listing<%= c.product_count === 1 ? '' : 's' %></span>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Ranges</h2>
+        <p>The four ways the stock record classifies a build.</p>
+      </div>
+    </div>
+    <div class="grid grid-4">
+      <% ranges.forEach(function (c) { %>
+        <a class="tile" href="/collections/<%= c.slug %>">
+          <strong><%= c.name %></strong>
+          <span><%= c.product_count %> listing<%= c.product_count === 1 ? '' : 's' %></span>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Recently added to the catalogue</h2>
+        <p>Ordered by the date the stock record was created.</p>
+      </div>
+      <a class="btn btn-secondary btn-sm" href="/glock-pistols-for-sale?sort=featured">View the full catalogue</a>
+    </div>
+    <div class="grid grid-4">
+      <% recent.forEach(function (p, i) { %>
+        <%- include('partials/product-card', { p: p, eager: i < 4 }) %>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="grid grid-2">
+      <div class="note note-legal">
+        <h3>Eligibility comes before checkout</h3>
+        <p>
+          A firearm listed here is not shipped to a customer address on demand. Age limits, background
+          checks and local restrictions apply, and they differ by state and by country. Read the
+          <a href="/compliance">compliance notice</a> before you place an order.
+        </p>
+      </div>
+      <div class="note<%= transferConfirmed ? '' : ' note-pending' %>">
+        <h3>How an order is completed</h3>
+        <% if (transferConfirmed) { %>
+          <p><%= business.policy.transferProcessText %></p>
+        <% } else { %>
+          <p>
+            The exact transfer procedure for this dealer has not been published on the site yet. It is
+            supplied by the licence holder, not by the developer, and it appears here once signed off.
+            See <a href="/shipping-and-transfer-policy">shipping and transfers</a>.
+          </p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

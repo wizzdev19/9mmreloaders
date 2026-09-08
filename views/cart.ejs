@@ -1,0 +1,89 @@
+<%- include('partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Your order request</h1>
+    <p>
+      Nothing on this page is a completed sale. It is a list of items you want the shop to quote and
+      check eligibility for.
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <% if (lines.length === 0) { %>
+      <div class="empty">
+        <h2>Your order request is empty</h2>
+        <p><a class="btn btn-primary" href="/glock-pistols-for-sale">Browse the catalogue</a></p>
+      </div>
+    <% } else { %>
+      <div class="grid grid-2">
+        <div>
+          <table class="cart-table">
+            <caption class="visually-hidden">Items in your order request</caption>
+            <thead>
+              <tr>
+                <th scope="col">Image</th><th scope="col">Item</th><th scope="col">Unit price</th>
+                <th scope="col">Quantity</th><th scope="col">Line total</th><th scope="col">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% lines.forEach(function (line) { %>
+                <tr>
+                  <td>
+                    <% if (line.product.primary_image) { %>
+                      <img src="/img/products/<%= line.product.primary_image %>" alt="" width="76" height="57" loading="lazy">
+                    <% } %>
+                  </td>
+                  <td>
+                    <a href="/product/<%= line.product.slug %>"><%= line.product.name %></a><br>
+                    <span class="meta-updated">SKU <%= line.product.sku %><%= line.variantLabel ? ' · ' + line.variantLabel : '' %></span>
+                  </td>
+                  <td>$<%= money(line.unitCents) %></td>
+                  <td>
+                    <form class="cart-line-form" action="/cart/update" method="post">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" name="key" value="<%= line.key %>">
+                      <label class="visually-hidden" for="qty-<%= line.key %>">Quantity for <%= line.product.name %></label>
+                      <input type="number" id="qty-<%= line.key %>" name="qty" value="<%= line.qty %>" min="0" max="5" step="1" inputmode="numeric">
+                      <button type="submit" class="btn btn-secondary btn-sm">Update quantity</button>
+                    </form>
+                  </td>
+                  <td>$<%= money(line.lineCents) %></td>
+                  <td>
+                    <form action="/cart/remove" method="post">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" name="key" value="<%= line.key %>">
+                      <button type="submit" class="btn btn-secondary btn-sm">Remove <%= line.product.model ? 'Glock ' + line.product.model : 'item' %></button>
+                    </form>
+                  </td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <div class="cart-summary">
+            <h2>Summary</h2>
+            <dl>
+              <dt>Items</dt><dd><%= itemCount %></dd>
+              <dt>Listed subtotal</dt><dd>$<%= money(subtotalCents) %></dd>
+              <dt>Transfer and shipping</dt><dd>Quoted by the shop</dd>
+              <dt>Tax</dt><dd>Quoted by the shop</dd>
+            </dl>
+            <p class="meta-updated">
+              Shipping, transfer fees and tax depend on where the firearm is going and which licence
+              receives it, so they are quoted by a person rather than calculated here.
+            </p>
+            <p><a class="btn btn-primary btn-block" href="/order-request">Continue to the order request form</a></p>
+            <p><a class="btn btn-secondary btn-block" href="/glock-pistols-for-sale">Keep browsing the catalogue</a></p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

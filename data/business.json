@@ -1,0 +1,61 @@
+{
+  "_README": "Single source of truth for business identity. Every value marked PLACEHOLDER must be replaced with verified real data before this site goes live. The server logs a startup warning and blocks production boot while placeholders remain (see src/config.js).",
+
+  "legalName": "PLACEHOLDER Legal Entity Name LLC",
+  "tradingName": "PLACEHOLDER Trading Name",
+  "shortName": "PLACEHOLDER",
+  "tagline": "Factory and custom Glock pistols, slides and triggers",
+
+  "fflLicenceNumber": "PLACEHOLDER Federal Firearms Licence number",
+  "fflLicenceType": "PLACEHOLDER (for example Type 01 Dealer in Firearms)",
+  "businessRegistrationNumber": "PLACEHOLDER",
+  "salesTaxId": "PLACEHOLDER",
+
+  "jurisdiction": {
+    "country": "PLACEHOLDER ISO country, for example US",
+    "stateOrRegion": "PLACEHOLDER",
+    "regulator": "PLACEHOLDER primary firearms regulator for this jurisdiction",
+    "minimumAgeHandgun": 21,
+    "minimumAgeLongGun": 18,
+    "minimumAgeAccessory": 18,
+    "notes": "Ages above are the common United States federal baseline for a licensed dealer. They MUST be re-confirmed against the client's actual jurisdiction and state law before launch. If the business operates outside the United States these values and every policy page have to be rewritten for that country's law."
+  },
+
+  "address": {
+    "street": "PLACEHOLDER street address",
+    "locality": "PLACEHOLDER city",
+    "region": "PLACEHOLDER state",
+    "postalCode": "PLACEHOLDER",
+    "country": "PLACEHOLDER"
+  },
+
+  "geo": { "latitude": null, "longitude": null },
+
+  "contact": {
+    "phone": "PLACEHOLDER +1 000 000 0000",
+    "email": "PLACEHOLDER sales@example.com",
+    "privacyEmail": "PLACEHOLDER privacy@example.com",
+    "supportHours": "PLACEHOLDER Monday to Friday, 9am to 5pm"
+  },
+
+  "openingHours": [
+    "Mo-Fr 09:00-17:00",
+    "Sa 10:00-14:00"
+  ],
+
+  "social": {
+    "website": "PLACEHOLDER https://example.com",
+    "profiles": []
+  },
+
+  "policy": {
+    "dataControllerName": "PLACEHOLDER Legal Entity Name LLC",
+    "dataRetentionMonths": 24,
+    "returnsWindowDays": 30,
+    "transferProcessConfirmed": false,
+    "transferProcessText": "PLACEHOLDER. The client must supply the exact wording of their firearm transfer process, including which licence the firearm ships to, what identification and background check is required, who pays transfer fees, and which destinations are refused. Nothing about the transfer process may be invented by the developer.",
+    "restrictedDestinations": [],
+    "complianceReviewedBy": "PLACEHOLDER name of the attorney or compliance officer who signed off",
+    "complianceReviewedOn": null
+  }
+}

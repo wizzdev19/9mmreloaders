@@ -1,0 +1,23 @@
+<article class="card">
+  <a class="card-media" href="/product/<%= p.slug %>" tabindex="-1" aria-hidden="true">
+    <% if (p.primary_image) { %>
+      <img src="/img/products/<%= p.primary_image %>" alt="" width="320" height="240" loading="<%= (typeof eager !== 'undefined' && eager) ? 'eager' : 'lazy' %>" decoding="async">
+    <% } %>
+  </a>
+  <div class="card-body">
+    <p class="card-eyebrow"><%= p.product_class %><%= p.model ? ' · Glock ' + p.model : '' %></p>
+    <h3 class="card-title"><a href="/product/<%= p.slug %>"><%= p.name %></a></h3>
+    <ul class="card-specs">
+      <% if (p.caliber) { %><li><%= p.caliber %></li><% } %>
+      <% if (p.barrel_in) { %><li><%= p.barrel_in %> in barrel</li><% } %>
+      <% if (p.capacity) { %><li><%= p.capacity %> rounds</li><% } %>
+    </ul>
+    <div class="card-foot">
+      <span class="price">
+        <% if (p.price_cents != null) { %>$<%= money(p.price_cents) %><% } else { %>Price on request<% } %>
+        <% if (p.compare_cents) { %><span class="price-was">$<%= money(p.compare_cents) %></span><% } %>
+      </span>
+      <a class="btn btn-secondary btn-sm" href="/product/<%= p.slug %>">View <%= p.model ? 'Glock ' + p.model : 'details' %></a>
+    </div>
+  </div>
+</article>

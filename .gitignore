@@ -1,0 +1,31 @@
+# Secrets - never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+service-account*.json
+
+# Data / generated
+data/catalog.db
+data/app.db
+data/*.db
+data/*.db-journal
+data/*.db-wal
+data/*.db-shm
+data/reports/
+public/img/products/
+
+# Runtime
+node_modules/
+npm-debug.log*
+logs/
+*.log
+.DS_Store
+coverage/
+dist/
+build/
+tmp/

@@ -1,0 +1,98 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Terms of service</h1>
+    <p class="meta-updated">These terms cover use of this website and the order request process.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <% if (!complianceSignedOff) { %>
+      <div class="note note-pending">
+        <h3>Awaiting legal review</h3>
+        <p>
+          These terms describe how the software behaves. They must be reviewed and adopted by the licence
+          holder's legal adviser before launch. Governing law and dispute resolution are left blank until the
+          operating jurisdiction is confirmed.
+        </p>
+      </div>
+    <% } %>
+
+    <h2>Who you are dealing with</h2>
+    <p>
+      This website is operated by <%= business.legalName %><%= hasRealFfl ? ', holder of Federal Firearms Licence ' + business.fflLicenceNumber : '' %>.
+      References to <q>the shop</q> mean that business.
+    </p>
+
+    <h2>The catalogue is an invitation to treat</h2>
+    <p>
+      A listing on this site is not an offer to sell. Adding an item to an order request and submitting the
+      form does not form a contract, does not reserve stock and does not take payment. A contract exists only
+      when the shop confirms the order in writing after checking availability and eligibility.
+    </p>
+
+    <h2>Accuracy of listings</h2>
+    <p>
+      Specifications, images and prices come from the supplier stock record. Where a field is not held in
+      that record the site leaves it out rather than estimating it. Errors do occur. Where a price or
+      specification is wrong the shop may decline the order and will tell you why. Images are representative
+      of the configuration and a specific unit may vary in markings or accessories.
+    </p>
+
+    <h2>Eligibility</h2>
+    <p>
+      You may only submit an order request if you are lawfully entitled to buy and possess the item where you
+      live. See the <a href="/compliance">compliance notice</a>. Giving false information in the eligibility
+      confirmation is a serious offence and the shop reports it where it is required to.
+    </p>
+
+    <h2>Prices</h2>
+    <p>
+      Prices are shown in United States dollars and cover the item only. Transfer fees, shipping and tax are
+      quoted separately. Prices change without notice until an order is confirmed in writing.
+    </p>
+
+    <h2>Acceptable use of this site</h2>
+    <ul>
+      <li>Do not attempt to access parts of the service you have not been given access to.</li>
+      <li>Do not scrape, mirror or resell the catalogue.</li>
+      <li>Do not submit forms through automated tooling. Rate limits are enforced and abusive addresses are blocked.</li>
+      <li>Do not use the contact forms to send identity documents, licence numbers or payment details.</li>
+    </ul>
+
+    <h2>Intellectual property</h2>
+    <p>
+      Site design and code belong to the shop. GLOCK is a registered trademark of Glock Ges.m.b.H. Product
+      photographs belong to their respective owners and are used to identify the items offered. This site is
+      an independent dealer listing and is not affiliated with, endorsed by or sponsored by Glock Ges.m.b.H.
+    </p>
+
+    <h2>Liability</h2>
+    <p>
+      The shop is responsible for supplying goods that match their description and for meeting its legal
+      obligations as a licensed dealer. Nothing in these terms limits liability that cannot lawfully be
+      limited. Safe storage, safe handling and lawful use of any item after transfer are the responsibility of
+      the person who receives it.
+    </p>
+
+    <h2>Governing law</h2>
+    <% if (jurisdictionPending) { %>
+      <p class="meta-updated">
+        Governing law and the courts with jurisdiction are stated here once the operating jurisdiction is
+        confirmed. This field is intentionally not guessed.
+      </p>
+    <% } else { %>
+      <p>
+        These terms are governed by the law of <%= jurisdiction.stateOrRegion %>, <%= jurisdiction.country %>,
+        and the courts of that jurisdiction have exclusive jurisdiction over any dispute.
+      </p>
+    <% } %>
+
+    <h2>Contact</h2>
+    <p>Questions about these terms go through the <a href="/contact">contact form</a>.</p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

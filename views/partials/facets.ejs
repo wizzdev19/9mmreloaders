@@ -1,0 +1,43 @@
+<aside class="facets" aria-labelledby="facet-heading">
+  <h2 id="facet-heading">Refine the catalogue</h2>
+
+  <section>
+    <h3>Ranges</h3>
+    <ul>
+      <% groups.Ranges.forEach(function (c) { %>
+        <li><a href="/collections/<%= c.slug %>"<%= activeSlug === c.slug ? ' aria-current="true"' : '' %>>
+          <span><%= c.name %></span><span class="count"><%= c.product_count %></span></a></li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Parts</h3>
+    <ul>
+      <% groups.Parts.forEach(function (c) { %>
+        <li><a href="/collections/<%= c.slug %>"<%= activeSlug === c.slug ? ' aria-current="true"' : '' %>>
+          <span><%= c.name %></span><span class="count"><%= c.product_count %></span></a></li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Caliber</h3>
+    <ul>
+      <% calibers.forEach(function (c) { %>
+        <li><a href="/calibers/<%= c.caliber_slug %>"<%= activeCaliber === c.caliber_slug ? ' aria-current="true"' : '' %>>
+          <span><%= c.caliber %></span><span class="count"><%= c.n %></span></a></li>
+      <% }); %>
+    </ul>
+  </section>
+
+  <section>
+    <h3>Model</h3>
+    <ul>
+      <% groups.Models.forEach(function (c) { %>
+        <li><a href="/collections/<%= c.slug %>"<%= activeSlug === c.slug ? ' aria-current="true"' : '' %>>
+          <span><%= c.name %></span><span class="count"><%= c.product_count %></span></a></li>
+      <% }); %>
+    </ul>
+  </section>
+</aside>

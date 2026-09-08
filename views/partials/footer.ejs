@@ -1,0 +1,84 @@
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h2><%= brand %></h2>
+        <address class="foot-addr">
+          <%= business.legalName %><br>
+          <% if (hasRealAddress) { %>
+            <%= business.address.street %><br>
+            <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %><br>
+            <%= business.address.country %><br>
+          <% } else { %>
+            <span class="meta-updated">Trading address pending. See <a href="/contact">contact</a>.</span><br>
+          <% } %>
+          <% if (hasRealPhone) { %><a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a><br><% } %>
+          <% if (hasRealEmail) { %><a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><% } %>
+        </address>
+        <p class="meta-updated">
+          Federal Firearms Licence: <%= hasRealFfl ? business.fflLicenceNumber : 'on file, published at launch' %>
+        </p>
+      </div>
+
+      <div>
+        <h2>Shop</h2>
+        <ul>
+          <li><a href="/glock-pistols-for-sale">All Glock pistols</a></li>
+          <li><a href="/models">Browse by model</a></li>
+          <li><a href="/calibers">Browse by caliber</a></li>
+          <li><a href="/collections/glock-slides">Glock slides</a></li>
+          <li><a href="/collections/glock-triggers">Glock triggers</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Buying</h2>
+        <ul>
+          <li><a href="/shipping-and-transfer-policy">Shipping and transfers</a></li>
+          <li><a href="/returns-policy">Returns policy</a></li>
+          <li><a href="/compliance">Compliance and eligibility</a></li>
+          <li><a href="/contact">Contact the shop</a></li>
+          <li><a href="/about">About the business</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Legal</h2>
+        <ul>
+          <li><a href="/privacy-policy">Privacy policy</a></li>
+          <li><a href="/cookie-policy">Cookie policy</a></li>
+          <li><a href="/terms-of-service">Terms of service</a></li>
+          <li><a href="/accessibility">Accessibility</a></li>
+          <li><a href="/sitemap.xml">XML sitemap</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-legal">
+      <span>&copy; <%= year %> <%= business.legalName %>. All rights reserved.</span>
+      <span>GLOCK is a registered trademark of Glock Ges.m.b.H. This site is an independent dealer listing and is not affiliated with Glock Ges.m.b.H.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="cookiebar" id="cookiebar" hidden data-analytics-id="<%= analyticsId %>">
+  <div class="wrap">
+    <div>
+      <p id="cookiebar-text">
+        This site sets one cookie to keep your basket and one to protect forms against cross site
+        request forgery. Both are required for the site to work. Measurement cookies are only set if
+        you choose to allow them. Details are in the <a href="/cookie-policy">cookie policy</a>.
+      </p>
+    </div>
+    <div class="actions">
+      <button type="button" class="btn btn-secondary btn-sm" id="cookie-reject" aria-describedby="cookiebar-text">Use required cookies only</button>
+      <button type="button" class="btn btn-primary btn-sm" id="cookie-accept" aria-describedby="cookiebar-text">Allow measurement cookies</button>
+    </div>
+  </div>
+</div>
+
+<script src="/js/site.js?v=<%= assetVersion %>" nonce="<%= nonce %>" defer></script>
+</body>
+</html>

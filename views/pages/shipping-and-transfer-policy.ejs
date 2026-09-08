@@ -1,0 +1,66 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Shipping and transfers</h1>
+    <p>How an item listed on this site physically reaches you.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <% if (transferConfirmed) { %>
+      <h2>Firearm transfers</h2>
+      <p><%= business.policy.transferProcessText %></p>
+    <% } else { %>
+      <div class="note note-pending">
+        <h3>Transfer procedure pending</h3>
+        <p>
+          This section is deliberately blank. A firearm transfer procedure is a legal process specific to
+          the dealer's licence and jurisdiction, and writing a plausible sounding version of it would be
+          both wrong and dangerous. The licence holder supplies the exact wording, it is reviewed, and then
+          it appears here.
+        </p>
+        <p>The wording needs to answer, at minimum:</p>
+        <ul>
+          <li>Which licence or premises the firearm is shipped to, and whether a customer address is ever used.</li>
+          <li>What identification and what background check the receiving party performs.</li>
+          <li>Who pays the transfer fee and how much it is.</li>
+          <li>How long the process normally takes.</li>
+          <li>Which destinations are refused outright.</li>
+          <li>What happens if the buyer fails the check after the item has shipped.</li>
+        </ul>
+      </div>
+    <% } %>
+
+    <h2>Parts and accessories</h2>
+    <p>
+      Slides, triggers and other parts are not always subject to the same transfer rules as a complete
+      firearm, but some jurisdictions do regulate them. The shop confirms which route applies to your order
+      when it replies to your request.
+    </p>
+
+    <h2>Costs</h2>
+    <p>
+      Shipping, transfer fees and tax are not calculated on this site. They depend on the destination, the
+      receiving licence and the item, so a person quotes them on your order request rather than an estimate
+      appearing at checkout. The price shown against a listing is the item price recorded in the stock
+      system and nothing else.
+    </p>
+
+    <h2>Timescales</h2>
+    <p class="meta-updated">
+      Dispatch and delivery timescales are published here once the shop confirms them with its carriers. No
+      timeframe is stated on this site until the shop can stand behind it.
+    </p>
+
+    <h2>Damage or a wrong item</h2>
+    <p>
+      Tell the shop within the window set out in the <a href="/returns-policy">returns policy</a>. Do not
+      attempt to return a firearm by post without first agreeing the route with the shop, because unlawful
+      shipping of a firearm is an offence in itself.
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,29 @@
+<%- include('partials/head') %>
+<%- include('partials/breadcrumbs', { trail: trail }) %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1><%= h1 %></h1>
+    <p><%= intro %></p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <% sections.forEach(function (sec) { %>
+      <div class="section-head">
+        <div><h2><%= sec.heading %></h2><p><%= sec.note %></p></div>
+      </div>
+      <div class="grid grid-4">
+        <% sec.items.forEach(function (item) { %>
+          <a class="tile" href="<%= item.href %>">
+            <strong><%= item.label %></strong>
+            <span><%= item.count %> listing<%= item.count === 1 ? '' : 's' %></span>
+          </a>
+        <% }); %>
+      </div>
+    <% }); %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

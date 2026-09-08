@@ -1,0 +1,49 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Accessibility</h1>
+    <p>What this site does to stay usable with a keyboard, a screen reader or a magnifier, and where it still falls short.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <h2>Target</h2>
+    <p>
+      This site is built against WCAG 2.2 level AA. That is the target, not a certification. It has not been
+      audited by an external accessibility firm, and that is stated plainly rather than implied away.
+    </p>
+
+    <h2>What is in place</h2>
+    <ul>
+      <li>Every page works without JavaScript. Navigation, search, the basket and both forms are ordinary links and form posts.</li>
+      <li>A skip link is the first focusable element on every page.</li>
+      <li>Every form control has a visible label that is programmatically associated with it. Placeholders are never used as labels.</li>
+      <li>Errors are listed in a summary at the top of the form, each error links to the field, and the field itself is marked with <code>aria-invalid</code>.</li>
+      <li>Focus is always visible, with a three pixel outline that is not removed anywhere in the stylesheet.</li>
+      <li>Buttons say what they do. There is no button on this site labelled only <q>Submit</q>, <q>Click here</q> or <q>Go</q>.</li>
+      <li>Product images carry descriptive alternative text. Decorative images carry an empty alt attribute so screen readers skip them.</li>
+      <li>Text contrast meets or exceeds 4.5 to 1 against its background.</li>
+      <li>No animation runs on scroll, no custom cursor is drawn, and transitions are disabled entirely for anyone whose system asks for reduced motion.</li>
+      <li>The page still works at 400 percent zoom and reflows to a single column without a horizontal scrollbar.</li>
+      <li>Data tables use real table markup with scoped headers and captions.</li>
+    </ul>
+
+    <h2>Known gaps</h2>
+    <ul>
+      <li>Some product photographs come from the supplier with text baked into the image. That text is not available to a screen reader.</li>
+      <li>Alternative text for product images is generated from the product name and specification rather than written by a person describing the photograph.</li>
+      <li>No formal audit or user testing with assistive technology has been carried out yet.</li>
+    </ul>
+
+    <h2>Telling us about a problem</h2>
+    <p>
+      If something on this site blocks you, describe what you were trying to do and what got in the way
+      through the <a href="/contact">contact form</a>. Accessibility faults are treated as bugs, not as
+      feature requests.
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

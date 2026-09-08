@@ -1,0 +1,101 @@
+<%- include('partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Contact the shop</h1>
+    <p>Questions about a SKU, availability, or how a transfer would work for your location.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <div class="grid grid-2">
+      <div>
+        <% if (errors.length) { %>
+          <div class="form-errors" role="alert" tabindex="-1" id="form-errors">
+            <h2>Your message was not sent</h2>
+            <ul>
+              <% errors.forEach(function (e) { %><li><a href="#<%= e.field %>"><%= e.message %></a></li><% }); %>
+            </ul>
+          </div>
+        <% } %>
+
+        <form class="formcard" action="/contact" method="post" novalidate>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <div class="hp" aria-hidden="true">
+            <label for="company_website">Leave this field empty</label>
+            <input type="text" id="company_website" name="company_website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="formgrid">
+            <div class="formgrid formgrid-2">
+              <div class="field">
+                <label for="name">Full name (required)</label>
+                <input type="text" id="name" name="name" required maxlength="80" autocomplete="name"
+                       value="<%= values.name || '' %>" <%= fieldErrors.name ? 'aria-invalid="true" aria-describedby="err-name"' : '' %>>
+                <% if (fieldErrors.name) { %><span class="field-error" id="err-name"><%= fieldErrors.name %></span><% } %>
+              </div>
+              <div class="field">
+                <label for="email">Email address (required)</label>
+                <input type="email" id="email" name="email" required maxlength="254" autocomplete="email"
+                       inputmode="email" value="<%= values.email || '' %>"
+                       <%= fieldErrors.email ? 'aria-invalid="true" aria-describedby="err-email"' : '' %>>
+                <% if (fieldErrors.email) { %><span class="field-error" id="err-email"><%= fieldErrors.email %></span><% } %>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="message">Your message (required)</label>
+              <textarea id="message" name="message" rows="7" required maxlength="1500" aria-describedby="message-hint"
+                        <%= fieldErrors.message ? 'aria-invalid="true" aria-describedby="err-message message-hint"' : '' %>><%= values.message || '' %></textarea>
+              <span class="hint" id="message-hint">Do not send licence numbers, identity documents or payment details through this form.</span>
+              <% if (fieldErrors.message) { %><span class="field-error" id="err-message"><%= fieldErrors.message %></span><% } %>
+            </div>
+
+            <div class="check">
+              <input type="checkbox" id="consent" name="consent" value="yes" <%= values.consent ? 'checked' : '' %>
+                     <%= fieldErrors.consent ? 'aria-invalid="true" aria-describedby="err-consent"' : '' %>>
+              <label for="consent">
+                I agree that the shop may store my name, email and message in order to reply, as described
+                in the <a href="/privacy-policy">privacy policy</a>. (required)
+                <% if (fieldErrors.consent) { %><span class="field-error" id="err-consent"><%= fieldErrors.consent %></span><% } %>
+              </label>
+            </div>
+
+            <p><button type="submit" class="btn btn-primary">Send my message to the shop</button></p>
+          </div>
+        </form>
+      </div>
+
+      <div class="stack">
+        <div class="note">
+          <h3>Business details</h3>
+          <p>
+            <strong><%= business.legalName %></strong><br>
+            <% if (hasRealAddress) { %>
+              <%= business.address.street %><br>
+              <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %><br>
+              <%= business.address.country %>
+            <% } else { %>
+              <span class="meta-updated">Trading address is published once the licence holder confirms it.</span>
+            <% } %>
+          </p>
+          <p>
+            <% if (hasRealPhone) { %>Phone: <a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a><br><% } %>
+            <% if (hasRealEmail) { %>Email: <a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><br><% } %>
+            <% if (hasRealHours) { %>Hours: <%= business.contact.supportHours %><% } %>
+          </p>
+        </div>
+        <div class="note">
+          <h3>Only what is needed</h3>
+          <p>
+            This form asks for a name, an email address and a message. It does not ask for an address,
+            a date of birth or a licence number, because none of those are needed to answer a question.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

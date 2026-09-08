@@ -1,0 +1,29 @@
+<%- include('partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1><%= heading %></h1>
+    <p><%= body %></p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <div class="formcard">
+      <h2>Where to go next</h2>
+      <ul>
+        <li><a href="/">Home page</a></li>
+        <li><a href="/glock-pistols-for-sale">Full catalogue</a></li>
+        <li><a href="/models">Browse by Glock model</a></li>
+        <li><a href="/contact">Contact the shop</a></li>
+      </ul>
+      <% if (showDetail) { %>
+        <h2>Technical detail</h2>
+        <pre><code><%= detail %></code></pre>
+        <p class="meta-updated">This block appears because DEBUG_MODE is on. It is never shown in production.</p>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

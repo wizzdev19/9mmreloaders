@@ -1,0 +1,136 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Privacy policy</h1>
+    <p class="meta-updated">Last reviewed <%= reviewedOn %>. This policy describes what this website does with personal data.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <% if (!complianceSignedOff) { %>
+      <div class="note note-pending">
+        <h3>Not yet signed off</h3>
+        <p>
+          This policy is written to match what the software actually does. It still has to be reviewed by
+          the licence holder and their legal adviser before launch, and the reviewer name recorded in
+          <code>data/business.json</code>.
+        </p>
+      </div>
+    <% } %>
+
+    <h2>Who is responsible for your data</h2>
+    <p>
+      <%= business.policy.dataControllerName %> is the data controller for this website.
+      <% if (hasRealAddress) { %>
+        The registered address is <%= business.address.street %>, <%= business.address.locality %>,
+        <%= business.address.region %> <%= business.address.postalCode %>, <%= business.address.country %>.
+      <% } %>
+      <% if (hasRealPrivacyEmail) { %>
+        Privacy questions go to <a href="mailto:<%= business.contact.privacyEmail %>"><%= business.contact.privacyEmail %></a>.
+      <% } else { %>
+        A dedicated privacy contact address is published here before launch.
+      <% } %>
+    </p>
+
+    <h2>What this site collects</h2>
+    <p>The site collects the smallest amount of data that lets it work. There is no account system, no profile building and no data brokerage.</p>
+    <table>
+      <thead>
+        <tr><th scope="col">Where</th><th scope="col">What</th><th scope="col">Why</th><th scope="col">Kept for</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Contact form</td>
+          <td>Name, email address, message text</td>
+          <td>To answer the question you asked</td>
+          <td><%= retentionMonths %> months</td>
+        </tr>
+        <tr>
+          <td>Order request form</td>
+          <td>Name, email address, optional phone number, message text, the list of items you selected, your confirmations</td>
+          <td>To check availability and eligibility and to quote a transfer</td>
+          <td><%= retentionMonths %> months</td>
+        </tr>
+        <tr>
+          <td>Basket cookie</td>
+          <td>Item identifiers and quantities</td>
+          <td>So your selection survives moving between pages</td>
+          <td>14 days</td>
+        </tr>
+        <tr>
+          <td>Security cookie</td>
+          <td>A random token</td>
+          <td>To stop another website submitting forms on your behalf</td>
+          <td>4 hours</td>
+        </tr>
+        <tr>
+          <td>Consent cookie</td>
+          <td>Your cookie choice</td>
+          <td>So the site stops asking</td>
+          <td>6 months</td>
+        </tr>
+        <tr>
+          <td>Web server logs</td>
+          <td>IP address, request path, timestamp, status code</td>
+          <td>Security, abuse handling and fault diagnosis</td>
+          <td>Set by the hosting provider, published here once hosting is confirmed</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>What this site does not collect</h2>
+    <ul>
+      <li>No date of birth, home address or identity document is requested by any form on this site.</li>
+      <li>No firearms licence number is requested by any form on this site.</li>
+      <li>No card or bank details are handled by this site. It does not process payments.</li>
+      <li>No advertising or cross site tracking pixels are loaded.</li>
+      <li>No data is sold or shared with data brokers.</li>
+    </ul>
+
+    <h2>Legal basis</h2>
+    <p>
+      Form data is processed on the basis of your consent, which you give with the checkbox on the form
+      and can withdraw at any time by asking for your record to be deleted. Basket and security cookies are
+      strictly necessary for the site to function. Measurement cookies, if the shop ever enables them, are set
+      only after you allow them in the cookie banner.
+    </p>
+
+    <h2>Who else sees it</h2>
+    <p>
+      The hosting provider processes data on the shop's behalf in order to run the servers. If the shop
+      enables email notifications, the email provider handles the message in transit. Both are listed by
+      name here once hosting and email are confirmed. Data is disclosed to a public authority only where
+      the law requires it.
+    </p>
+
+    <h2>Your rights</h2>
+    <p>
+      You can ask for a copy of the data held about you, ask for it to be corrected, ask for it to be
+      deleted, or withdraw consent. Contact the address above. The exact statutory rights that apply depend
+      on where you live and are confirmed here alongside the jurisdiction the shop operates in.
+    </p>
+
+    <h2>Retention and deletion</h2>
+    <p>
+      Every submission record carries a deletion date of <%= retentionMonths %> months from the day it was
+      received. A scheduled task deletes expired records automatically rather than relying on someone
+      remembering to do it.
+    </p>
+
+    <h2>Children</h2>
+    <p>
+      This site is not intended for use by children. Firearms cannot lawfully be sold to minors, and the
+      order request form requires an age confirmation before it can be submitted.
+    </p>
+
+    <h2>Changes</h2>
+    <p>
+      Material changes to this policy are dated at the top of the page. The previous version is kept in the
+      project's version control history.
+    </p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

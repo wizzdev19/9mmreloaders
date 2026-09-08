@@ -1,0 +1,58 @@
+<%- include('../partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>About the business</h1>
+    <p>Who runs this shop and what it actually sells.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap prose">
+    <% if (placeholderCount > 0) { %>
+      <div class="note note-pending">
+        <h3>Business details pending</h3>
+        <p>
+          The licence holder has not yet supplied the trading history, staff and premises detail that belongs
+          on this page. It is left empty rather than filled with invented background, because a page about a
+          licensed firearms business that contains made up history is worse than no page at all.
+        </p>
+        <p>To complete it, the shop needs to supply: trading name and legal entity, the licence number and type, how long it has traded, the premises address, who runs it, and any trade body membership.</p>
+      </div>
+    <% } %>
+
+    <h2>What is in the catalogue</h2>
+    <p>
+      <%= stats.total %> listings across <%= stats.modelCount %> Glock models, covering factory
+      configurations, factory colored finishes, custom slide and grip work, optic ready builds, spare slides
+      and drop in triggers. Prices run from $<%= money(stats.minPrice) %> to $<%= money(stats.maxPrice) %>.
+    </p>
+
+    <h2>Where the data comes from</h2>
+    <p>
+      Every listing on this site is generated from the shop's own stock export. The caliber, barrel length,
+      magazine capacity, SKU, price and availability shown on a product page are the values held in that
+      record. Where a field is missing from the record, the product page leaves it out instead of filling it
+      with a plausible number.
+    </p>
+
+    <h2>Marketing copy</h2>
+    <p>
+      The supplier export arrived with promotional descriptions attached. That copy made claims the shop
+      cannot evidence, so none of it was published. Product pages carry the specification table and a factual
+      one line summary until the shop writes descriptions it can stand behind.
+    </p>
+
+    <h2>What this site is not</h2>
+    <ul>
+      <li>It is not affiliated with Glock Ges.m.b.H. GLOCK is their registered trademark.</li>
+      <li>It does not publish customer reviews or ratings, because none have been collected. No rating markup is emitted to search engines either.</li>
+      <li>It does not process payments or complete a firearm sale online.</li>
+    </ul>
+
+    <h2>Contact</h2>
+    <p>Use the <a href="/contact">contact form</a>. Business details, licence number and premises address appear in the footer of every page once confirmed.</p>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

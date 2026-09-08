@@ -1,0 +1,88 @@
+<% if (!isProd && placeholderCount > 0) { %>
+<div class="devbar" role="status">
+  <div class="wrap">
+    Development build. <%= placeholderCount %> business detail<%= placeholderCount === 1 ? '' : 's' %> in
+    <code>data/business.json</code> still marked PLACEHOLDER. Production boot is blocked until they are replaced.
+  </div>
+</div>
+<% } %>
+
+<div class="utility">
+  <div class="wrap">
+    <div>
+      <% if (hasRealPhone) { %>
+        Sales: <a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a>
+      <% } else { %>
+        Licensed firearms dealer. Every firearm order is completed through a licensed transfer.
+      <% } %>
+    </div>
+    <nav class="utility-legal" aria-label="Compliance">
+      <a href="/compliance">Compliance</a>
+      <a href="/shipping-and-transfer-policy">Shipping and transfers</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="/">
+      <svg width="38" height="38" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+        <rect width="64" height="64" rx="6" fill="#14171a"></rect>
+        <circle cx="32" cy="32" r="19" fill="none" stroke="#ffffff" stroke-width="3"></circle>
+        <circle cx="32" cy="32" r="8.5" fill="#8c2f14"></circle>
+        <g stroke="#ffffff" stroke-width="3">
+          <path d="M32 13v7"></path><path d="M32 44v7"></path><path d="M13 32h7"></path><path d="M44 32h7"></path>
+          <path d="M18.6 18.6l4.9 4.9"></path><path d="M40.5 40.5l4.9 4.9"></path>
+          <path d="M45.4 18.6l-4.9 4.9"></path><path d="M23.5 40.5l-4.9 4.9"></path>
+        </g>
+      </svg>
+      <span>
+        <span class="brand-name"><%= brand %></span>
+        <span class="brand-sub">Glock pistols, slides and triggers</span>
+      </span>
+    </a>
+
+    <form class="searchbar" action="/search" method="get" role="search">
+      <label for="site-search">Search the catalogue</label>
+      <input type="search" id="site-search" name="q" placeholder="Model, caliber or SKU" maxlength="60"
+             autocomplete="off" value="<%= typeof searchTerm !== 'undefined' ? searchTerm : '' %>">
+      <button type="submit">Search catalogue</button>
+    </form>
+
+    <div class="header-actions">
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="primary-nav">Menu</button>
+      <a class="btn btn-secondary btn-sm" href="/cart">
+        Cart<% if (cartCount > 0) { %><span class="cart-count"><%= cartCount %></span><% } %>
+      </a>
+    </div>
+  </div>
+</header>
+
+<nav class="mainnav" id="mainnav" aria-label="Primary">
+  <div class="wrap">
+    <ul id="primary-nav">
+      <li><a href="/glock-pistols-for-sale"<%= currentPath === '/glock-pistols-for-sale' ? ' aria-current="page"' : '' %>>All pistols</a></li>
+      <li><a href="/collections/glock-factory-handguns"<%= currentPath === '/collections/glock-factory-handguns' ? ' aria-current="page"' : '' %>>Factory</a></li>
+      <li><a href="/collections/glock-factory-colored-handguns"<%= currentPath === '/collections/glock-factory-colored-handguns' ? ' aria-current="page"' : '' %>>Colored</a></li>
+      <li><a href="/collections/custom-glocks"<%= currentPath === '/collections/custom-glocks' ? ' aria-current="page"' : '' %>>Custom builds</a></li>
+      <li><a href="/collections/optic-ready-glocks"<%= currentPath === '/collections/optic-ready-glocks' ? ' aria-current="page"' : '' %>>Optic ready</a></li>
+      <li><a href="/collections/gen-6-glocks"<%= currentPath === '/collections/gen-6-glocks' ? ' aria-current="page"' : '' %>>Gen 6</a></li>
+      <li><a href="/collections/glock-slides"<%= currentPath === '/collections/glock-slides' ? ' aria-current="page"' : '' %>>Slides</a></li>
+      <li><a href="/collections/glock-triggers"<%= currentPath === '/collections/glock-triggers' ? ' aria-current="page"' : '' %>>Triggers</a></li>
+      <li><a href="/models"<%= currentPath === '/models' ? ' aria-current="page"' : '' %>>Browse by model</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="agebar" id="agebar" hidden>
+  <div class="wrap">
+    <p id="agebar-text">
+      This catalogue lists firearms and firearm parts. Purchases are restricted by age and by law in your
+      location. Read the <a href="/compliance">compliance notice</a> before ordering.
+    </p>
+    <button type="button" class="btn btn-secondary btn-sm" id="agebar-dismiss" aria-describedby="agebar-text">
+      I understand, hide this notice
+    </button>
+  </div>
+</div>

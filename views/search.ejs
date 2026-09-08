@@ -1,0 +1,45 @@
+<%- include('partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>Search results</h1>
+    <p>
+      <% if (term) { %>
+        <%= total %> listing<%= total === 1 ? '' : 's' %> match <q><%= term %></q>.
+      <% } else { %>
+        Enter a Glock model number, a caliber or a SKU.
+      <% } %>
+    </p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <form class="formcard" action="/search" method="get" role="search">
+      <div class="field">
+        <label for="q">Search the catalogue</label>
+        <input type="search" id="q" name="q" value="<%= term %>" maxlength="60" autocomplete="off"
+               aria-describedby="q-hint">
+        <span class="hint" id="q-hint">Examples: 43X, 10mm, MOS, trigger, GR-5163</span>
+      </div>
+      <p><button type="submit" class="btn btn-primary">Search the catalogue</button></p>
+    </form>
+
+    <% if (term && products.length === 0) { %>
+      <div class="empty">
+        <h2>Nothing matched that search</h2>
+        <p>Check the spelling, or browse <a href="/models">all Glock models</a>.</p>
+      </div>
+    <% } %>
+
+    <% if (products.length) { %>
+      <div class="grid grid-4">
+        <% products.forEach(function (p, i) { %>
+          <%- include('partials/product-card', { p: p, eager: i < 4 }) %>
+        <% }); %>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
