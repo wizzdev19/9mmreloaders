@@ -6,10 +6,15 @@
     <div>
       <div class="gallery-main" id="gallery-main">
         <% if (images.length) { %>
-          <img id="gallery-image" src="/img/products/<%= images[0].filename %>"
-               alt="<%= product.name %><%= product.caliber ? ', ' + product.caliber : '' %>"
-               width="<%= images[0].width || 640 %>" height="<%= images[0].height || 480 %>"
-               fetchpriority="high" decoding="async">
+          <picture>
+            <source id="gallery-source" type="image/webp"
+                    srcset="<%= webpSrcset(images[0]) %>"
+                    sizes="(max-width: 1000px) 92vw, 560px">
+            <img id="gallery-image" src="/img/products/<%= images[0].filename %>"
+                 alt="<%= imageAlt(0) %>"
+                 width="<%= images[0].width || 640 %>" height="<%= images[0].height || 480 %>"
+                 fetchpriority="high" decoding="async">
+          </picture>
         <% } else { %>
           <p class="meta-updated">No photograph has been supplied for this SKU.</p>
         <% } %>
@@ -21,8 +26,11 @@
             <li>
               <a href="/img/products/<%= img.filename %>"
                  data-full="/img/products/<%= img.filename %>"
-                 <%= i === 0 ? 'aria-current="true"' : '' %>>
-                <img src="/img/products/<%= img.filename %>" alt="View image <%= i + 1 %> of <%= product.name %>"
+                 data-srcset="<%= webpSrcset(img) %>"
+                 data-alt="<%= imageAlt(i) %>"
+                 aria-label="Show image <%= i + 1 %> of <%= images.length %>: <%= imageAlt(i) %>"
+                 <%- i === 0 ? 'aria-current="true"' : '' %>>
+                <img src="/img/products/<%= thumbFile(img) %>" alt=""
                      width="68" height="52" loading="lazy" decoding="async">
               </a>
             </li>
@@ -32,7 +40,7 @@
     </div>
 
     <div class="pdp-info">
-      <h1><%= product.name %></h1>
+      <h1><%= h1 %></h1>
       <p class="pdp-meta">
         <span>SKU <%= product.sku %></span>
         <span><%= product.product_class %></span>
@@ -112,12 +120,13 @@
         <%- clientCopy %>
       </div>
     <% } else { %>
-      <div class="note note-pending">
-        <h3>Description pending</h3>
+      <div class="note">
+        <h3>About this listing</h3>
         <p>
-          The supplier feed for this SKU contains promotional copy that could not be verified, so it has
-          not been published. The specification table above comes straight from the stock record. A written
-          description appears here once the shop supplies one.
+          The specification above is taken directly from the shop's stock record for this SKU. The supplier
+          feed also carried promotional prose that could not be verified against the product, so it was not
+          published. Ask the shop through the <a href="/contact?sku=<%= encodeURIComponent(product.sku || '') %>">contact form</a>
+          if you need detail that is not shown here.
         </p>
       </div>
     <% } %>
@@ -128,8 +137,8 @@
       <div class="note note-legal">
         <h3>Before you order</h3>
         <p>
-          Eligibility to buy this item depends on your age, your background check and the law where you
-          live. Read the <a href="/compliance">compliance notice</a> and the
+          Eligibility to buy this item depends on your age, the federal background check and the law of the
+          state you live in. Read the <a href="/compliance">compliance notice</a> and the
           <a href="/shipping-and-transfer-policy">transfer policy</a> first.
         </p>
       </div>

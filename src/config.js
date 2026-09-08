@@ -51,6 +51,9 @@ const config = {
     max: int('RATE_LIMIT_MAX', 300),
     formMax: int('FORM_RATE_LIMIT_MAX', 5)
   },
+  robotsMode: ['auto', 'allow', 'disallow'].includes(String(process.env.ROBOTS_MODE || '').trim())
+    ? String(process.env.ROBOTS_MODE).trim()
+    : 'auto',
   analyticsMeasurementId: str('ANALYTICS_MEASUREMENT_ID', ''),
   smtp: {
     host: str('SMTP_HOST', ''),
@@ -94,40 +97,54 @@ if (!fs.existsSync(config.dbPath)) {
 
 const businessPath = path.join(ROOT, 'data', 'business.json');
 let business = null;
-const placeholderPaths = [];
+const pendingFields = [];
 
-function walk(node, trail) {
-  if (typeof node === 'string' && /PLACEHOLDER/.test(node)) placeholderPaths.push(trail);
-  else if (node && typeof node === 'object') {
-    for (const [k, v] of Object.entries(node)) {
-      if (k === '_README') continue;
-      walk(v, trail ? `${trail}.${k}` : k);
-    }
-  }
+/** Reads a dotted path out of the business object. */
+function pick(obj, dotted) {
+  return dotted.split('.').reduce((node, key) => (node == null ? undefined : node[key]), obj);
 }
+
+const isEmpty = (v) => v === null || v === undefined || v === ''
+  || (Array.isArray(v) && v.length === 0)
+  || (typeof v === 'string' && /PLACEHOLDER/i.test(v));
 
 try {
   business = JSON.parse(fs.readFileSync(businessPath, 'utf8'));
-  walk(business, '');
 } catch (err) {
   errors.push(`data/business.json could not be read or parsed: ${err.message}`);
 }
 
 if (business) {
-  if (placeholderPaths.length) {
-    const msg = `data/business.json still contains ${placeholderPaths.length} PLACEHOLDER value(s): ${placeholderPaths.slice(0, 8).join(', ')}${placeholderPaths.length > 8 ? ' ...' : ''}`;
-    if (isProd) errors.push(msg + ' - real business details are required before launch.');
+  const required = Array.isArray(business.policy?.requiredBeforeLaunch) ? business.policy.requiredBeforeLaunch : [];
+  for (const field of required) {
+    if (isEmpty(pick(business, field))) pendingFields.push(field);
+  }
+
+  // Nothing user facing may ever print the word PLACEHOLDER.
+  // The _README key documents this very rule, so it is excluded from its own scan.
+  const scanned = Object.fromEntries(Object.entries(business).filter(([k]) => k !== '_README'));
+  const leaked = JSON.stringify(scanned).match(/PLACEHOLDER/gi);
+  if (leaked) errors.push(`data/business.json still contains ${leaked.length} literal PLACEHOLDER string(s). Use null for a value that is not known yet.`);
+
+  if (pendingFields.length) {
+    const msg = `data/business.json is missing ${pendingFields.length} required value(s): ${pendingFields.join(', ')}`;
+    if (isProd) errors.push(msg + '. These are required before launch.');
     else warnings.push(msg);
   }
-  if (!business.policy || business.policy.transferProcessConfirmed !== true) {
-    const msg = 'business.json policy.transferProcessConfirmed is false. The firearm transfer process wording has not been supplied and signed off by the client.';
+
+  if (business.policy?.transferProcessConfirmed !== true) {
+    const msg = 'business.json policy.transferProcessConfirmed is false. The firearm transfer wording has not been signed off.';
     if (isProd) errors.push(msg);
     else warnings.push(msg);
+  }
+
+  if (isEmpty(business.jurisdiction?.country) || isEmpty(business.jurisdiction?.stateOrRegion)) {
+    errors.push('business.json jurisdiction.country and jurisdiction.stateOrRegion are required. Legal pages depend on them.');
   }
 }
 
 config.business = business;
-config.businessPlaceholders = placeholderPaths;
+config.pendingFields = pendingFields;
 config.startupWarnings = warnings;
 
 function report() {

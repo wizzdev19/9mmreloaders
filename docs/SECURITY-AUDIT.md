@@ -140,7 +140,7 @@ Limits are configurable per environment. A honeypot field catches naive bots wit
 
 ## 13. Update dependencies
 
-**Done.** Ten direct dependencies, all on current major versions. Express was moved from 4 to 5 and sanitize-html to 2.17.7 during the build specifically to clear advisories.
+**Done.** Eleven direct dependencies, all on current major versions. Express was moved from 4 to 5 and sanitize-html to 2.17.7 during the build specifically to clear advisories. `sharp` was added afterwards to generate responsive image variants. It runs at build time only, never inside a request, and `npm audit` still reports 0 vulnerabilities.
 
 `npm audit` result: **0 vulnerabilities.** Re-run with `npm run audit:deps`, which fails on moderate or higher.
 
@@ -257,3 +257,22 @@ npm run audit:all
 ```
 
 Runs, in order: dependency audit, secret scan of tree and git history, house style and claim check, then the SEO and accessibility crawl against a running server.
+
+
+---
+
+## Later additions
+
+Changes made after the first pass of this audit, each re-checked against the same criteria.
+
+| Change | Security effect |
+|---|---|
+| `sharp` added for image variants | Build time only. No request path touches it and no user input reaches it. It reads files the ingest already downloaded |
+| Custom 404 template | The attempted path is echoed into the search box only after being stripped to letters, digits and spaces and passed through `sanitize.text`, so a crafted URL cannot reach the template as markup. Verified with script and attribute injection probes |
+| `/llms.txt` route | Read only. Generated from the catalogue database with no user input in the output |
+| `ROBOTS_MODE` env | Validated against an allowlist of three values. An unrecognised value falls back to `auto`, which is the safe setting |
+| Placeholder removal | `src/config.js` now fails a production boot if any literal `PLACEHOLDER` string survives in `data/business.json`, and warns at every boot listing the fields still outstanding |
+| `lastref` cookie documented | It was already signed, HttpOnly and ten minutes long. It was missing from the cookie policy table, which is a transparency defect rather than a technical one. Now listed |
+| Responsive `<picture>` markup | No new script. The gallery swap still runs from the existing nonce loaded `site.js` with no inline handler |
+
+`npm run audit:all` is the gate. All six checks pass as of this revision.

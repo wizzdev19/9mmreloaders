@@ -1,5 +1,7 @@
 <%- include('../partials/head') %>
 
+<%- include('../partials/breadcrumbs') %>
+
 <div class="pagehead">
   <div class="wrap">
     <h1>Terms of service</h1>
@@ -9,21 +11,11 @@
 
 <div class="section">
   <div class="wrap prose">
-    <% if (!complianceSignedOff) { %>
-      <div class="note note-pending">
-        <h3>Awaiting legal review</h3>
-        <p>
-          These terms describe how the software behaves. They must be reviewed and adopted by the licence
-          holder's legal adviser before launch. Governing law and dispute resolution are left blank until the
-          operating jurisdiction is confirmed.
-        </p>
-      </div>
-    <% } %>
-
     <h2>Who you are dealing with</h2>
     <p>
-      This website is operated by <%= business.legalName %><%= hasRealFfl ? ', holder of Federal Firearms Licence ' + business.fflLicenceNumber : '' %>.
-      References to <q>the shop</q> mean that business.
+      This website is operated by
+      <% if (hasRealLegalName) { %><%= business.legalName %><% } else { %>the licensed firearms dealer that publishes this catalogue<% } %><%= hasRealFfl ? ', holder of Federal Firearms License ' + business.fflLicenceNumber : '' %>,
+      a Federal Firearms Licensee trading in the state of Texas. References to <q>the shop</q> mean that business.
     </p>
 
     <h2>The catalogue is an invitation to treat</h2>
@@ -77,18 +69,18 @@
       the person who receives it.
     </p>
 
-    <h2>Governing law</h2>
-    <% if (jurisdictionPending) { %>
-      <p class="meta-updated">
-        Governing law and the courts with jurisdiction are stated here once the operating jurisdiction is
-        confirmed. This field is intentionally not guessed.
-      </p>
-    <% } else { %>
-      <p>
-        These terms are governed by the law of <%= jurisdiction.stateOrRegion %>, <%= jurisdiction.country %>,
-        and the courts of that jurisdiction have exclusive jurisdiction over any dispute.
-      </p>
-    <% } %>
+    <h2>Governing law and venue</h2>
+    <p>
+      These terms are governed by the laws of the State of <%= jurisdiction.stateOrRegion %> and the federal
+      laws of the <%= jurisdiction.country %>, without regard to conflict of law rules. Any dispute arising
+      from them is subject to the exclusive jurisdiction of the state and federal courts sitting in
+      <%= jurisdiction.stateOrRegion %>.
+    </p>
+    <p>
+      Every sale is also subject to the Gun Control Act, to the regulations of the
+      <%= jurisdiction.regulator %>, and to Texas Penal Code Chapter 46. Where these terms and that law
+      conflict, the law governs.
+    </p>
 
     <h2>Contact</h2>
     <p>Questions about these terms go through the <a href="/contact">contact form</a>.</p>

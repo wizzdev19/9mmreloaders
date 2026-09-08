@@ -16,7 +16,10 @@
     "audit:claims": "node scripts/check-claims.js",
     "audit:seo": "node scripts/check-seo.js",
     "audit:deps": "npm audit --audit-level=moderate",
-    "audit:all": "npm run audit:deps && npm run audit:secrets && npm run audit:claims && npm run audit:seo"
+    "audit:all": "npm run audit:deps && npm run audit:secrets && npm run audit:claims && npm run audit:seo && npm run audit:cannibal && npm run audit:assets",
+    "audit:cannibal": "node scripts/check-cannibalisation.js",
+    "audit:assets": "node scripts/check-assets.js",
+    "images": "node scripts/make-image-variants.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1",
@@ -28,6 +31,7 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
-    "sanitize-html": "^2.17.7"
+    "sanitize-html": "^2.17.7",
+    "sharp": "^0.35.4"
   }
 }

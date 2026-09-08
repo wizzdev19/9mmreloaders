@@ -17,7 +17,14 @@
       </div>
       <% if (featured) { %>
       <figure class="hero-figure">
-        <img src="/img/products/<%= featured.primary_image %>" alt="<%= featured.name %>" width="520" height="390" fetchpriority="high" decoding="async">
+        <%- include('partials/product-image', {
+              filename: featured.primary_image,
+              width: featured.primary_w, height: featured.primary_h,
+              variants: featured.primary_variants,
+              alt: featured.name + (featured.caliber ? ', ' + featured.caliber : '') + ', product photograph',
+              sizes: '(max-width: 1000px) 92vw, 520px',
+              eager: true, fetchPriority: true
+            }) %>
         <figcaption>
           <a href="/product/<%= featured.slug %>"><%= featured.name %></a>
           <% if (featured.caliber) { %> &middot; <%= featured.caliber %><% } %>
@@ -99,21 +106,17 @@
         <h3>Eligibility comes before checkout</h3>
         <p>
           A firearm listed here is not shipped to a customer address on demand. Age limits, background
-          checks and local restrictions apply, and they differ by state and by country. Read the
+          checks and state law apply. This shop is licensed in Texas and transfers run through a Federal
+          Firearms Licensee. Read the
           <a href="/compliance">compliance notice</a> before you place an order.
         </p>
       </div>
-      <div class="note<%= transferConfirmed ? '' : ' note-pending' %>">
+      <div class="note">
         <h3>How an order is completed</h3>
         <% if (transferConfirmed) { %>
           <p><%= business.policy.transferProcessText %></p>
-        <% } else { %>
-          <p>
-            The exact transfer procedure for this dealer has not been published on the site yet. It is
-            supplied by the licence holder, not by the developer, and it appears here once signed off.
-            See <a href="/shipping-and-transfer-policy">shipping and transfers</a>.
-          </p>
         <% } %>
+        <p><a href="/shipping-and-transfer-policy">Read the shipping and transfer policy</a>.</p>
       </div>
     </div>
   </div>

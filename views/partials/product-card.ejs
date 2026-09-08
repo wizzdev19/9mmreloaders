@@ -1,11 +1,18 @@
 <article class="card">
-  <a class="card-media" href="/product/<%= p.slug %>" tabindex="-1" aria-hidden="true">
+  <a class="card-media" href="/product/<%= p.slug %>" tabindex="-1">
     <% if (p.primary_image) { %>
-      <img src="/img/products/<%= p.primary_image %>" alt="" width="320" height="240" loading="<%= (typeof eager !== 'undefined' && eager) ? 'eager' : 'lazy' %>" decoding="async">
+      <%- include('product-image', {
+            filename: p.primary_image,
+            width: p.primary_w, height: p.primary_h,
+            variants: p.primary_variants,
+            alt: p.name + (p.caliber ? ', ' + p.caliber : '') + (p.generation ? ', ' + p.generation : '') + ', shown from the left side',
+            sizes: '(max-width: 480px) 92vw, (max-width: 720px) 46vw, (max-width: 1000px) 30vw, 280px',
+            eager: (typeof eager !== 'undefined' && eager)
+          }) %>
     <% } %>
   </a>
   <div class="card-body">
-    <p class="card-eyebrow"><%= p.product_class %><%= p.model ? ' · Glock ' + p.model : '' %></p>
+    <p class="card-eyebrow"><%= p.product_class %><%= p.model ? ' \u00b7 Glock ' + p.model : '' %></p>
     <h3 class="card-title"><a href="/product/<%= p.slug %>"><%= p.name %></a></h3>
     <ul class="card-specs">
       <% if (p.caliber) { %><li><%= p.caliber %></li><% } %>

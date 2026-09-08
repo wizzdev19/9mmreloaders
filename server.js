@@ -118,16 +118,30 @@ app.use((req, res) => {
   res.status(404);
   res.locals.meta = {
     title: 'Page not found | ' + res.locals.brand,
-    description: 'That page does not exist on this site.',
+    description: 'That page does not exist on this site. Search the Glock catalogue or jump to a model collection from here.',
     canonical: require('./src/seo').absoluteUrl(req.path),
+    // A 404 is already a signal not to index. noindex, follow keeps the outgoing
+    // links on the page useful to a crawler that arrived from a stale backlink.
     robots: 'noindex, follow'
   };
-  res.render('error', {
-    heading: 'Page not found',
-    body: 'That address does not match anything on this site. It may have been removed, or the link may be mistyped.',
-    showDetail: false,
-    detail: ''
-  });
+
+  // A dead end page loses the visitor. This one offers a search box, the biggest
+  // model collections and the main sections, all as plain server rendered links.
+  let topModels = [];
+  try {
+    topModels = require('./src/db').q.categories.all()
+      .filter((c) => c.grp === 'Models')
+      .sort((a, b) => b.product_count - a.product_count)
+      .slice(0, 8);
+  } catch { topModels = []; }
+
+  // The path is echoed into the search box as a hint, stripped to plain words so
+  // nothing from the URL can reach the template as markup.
+  const attempted = require('./src/sanitize').text(
+    decodeURIComponent(req.path).replace(/[^a-zA-Z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim(), 60
+  );
+
+  res.render('404', { topModels, attempted });
 });
 
 // eslint-disable-next-line no-unused-vars
@@ -171,7 +185,10 @@ setInterval(() => {
 const server = app.listen(config.port, '0.0.0.0', () => {
   console.log(`${config.env} server listening on port ${config.port}`);
   console.log(`canonical origin: ${config.siteOrigin}`);
-  if (!config.isProd) console.log('robots.txt is serving Disallow: / because this is not a production build');
+  const robotsReal = config.robotsMode === 'allow' || (config.robotsMode === 'auto' && config.isProd);
+  console.log(robotsReal
+    ? `robots.txt is serving the real crawl rules (ROBOTS_MODE=${config.robotsMode})`
+    : `robots.txt is serving Disallow: / (ROBOTS_MODE=${config.robotsMode}, production build: ${config.isProd})`);
 });
 
 for (const signal of ['SIGTERM', 'SIGINT']) {

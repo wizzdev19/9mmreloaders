@@ -109,12 +109,17 @@
 
   var thumbs = document.getElementById('gallery-thumbs');
   var mainImage = document.getElementById('gallery-image');
+  var mainSource = document.getElementById('gallery-source');
   if (thumbs && mainImage) {
     thumbs.addEventListener('click', function (event) {
-      var link = event.target.closest ? event.target.closest('a[data-full]') : null;
+      var link = event.target && event.target.closest ? event.target.closest('a[data-full]') : null;
       if (!link) return;
       event.preventDefault();
+      // The <source> has to change too, otherwise the browser keeps serving the
+      // WebP candidate for the previous image and the swap appears to do nothing.
+      if (mainSource) mainSource.setAttribute('srcset', link.getAttribute('data-srcset') || '');
       mainImage.setAttribute('src', link.getAttribute('data-full'));
+      mainImage.setAttribute('alt', link.getAttribute('data-alt') || '');
       var all = thumbs.querySelectorAll('a[data-full]');
       for (var i = 0; i < all.length; i++) all[i].removeAttribute('aria-current');
       link.setAttribute('aria-current', 'true');

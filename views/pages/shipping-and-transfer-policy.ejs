@@ -1,5 +1,7 @@
 <%- include('../partials/head') %>
 
+<%- include('../partials/breadcrumbs') %>
+
 <div class="pagehead">
   <div class="wrap">
     <h1>Shipping and transfers</h1>
@@ -9,49 +11,57 @@
 
 <div class="section">
   <div class="wrap prose">
+    <h2>Firearms ship to a licensed dealer, never to your door</h2>
     <% if (transferConfirmed) { %>
-      <h2>Firearm transfers</h2>
       <p><%= business.policy.transferProcessText %></p>
-    <% } else { %>
-      <div class="note note-pending">
-        <h3>Transfer procedure pending</h3>
-        <p>
-          This section is deliberately blank. A firearm transfer procedure is a legal process specific to
-          the dealer's licence and jurisdiction, and writing a plausible sounding version of it would be
-          both wrong and dangerous. The licence holder supplies the exact wording, it is reviewed, and then
-          it appears here.
-        </p>
-        <p>The wording needs to answer, at minimum:</p>
-        <ul>
-          <li>Which licence or premises the firearm is shipped to, and whether a customer address is ever used.</li>
-          <li>What identification and what background check the receiving party performs.</li>
-          <li>Who pays the transfer fee and how much it is.</li>
-          <li>How long the process normally takes.</li>
-          <li>Which destinations are refused outright.</li>
-          <li>What happens if the buyer fails the check after the item has shipped.</li>
-        </ul>
-      </div>
     <% } %>
+
+    <h2>What happens at the counter</h2>
+    <ol>
+      <li>The shop confirms the item, the price and the receiving Federal Firearms Licensee with you in writing.</li>
+      <li>The firearm ships to that licensee, together with a copy of their license.</li>
+      <li>You attend in person with government issued photo identification showing your current residential address.</li>
+      <li>You complete <%= jurisdiction.transactionRecordForm %> at the counter.</li>
+      <li>The licensee queries the <%= jurisdiction.backgroundCheckSystem %> and releases the firearm on a proceed result.</li>
+    </ol>
+    <p>
+      Texas sets no state waiting period and no purchase permit, so a proceed result normally means you take
+      the firearm the same day. A delay result holds the transfer until the check resolves. A deny result
+      means the firearm cannot be released, and the appeal route runs through the federal system, not through
+      this shop.
+    </p>
+
+    <h2>Buyers outside Texas</h2>
+    <p>
+      A handgun bought by a resident of another state is shipped to a licensed dealer in that state and
+      transferred there under that state's rules, because federal law limits face to face handgun sales by a
+      dealer to residents of the dealer's own state. Long guns may be sold to an out of state resident where
+      the sale is lawful in both states.
+    </p>
 
     <h2>Parts and accessories</h2>
     <p>
       Slides, triggers and other parts are not always subject to the same transfer rules as a complete
-      firearm, but some jurisdictions do regulate them. The shop confirms which route applies to your order
-      when it replies to your request.
+      firearm. A stripped Glock slide, a drop in trigger or a magazine is not a firearm under federal law and
+      can normally ship directly to a residential address. Several states and cities do regulate magazines and
+      certain components, so the shop confirms which route applies to your address when it replies to your
+      request.
     </p>
 
     <h2>Costs</h2>
     <p>
-      Shipping, transfer fees and tax are not calculated on this site. They depend on the destination, the
-      receiving licence and the item, so a person quotes them on your order request rather than an estimate
-      appearing at checkout. The price shown against a listing is the item price recorded in the stock
-      system and nothing else.
+      Shipping, transfer fees and sales tax are not calculated on this site. They depend on the destination,
+      the receiving licensee and the item, so a person quotes them against your order request rather than an
+      estimate appearing at checkout. The price shown against a listing is the item price recorded in the
+      stock system and nothing else.
     </p>
+    <% if (transferFeeNote) { %><p><%= transferFeeNote %></p><% } %>
 
     <h2>Timescales</h2>
-    <p class="meta-updated">
-      Dispatch and delivery timescales are published here once the shop confirms them with its carriers. No
-      timeframe is stated on this site until the shop can stand behind it.
+    <p>
+      The shop does not publish a dispatch or delivery estimate on this site, because it has not yet
+      committed to one with its carriers, and a number invented for a web page is worse than no number. You
+      are given a timescale in writing when your order request is answered.
     </p>
 
     <h2>Damage or a wrong item</h2>

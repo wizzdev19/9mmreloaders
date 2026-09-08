@@ -14,7 +14,11 @@
 const { config } = require('./config');
 
 const b = () => config.business || {};
-const brand = () => b().tradingName || b().legalName || 'Glock Retailer';
+// The trading name drives every page title, the footer and the structured data.
+// Until the licence holder supplies it, a neutral catalogue name is used. It is a
+// single field to change, not a string scattered through the templates.
+const brand = () => b().tradingName || b().legalName || b().fallbackBrand || 'Glock Catalogue';
+const legalName = () => b().legalName || brand();
 
 function absoluteUrl(pathname) {
   return config.siteOrigin + (pathname.startsWith('/') ? pathname : '/' + pathname);
@@ -38,6 +42,12 @@ function truncate(str, n) {
  * Description pattern: what the page lists, the concrete attributes, the price floor.
  * Everything is generated from catalogue data, so nothing here is an invented figure.
  */
+// "1 listings" reads like a bug, so counts are pluralised everywhere they are printed.
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+// A collection with fewer than this many listings is too thin to rank on its own.
+const THIN_COLLECTION_MIN = 3;
+
 function categoryMeta(category, stats) {
   const n = category.product_count;
   const from = stats.minPrice != null ? `Prices from $${money(stats.minPrice)}.` : '';
@@ -50,36 +60,44 @@ function categoryMeta(category, stats) {
       description: truncate(
         `${n} Glock ${model} pistols listed${calibers ? ` in ${calibers}` : ''}. Factory, colored and custom configurations with specifications, images and SKUs. ${from}`, 155),
       h1: `Glock ${model} for sale`,
-      intro: `${n} Glock ${model} listings. Each entry shows the caliber, barrel length, magazine capacity and SKU taken from the supplier record.`
+      intro: `${plural(n, 'Glock ' + model + ' listing')}. Each entry shows the caliber, barrel length, magazine capacity and SKU taken from the supplier record.`
     };
   }
 
+  // Each non model collection is given its own angle, so two collections that
+  // contain overlapping stock never compete for the same search term. The map is
+  // the single source of that wording: title, H1 and intro all derive from it.
   const map = {
     'gen-6-glocks': ['Gen 6 Glock Pistols', 'Gen 6 Glock models with the Standard Optic Ready System and RTF6 frame texture.'],
-    'custom-glocks': ['Custom Glock Builds', 'Custom slide cuts, coatings, grip work and optic installations on Glock frames.'],
-    'optic-ready-glocks': ['Optic Ready Glock Pistols', 'Glock pistols supplied with a red dot already cut and mounted.'],
-    'glock-factory-handguns': ['Glock Factory Handguns', 'Standard factory configuration Glock pistols.'],
-    'glock-factory-colored-handguns': ['Glock Factory Colored Handguns', 'Factory Glock pistols in Cerakote and factory color finishes.'],
-    'used-glock-pistols': ['Used Glock Pistols', 'Second hand Glock pistols.'],
-    'glock-slides': ['Glock Slides', 'Complete and stripped slides for Glock frames.'],
+    'custom-glocks': ['Custom Glock Builds', 'Custom slide cuts, coatings, grip work and optic installations carried out on Glock frames.'],
+    'optic-ready-glocks': ['Optic Ready Glock Pistols', 'Glock pistols supplied with the slide already cut for a red dot, or with an optic fitted.'],
+    'glock-factory-handguns': ['Glock Factory Handguns', 'Unmodified factory configuration Glock pistols, as they leave the factory with no aftermarket work.'],
+    'glock-factory-colored-handguns': ['Glock Factory Colored Handguns', 'Factory Glock pistols in a factory applied color finish rather than standard black.'],
+    'used-glock-pistols': ['Used Glock Pistols', 'Second hand Glock pistols taken in by the shop.'],
+    'glock-slides': ['Glock Slides', 'Complete and stripped slides for Glock frames, sold as a part rather than a firearm.'],
     'glock-triggers': ['Glock Triggers', 'Drop in trigger assemblies and trigger shoes for Glock pistols.'],
-    'glock-store-models': ['Glock Store Models', 'Store exclusive Glock configurations.']
+    'glock-store-models': ['Glock Store Models', 'Store exclusive Glock configurations built for a single retailer.']
   };
   const [label, blurb] = map[category.slug] || [category.name, `${category.name} listings.`];
   return {
     title: `${label} | ${n} Listed | ${brand()}`,
-    description: truncate(`${blurb} ${n} listings with specifications, images and SKUs. ${from}`, 155),
+    description: truncate(`${blurb} ${plural(n, 'listing')} with specifications, images and SKUs. ${from}`, 155),
     h1: label,
-    intro: `${blurb} ${n} listings, each with the specifications recorded against the SKU.`
+    intro: `${blurb} ${plural(n, 'listing')}, each with the specifications recorded against the SKU.`,
+    // A collection holding one or two items cannot support its own search term and
+    // only competes with the larger page that also contains those items, so it is
+    // kept crawlable but out of the index. Model collections are exempt: a single
+    // Glock 39 listing is still the only answer to a search for a Glock 39.
+    robots: n < THIN_COLLECTION_MIN ? 'noindex, follow' : null
   };
 }
 
 function caliberMeta(caliber, slug, count, minPrice) {
   return {
     title: `${caliber} Glock Pistols | ${count} Listed | ${brand()}`,
-    description: truncate(`${count} Glock pistols chambered in ${caliber}, with barrel length, capacity and SKU for each listing.${minPrice != null ? ` Prices from $${money(minPrice)}.` : ''}`, 155),
+    description: truncate(`${plural(count, 'Glock pistol')} chambered in ${caliber}, with barrel length, capacity and SKU for each listing.${minPrice != null ? ` Prices from $${money(minPrice)}.` : ''}`, 155),
     h1: `Glock pistols in ${caliber}`,
-    intro: `Every Glock listing recorded as ${caliber}, grouped so you can compare barrel length and capacity across models.`
+    intro: `Every Glock in the catalogue chambered in ${caliber}, drawn from all models and finishes. Use this page to compare barrel length and magazine capacity across models in one caliber.`
   };
 }
 
@@ -120,16 +138,16 @@ function organizationLd() {
     '@context': 'https://schema.org',
     '@type': 'Store',
     '@id': absoluteUrl('/#organization'),
-    name: biz.tradingName || biz.legalName,
-    legalName: biz.legalName,
+    name: brand(),
     url: config.siteOrigin,
     description: biz.tagline,
     image: absoluteUrl('/img/brand/storefront.png'),
     logo: absoluteUrl('/img/brand/logo.png')
   };
-  if (biz.contact?.phone && !/PLACEHOLDER/.test(biz.contact.phone)) node.telephone = biz.contact.phone;
-  if (biz.contact?.email && !/PLACEHOLDER/.test(biz.contact.email)) node.email = biz.contact.email;
-  if (biz.address && !/PLACEHOLDER/.test(biz.address.street || '')) {
+  if (biz.legalName) node.legalName = biz.legalName;
+  if (biz.contact?.phone) node.telephone = biz.contact.phone;
+  if (biz.contact?.email) node.email = biz.contact.email;
+  if (biz.address?.street && biz.address?.locality) {
     node.address = {
       '@type': 'PostalAddress',
       streetAddress: biz.address.street,
@@ -217,6 +235,26 @@ function productLd(product, images) {
   return node;
 }
 
+/**
+ * A typed page node for the non catalogue pages, so each one declares what it is
+ * rather than leaving Google to infer it. Also carries the last review date on
+ * policy pages, which is the signal that they are maintained.
+ */
+function webPageLd(type, { name, description, pathname, dateModified }) {
+  const node = {
+    '@context': 'https://schema.org',
+    '@type': type,
+    '@id': absoluteUrl(pathname) + '#page',
+    url: absoluteUrl(pathname),
+    name,
+    description,
+    isPartOf: { '@id': absoluteUrl('/#website') },
+    publisher: { '@id': absoluteUrl('/#organization') }
+  };
+  if (dateModified) node.dateModified = dateModified;
+  return node;
+}
+
 function itemListLd(products, pathname) {
   return {
     '@context': 'https://schema.org',
@@ -232,8 +270,50 @@ function itemListLd(products, pathname) {
   };
 }
 
+/* ------------------------------------------------------------------ images */
+
+/**
+ * Alt text for a product photograph.
+ *
+ * Google asks for descriptive alt text, not a keyword list, so this states what the
+ * picture actually shows: the product, its caliber and which of the supplied views
+ * it is. The supplier gives no per image caption, so the position is the only honest
+ * way to distinguish the second and third shots.
+ */
+function imageAlt(product, index, total) {
+  const parts = [product.name];
+  if (product.caliber) parts.push(product.caliber);
+  const base = parts.join(', ');
+  if (!index) return `${base}, product photograph`;
+  return `${base}, photograph ${index + 1} of ${total}`;
+}
+
+/** WebP srcset for an image row that carries a comma separated variants column. */
+function webpSrcset(image) {
+  if (!image || !image.variants) return '';
+  const base = String(image.filename).replace(/\.[^.]+$/, '');
+  return String(image.variants)
+    .split(',')
+    .filter(Boolean)
+    .map((w) => `/img/products/${base}-${w}.webp ${w}w`)
+    .join(', ');
+}
+
+/** Smallest generated variant, used for gallery thumbnails. */
+function thumbFile(image) {
+  if (!image) return '';
+  if (!image.variants) return image.filename;
+  const smallest = String(image.variants).split(',').filter(Boolean)[0];
+  return `${String(image.filename).replace(/\.[^.]+$/, '')}-${smallest}.webp`;
+}
+
 module.exports = {
+  THIN_COLLECTION_MIN,
+  imageAlt,
+  webpSrcset,
+  thumbFile,
   absoluteUrl, money, truncate, brand,
   categoryMeta, caliberMeta, productMeta,
-  organizationLd, websiteLd, breadcrumbLd, productLd, itemListLd
+  organizationLd, websiteLd, breadcrumbLd, productLd, itemListLd,
+  webPageLd, legalName
 };

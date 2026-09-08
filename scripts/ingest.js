@@ -325,6 +325,9 @@ CREATE TABLE products (
   attr1_name TEXT, attr1_values TEXT,
   attr2_name TEXT, attr2_values TEXT,
   primary_image TEXT,
+  primary_w INTEGER,
+  primary_h INTEGER,
+  primary_variants TEXT,
   image_count INTEGER NOT NULL DEFAULT 0
 );
 CREATE TABLE product_images (
@@ -332,6 +335,7 @@ CREATE TABLE product_images (
   position INTEGER NOT NULL,
   filename TEXT NOT NULL,
   width INTEGER, height INTEGER,
+  variants TEXT,
   PRIMARY KEY (product_id, position)
 );
 CREATE TABLE product_categories (
@@ -510,6 +514,19 @@ function jpegSize(buf) {
   };
   fs.writeFileSync(path.join(REPORT_DIR, 'ingest-stats.json'), JSON.stringify(stats, null, 2));
   db.close();
+
+  // Responsive WebP variants are generated from the files just downloaded.
+  await require('./make-image-variants').run();
+
+  // Card grids only load the primary image, so its dimensions and variant list are
+  // denormalised onto the product row to avoid a join on every listing page.
+  const db2 = new Database(DB_PATH);
+  db2.prepare(`UPDATE products SET
+      primary_w = (SELECT width FROM product_images i WHERE i.product_id = products.id ORDER BY position LIMIT 1),
+      primary_h = (SELECT height FROM product_images i WHERE i.product_id = products.id ORDER BY position LIMIT 1),
+      primary_variants = (SELECT variants FROM product_images i WHERE i.product_id = products.id ORDER BY position LIMIT 1)`).run();
+  db2.close();
+
   console.log('\nIngest complete');
   console.table(stats);
 })();

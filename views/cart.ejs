@@ -33,7 +33,7 @@
                 <tr>
                   <td>
                     <% if (line.product.primary_image) { %>
-                      <img src="/img/products/<%= line.product.primary_image %>" alt="" width="76" height="57" loading="lazy">
+                      <img src="/img/products/<%= line.product.primary_variants ? line.product.primary_image.replace(/\.[^.]+$/, '') + '-400.webp' : line.product.primary_image %>" alt="" width="76" height="57" loading="lazy" decoding="async">
                     <% } %>
                   </td>
                   <td>

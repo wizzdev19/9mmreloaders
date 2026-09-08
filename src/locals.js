@@ -7,7 +7,10 @@ const seo = require('./seo');
 const cart = require('./cart');
 const { jsonForScript } = require('./sanitize');
 
-const real = (value) => typeof value === 'string' && value.trim() !== '' && !/PLACEHOLDER/.test(value);
+// A field counts as real only when the licence holder has actually supplied it.
+// Anything null or blank is omitted from the page rather than printed as a
+// placeholder, so no visitor and no crawler ever sees filler text.
+const real = (value) => typeof value === 'string' && value.trim() !== '';
 
 // Cache buster derived from boot time. Static assets are served with a long max-age,
 // so the query string is what makes a deploy visible to a returning browser.
@@ -20,7 +23,7 @@ function locals(req, res, next) {
   res.locals.year = new Date().getFullYear();
   res.locals.isProd = config.isProd;
   res.locals.assetVersion = ASSET_VERSION;
-  res.locals.placeholderCount = config.businessPlaceholders.length;
+  res.locals.pendingFields = config.pendingFields;
   res.locals.analyticsId = config.analyticsMeasurementId || '';
   res.locals.currentPath = req.path;
   res.locals.cartCount = cart.count(req);
@@ -36,6 +39,8 @@ function locals(req, res, next) {
   res.locals.hasRealAddress = real(biz.address?.street) && real(biz.address?.locality);
   res.locals.jurisdiction = biz.jurisdiction || {};
   res.locals.jurisdictionPending = !real(biz.jurisdiction?.country);
+  res.locals.hasRealLegalName = real(biz.legalName);
+  res.locals.transferFeeNote = biz.policy?.transferFeeNote || null;
   res.locals.retentionMonths = Number(biz.policy?.dataRetentionMonths || 24);
   res.locals.returnsWindowDays = Number(biz.policy?.returnsWindowDays || 30);
   res.locals.minAge = Number(biz.jurisdiction?.minimumAgeHandgun || 21);

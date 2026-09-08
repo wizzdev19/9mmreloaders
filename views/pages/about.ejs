@@ -1,5 +1,7 @@
 <%- include('../partials/head') %>
 
+<%- include('../partials/breadcrumbs') %>
+
 <div class="pagehead">
   <div class="wrap">
     <h1>About the business</h1>
@@ -9,17 +11,16 @@
 
 <div class="section">
   <div class="wrap prose">
-    <% if (placeholderCount > 0) { %>
-      <div class="note note-pending">
-        <h3>Business details pending</h3>
-        <p>
-          The licence holder has not yet supplied the trading history, staff and premises detail that belongs
-          on this page. It is left empty rather than filled with invented background, because a page about a
-          licensed firearms business that contains made up history is worse than no page at all.
-        </p>
-        <p>To complete it, the shop needs to supply: trading name and legal entity, the licence number and type, how long it has traded, the premises address, who runs it, and any trade body membership.</p>
-      </div>
-    <% } %>
+    <h2>How the shop operates</h2>
+    <p>
+      This is a Federal Firearms Licensee trading in the state of Texas. Every firearm sold here is
+      transferred through a licensed dealer, with <%= jurisdiction.transactionRecordForm %> completed at the
+      counter and a background check run through the <%= jurisdiction.backgroundCheckSystem %> before
+      anything is released. The
+      minimum age from a licensed dealer is <%= jurisdiction.minimumAgeHandgun %> for a handgun and
+      <%= jurisdiction.minimumAgeLongGun %> for a rifle or shotgun. The full detail is on the
+      <a href="/compliance">compliance page</a>.
+    </p>
 
     <h2>What is in the catalogue</h2>
     <p>
@@ -51,7 +52,10 @@
     </ul>
 
     <h2>Contact</h2>
-    <p>Use the <a href="/contact">contact form</a>. Business details, licence number and premises address appear in the footer of every page once confirmed.</p>
+    <p>
+      Use the <a href="/contact">contact form</a> for stock questions, transfer questions or anything the
+      product pages do not answer. Replies come from a person, not an automated system.
+    </p>
   </div>
 </div>
 

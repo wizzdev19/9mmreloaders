@@ -88,7 +88,9 @@ function renderListing(req, res, opts) {
       ? seo.truncate(`Page ${page} of ${totalPages}. Listings ${offset + 1} to ${Math.min(offset + PER_PAGE, total)} of ${total}. ${opts.meta.description}`, 158)
       : opts.meta.description,
     canonical: seo.absoluteUrl(canonicalPath),
-    robots: isFiltered ? 'noindex, follow' : null,
+    // A sort permutation is duplicate content. A collection too thin to rank sets its
+    // own directive in seo.categoryMeta. Either one keeps the page out of the index.
+    robots: isFiltered ? 'noindex, follow' : (opts.meta.robots || null),
     prev: page > 1 ? seo.absoluteUrl(pageUrl(page - 1)) : null,
     next: page < totalPages ? seo.absoluteUrl(pageUrl(page + 1)) : null,
     image: rows[0]?.primary_image ? seo.absoluteUrl('/img/products/' + rows[0].primary_image) : null
@@ -168,7 +170,7 @@ router.get('/glock-pistols-for-sale', (req, res) => {
     filter: {},
     trail: [{ label: 'Home', href: '/' }, { label: 'Glock pistols for sale', href: '/glock-pistols-for-sale' }],
     h1: 'Glock pistols for sale',
-    intro: `The complete catalogue: ${total} listings covering factory, colored, custom and optic ready Glock pistols along with spare slides and drop in triggers.`,
+    intro: `Every listing the shop holds, ${total} in total, in one place. This page is the full index across all models, all finishes and all calibers. To narrow it down, use a model collection, a caliber page or the facets on the left.`,
     meta: {
       title: `Glock Pistols For Sale | ${total} Listings | ${seo.brand()}`,
       description: seo.truncate(`Every Glock listing in the catalogue, ${total} in total, with caliber, barrel length, magazine capacity, SKU and price. Prices from $${seo.money(range.lo)}.`, 155)
@@ -198,7 +200,7 @@ router.get('/collections/:slug', (req, res, next) => {
     ],
     h1: meta.h1,
     intro: meta.intro,
-    meta: { title: meta.title, description: meta.description }
+    meta: { title: meta.title, description: meta.description, robots: meta.robots }
   });
 });
 
@@ -303,6 +305,10 @@ router.get('/product/:slug', (req, res, next) => {
   };
   res.locals.jsonLd = [seo.breadcrumbLd(trail), seo.productLd(product, images)];
 
+  // 158 products share a supplier name, so the SKU is appended to the H1 in exactly
+  // the same way it is appended to the title tag. Every page then has one unique H1.
+  const h1 = product.title_suffix ? `${product.name} (${product.title_suffix})` : product.name;
+
   res.render('product', {
     product,
     images,
@@ -310,6 +316,10 @@ router.get('/product/:slug', (req, res, next) => {
     related,
     primaryCategory,
     trail,
+    h1,
+    imageAlt: (i) => seo.imageAlt(product, i, images.length),
+    webpSrcset: seo.webpSrcset,
+    thumbFile: seo.thumbFile,
     clientCopy: product.client_copy ? clean.renderClientCopy(product.client_copy) : null
   });
 });

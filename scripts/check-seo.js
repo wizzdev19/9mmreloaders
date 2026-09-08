@@ -18,6 +18,7 @@ const queue = ['/'];
 const issues = [];
 const titles = new Map();
 const descriptions = new Map();
+const h1s = new Map();
 
 // Length must be measured on the text a user sees, not on the encoded HTML,
 // otherwise every ampersand and quote inflates the count by four characters.
@@ -106,9 +107,19 @@ async function check(path) {
 
   /* --------------------------------------------------- body checks */
 
-  const h1s = [...html.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/gi)];
-  if (h1s.length === 0) add(path, 'error', 'no h1');
-  if (h1s.length > 1) add(path, 'error', `${h1s.length} h1 elements`);
+  const found = [...html.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/gi)];
+  if (found.length === 0) add(path, 'error', 'no h1');
+  if (found.length > 1) add(path, 'error', `${found.length} h1 elements`);
+  if (found.length === 1 && indexable && !canonicalised) {
+    // Two indexable pages sharing an H1 are two pages competing for one query.
+    const heading = decodeEntities(found[0][1].replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
+    if (h1s.has(heading)) add(path, 'error', `duplicate h1 "${heading.slice(0, 50)}", also used by ${h1s.get(heading)}`);
+    else h1s.set(heading, path);
+  }
+
+  // Every page except the home page should tell a crawler where it sits.
+  if (path !== '/' && indexable && !/BreadcrumbList/.test(html)) add(path, 'warn', 'no BreadcrumbList structured data');
+  if (path !== '/' && indexable && !/class="breadcrumbs"/.test(html)) add(path, 'warn', 'no visible breadcrumb trail');
 
   const imgs = [...html.matchAll(/<img\b[^>]*>/gi)].map((m) => m[0]);
   for (const img of imgs) {
@@ -180,6 +191,7 @@ async function check(path) {
   console.log(`Product URLs in sitemap:  ${sitemapUrls.length}`);
   console.log(`Unique titles:            ${titles.size}`);
   console.log(`Unique descriptions:      ${descriptions.size}`);
+  console.log(`Unique h1 headings:       ${h1s.size}`);
 
   const errors = issues.filter((i) => i.level === 'error');
   const warns = issues.filter((i) => i.level === 'warn');

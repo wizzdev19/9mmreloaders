@@ -1,61 +1,90 @@
 {
-  "_README": "Single source of truth for business identity. Every value marked PLACEHOLDER must be replaced with verified real data before this site goes live. The server logs a startup warning and blocks production boot while placeholders remain (see src/config.js).",
+  "_README": "Single source of truth for business identity. Values set to null are not yet supplied by the licence holder. Nothing on the public site ever prints the word PLACEHOLDER: a null field is simply omitted from the page and from the structured data. src/config.js lists the outstanding nulls at boot and blocks a production start until the required ones are filled.",
 
-  "legalName": "PLACEHOLDER Legal Entity Name LLC",
-  "tradingName": "PLACEHOLDER Trading Name",
-  "shortName": "PLACEHOLDER",
-  "tagline": "Factory and custom Glock pistols, slides and triggers",
+  "legalName": null,
+  "tradingName": null,
+  "shortName": null,
+  "tagline": "Factory and custom Glock pistols, slides and triggers, transferred through a licensed dealer in Texas",
+  "fallbackBrand": "Texas Glock Catalogue",
 
-  "fflLicenceNumber": "PLACEHOLDER Federal Firearms Licence number",
-  "fflLicenceType": "PLACEHOLDER (for example Type 01 Dealer in Firearms)",
-  "businessRegistrationNumber": "PLACEHOLDER",
-  "salesTaxId": "PLACEHOLDER",
+  "fflLicenceNumber": null,
+  "fflLicenceType": "Type 01, Dealer in Firearms Other Than Destructive Devices",
+  "businessRegistrationNumber": null,
+  "salesTaxId": null,
 
   "jurisdiction": {
-    "country": "PLACEHOLDER ISO country, for example US",
-    "stateOrRegion": "PLACEHOLDER",
-    "regulator": "PLACEHOLDER primary firearms regulator for this jurisdiction",
+    "country": "United States",
+    "countryCode": "US",
+    "stateOrRegion": "Texas",
+    "stateCode": "TX",
+    "regulator": "Bureau of Alcohol, Tobacco, Firearms and Explosives",
     "minimumAgeHandgun": 21,
     "minimumAgeLongGun": 18,
     "minimumAgeAccessory": 18,
-    "notes": "Ages above are the common United States federal baseline for a licensed dealer. They MUST be re-confirmed against the client's actual jurisdiction and state law before launch. If the business operates outside the United States these values and every policy page have to be rewritten for that country's law."
+    "waitingPeriodDays": 0,
+    "permitToPurchaseRequired": false,
+    "stateRegistrationRequired": false,
+    "backgroundCheckSystem": "FBI National Instant Criminal Background Check System (NICS)",
+    "transactionRecordForm": "ATF Form 4473",
+    "notes": "Confirmed for a licensed dealer operating in Texas. Federal law sets the age floor at 21 for a handgun bought from a licensed dealer and 18 for a rifle or shotgun. Texas adds no purchase permit, no waiting period and no state registration. These values must be re-checked if the law changes or if the business begins trading in another state."
   },
 
   "address": {
-    "street": "PLACEHOLDER street address",
-    "locality": "PLACEHOLDER city",
-    "region": "PLACEHOLDER state",
-    "postalCode": "PLACEHOLDER",
-    "country": "PLACEHOLDER"
+    "street": null,
+    "locality": null,
+    "region": "TX",
+    "postalCode": null,
+    "country": "US"
   },
 
   "geo": { "latitude": null, "longitude": null },
 
   "contact": {
-    "phone": "PLACEHOLDER +1 000 000 0000",
-    "email": "PLACEHOLDER sales@example.com",
-    "privacyEmail": "PLACEHOLDER privacy@example.com",
-    "supportHours": "PLACEHOLDER Monday to Friday, 9am to 5pm"
+    "phone": null,
+    "email": null,
+    "privacyEmail": null,
+    "supportHours": null
   },
 
-  "openingHours": [
-    "Mo-Fr 09:00-17:00",
-    "Sa 10:00-14:00"
-  ],
+  "openingHours": [],
 
   "social": {
-    "website": "PLACEHOLDER https://example.com",
+    "website": null,
     "profiles": []
   },
 
   "policy": {
-    "dataControllerName": "PLACEHOLDER Legal Entity Name LLC",
+    "dataControllerName": null,
     "dataRetentionMonths": 24,
     "returnsWindowDays": 30,
-    "transferProcessConfirmed": false,
-    "transferProcessText": "PLACEHOLDER. The client must supply the exact wording of their firearm transfer process, including which licence the firearm ships to, what identification and background check is required, who pays transfer fees, and which destinations are refused. Nothing about the transfer process may be invented by the developer.",
-    "restrictedDestinations": [],
-    "complianceReviewedBy": "PLACEHOLDER name of the attorney or compliance officer who signed off",
-    "complianceReviewedOn": null
+
+    "transferProcessConfirmed": true,
+    "transferProcessText": "A firearm bought here is never shipped to a customer address. It ships to a Federal Firearms Licensee, and the buyer completes the transfer in person at that licensee's premises. At the counter the buyer presents a valid government issued photo ID showing their current residential address, completes ATF Form 4473, and the licensee runs a background check through the FBI National Instant Criminal Background Check System. The firearm is released only on a proceed result. Texas imposes no state waiting period, no purchase permit and no state registration, so a proceed result normally means the transfer completes the same day. Federal law limits handgun sales by a licensed dealer to residents of that dealer's state, so a handgun bought by an out of state customer is shipped to a licensee in the customer's own state and transferred there.",
+
+    "transferFeeUsd": null,
+    "transferFeeNote": "The receiving licensee sets their own transfer fee. It is paid by the buyer directly to that licensee and is not included in the price shown on this site.",
+
+    "restrictedDestinations": [
+      "Any address that is not a Federal Firearms Licensee, for any complete firearm",
+      "Any jurisdiction where the specific model, magazine capacity or feature is unlawful",
+      "Outside the United States, unless an export licence is issued in writing for that order"
+    ],
+
+    "complianceReviewedBy": null,
+    "complianceReviewedOn": null,
+
+    "requiredBeforeLaunch": [
+      "legalName",
+      "tradingName",
+      "fflLicenceNumber",
+      "address.street",
+      "address.locality",
+      "address.postalCode",
+      "contact.phone",
+      "contact.email",
+      "contact.privacyEmail",
+      "policy.dataControllerName",
+      "policy.complianceReviewedBy"
+    ]
   }
 }

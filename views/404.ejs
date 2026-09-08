@@ -1,0 +1,55 @@
+<%- include('partials/head') %>
+
+<div class="pagehead">
+  <div class="wrap">
+    <h1>That page does not exist</h1>
+    <p>The address you asked for is not on this site. It may have been removed, or the link may be mistyped.</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="wrap">
+    <div class="grid grid-2">
+      <div class="formcard">
+        <h2>Search the catalogue</h2>
+        <p>If you know the model number, the caliber or the SKU, search for it.</p>
+        <form action="/search" method="get" role="search">
+          <div class="field">
+            <label for="notfound-q">Model, caliber or SKU</label>
+            <input type="search" id="notfound-q" name="q" maxlength="60" autocomplete="off"
+                   value="<%= attempted %>" enterkeyhint="search">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+
+      <div class="formcard">
+        <h2>Most requested models</h2>
+        <ul class="linklist">
+          <% topModels.forEach(function (c) { %>
+            <li><a href="/collections/<%= c.slug %>"><%= c.name %></a> <span class="meta-updated"><%= c.product_count %> listings</span></li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+
+    <div class="formcard">
+      <h2>Main sections of the site</h2>
+      <ul class="linklist">
+        <li><a href="/glock-pistols-for-sale">Every Glock pistol in stock</a></li>
+        <li><a href="/models">Browse by Glock model number</a></li>
+        <li><a href="/calibers">Browse by caliber</a></li>
+        <li><a href="/collections/glock-slides">Glock slides</a></li>
+        <li><a href="/collections/glock-triggers">Glock triggers</a></li>
+        <li><a href="/compliance">Compliance and eligibility in Texas</a></li>
+        <li><a href="/contact">Contact the shop</a></li>
+      </ul>
+      <p class="meta-updated">
+        If you followed a link on this site and reached this page, please
+        <a href="/contact">tell the shop</a> which page you came from so the link can be fixed.
+      </p>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

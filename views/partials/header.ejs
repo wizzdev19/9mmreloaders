@@ -1,12 +1,3 @@
-<% if (!isProd && placeholderCount > 0) { %>
-<div class="devbar" role="status">
-  <div class="wrap">
-    Development build. <%= placeholderCount %> business detail<%= placeholderCount === 1 ? '' : 's' %> in
-    <code>data/business.json</code> still marked PLACEHOLDER. Production boot is blocked until they are replaced.
-  </div>
-</div>
-<% } %>
-
 <div class="utility">
   <div class="wrap">
     <div>

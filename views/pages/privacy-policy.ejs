@@ -1,28 +1,20 @@
 <%- include('../partials/head') %>
 
+<%- include('../partials/breadcrumbs') %>
+
 <div class="pagehead">
   <div class="wrap">
     <h1>Privacy policy</h1>
-    <p class="meta-updated">Last reviewed <%= reviewedOn %>. This policy describes what this website does with personal data.</p>
+    <p class="meta-updated"><% if (reviewedOn) { %>Last reviewed <%= reviewedOn %>. <% } %>This policy describes what this website does with personal data.</p>
   </div>
 </div>
 
 <div class="section">
   <div class="wrap prose">
-    <% if (!complianceSignedOff) { %>
-      <div class="note note-pending">
-        <h3>Not yet signed off</h3>
-        <p>
-          This policy is written to match what the software actually does. It still has to be reviewed by
-          the licence holder and their legal adviser before launch, and the reviewer name recorded in
-          <code>data/business.json</code>.
-        </p>
-      </div>
-    <% } %>
-
     <h2>Who is responsible for your data</h2>
     <p>
-      <%= business.policy.dataControllerName %> is the data controller for this website.
+      <% if (dataController) { %><%= dataController %><% } else { %>The licensed firearms dealer that operates this shop<% } %>
+      is the data controller for this website.
       <% if (hasRealAddress) { %>
         The registered address is <%= business.address.street %>, <%= business.address.locality %>,
         <%= business.address.region %> <%= business.address.postalCode %>, <%= business.address.country %>.

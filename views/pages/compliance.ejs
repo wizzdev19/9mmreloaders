@@ -1,92 +1,100 @@
 <%- include('../partials/head') %>
 
+<%- include('../partials/breadcrumbs') %>
+
 <div class="pagehead">
   <div class="wrap">
-    <h1>Compliance and eligibility</h1>
-    <p>Who may order from this catalogue, and what the shop checks before anything is released.</p>
+    <h1>Compliance and eligibility in Texas</h1>
+    <p>Who may buy from this catalogue under federal and Texas law, and what is checked before a firearm is released.</p>
   </div>
 </div>
 
 <div class="section">
   <div class="wrap prose">
-    <% if (jurisdictionPending) { %>
-      <div class="note note-pending">
-        <h3>Jurisdiction not confirmed</h3>
-        <p>
-          The country and state this business is licensed in have not been recorded in the site
-          configuration yet. Until they are, the ages and rules below are shown as the common baseline for a
-          licensed dealer in the United States and must not be relied on. They are replaced with the rules
-          that actually apply once the licence holder confirms the jurisdiction.
-        </p>
-      </div>
-    <% } %>
-
-    <h2>Age</h2>
+    <h2>Age limits</h2>
     <p>
-      Handguns and handgun frames listed here may be transferred only to a buyer aged
-      <%= jurisdiction.minimumAgeHandgun %> or over. Parts and accessories may be transferred only to a
-      buyer aged <%= jurisdiction.minimumAgeAccessory %> or over. You are asked to confirm your age before an
-      order request can be submitted, and the shop verifies it with photographic identification before
-      anything is released.
+      This shop is a licensed dealer in the state of Texas, so federal age law applies at the counter. A handgun,
+      a handgun frame or a handgun receiver may be transferred by a licensed dealer only to a buyer aged
+      <%= jurisdiction.minimumAgeHandgun %> or over. A rifle or a shotgun may be transferred to a buyer aged
+      <%= jurisdiction.minimumAgeLongGun %> or over. Parts, slides, triggers and accessories that are not
+      themselves a firearm may be sold to a buyer aged <%= jurisdiction.minimumAgeAccessory %> or over.
+    </p>
+    <p>
+      You are asked to confirm your age before an order request can be submitted. That confirmation is not
+      the check. Age is verified against government issued photographic identification in person, before
+      anything is handed over.
     </p>
 
     <h2>Prohibited persons</h2>
     <p>
-      A person barred from possessing a firearm cannot buy one here. That includes anyone subject to a
-      disqualifying conviction, a court order, or a restriction recorded against them by the relevant
-      authority. Submitting an order request while prohibited is a criminal offence in most jurisdictions.
+      Federal law at 18 U.S.C. section 922(g) bars certain people from receiving or possessing a firearm.
+      The categories include a person convicted of a crime punishable by more than one year in prison, a
+      fugitive from justice, an unlawful user of a controlled substance, a person adjudicated as mentally
+      defective or committed to a mental institution, a person subject to a qualifying protective order, a
+      person convicted of a misdemeanor crime of domestic violence, and a person who is unlawfully in the
+      United States. If any of those apply to you, you cannot lawfully buy a firearm here. Making a false
+      statement on the federal transaction record is itself a felony.
     </p>
 
-    <h2>Local law varies</h2>
+    <h2>The background check</h2>
     <p>
-      Magazine capacity limits, permitted models, roster requirements, waiting periods and permit
-      requirements differ between states and between countries. An item appearing in this catalogue is not a
-      statement that it is legal where you live. Checking your local rules is your responsibility, and the
-      shop refuses any order it cannot lawfully complete.
+      Every firearm transfer from this dealer runs through <%= jurisdiction.transactionRecordForm %>, the
+      federal firearms transaction record, completed by the buyer at the counter. The dealer then queries the
+      <%= jurisdiction.backgroundCheckSystem %>. The system returns proceed, delay or deny. The firearm is
+      released only on a proceed result. A delay result means the transfer waits until the check is resolved.
+    </p>
+    <p>
+      Texas does not operate a separate state check. It defers to the federal system, and it adds no state
+      purchase permit, no state waiting period and no state firearm registry. Do not read that as a shortcut:
+      the federal check still happens on every transfer, every time.
     </p>
 
-    <h2>How the shop verifies</h2>
+    <h2>Buying from outside Texas</h2>
+    <p>
+      Federal law limits a licensed dealer to selling a handgun face to face only to a resident of the
+      dealer's own state. If you live outside Texas and you buy a handgun here, it is shipped to a licensed
+      dealer in your state and you complete the transfer there, under the rules of your state. A rifle or a
+      shotgun may be sold to an out of state resident where the sale is lawful in both states.
+    </p>
+
+    <h2>Your local law still governs you</h2>
+    <p>
+      Texas does not restrict magazine capacity, does not maintain an approved handgun roster and does not
+      impose an assault weapon ban. Many other states do. An item appearing in this catalogue is not a
+      statement that it is legal where you live. Checking the law of your own city and state is your
+      responsibility, and this shop refuses any order it cannot lawfully complete.
+    </p>
+
+    <h2>How a firearm reaches you</h2>
     <% if (transferConfirmed) { %>
       <p><%= business.policy.transferProcessText %></p>
-    <% } else { %>
-      <div class="note note-pending">
-        <h3>Verification steps pending publication</h3>
-        <p>
-          The exact identification, background check and licence checks this dealer performs are supplied by
-          the licence holder. They are not invented by the developer and they are not published here until
-          the licence holder signs off the wording. Until then the shop confirms the steps with you directly
-          before any item is released.
-        </p>
-      </div>
     <% } %>
+    <p>The full route, including who pays which fee, is set out in the <a href="/shipping-and-transfer-policy">shipping and transfer policy</a>.</p>
 
-    <h2>Destinations the shop will not ship to</h2>
+    <h2>Orders this shop will not fill</h2>
     <% if (restricted.length) { %>
       <ul><% restricted.forEach(function (d) { %><li><%= d %></li><% }); %></ul>
-    <% } else { %>
-      <p class="meta-updated">
-        The restricted destination list has not been supplied yet. It is published here as a plain list once
-        the licence holder provides it.
-      </p>
     <% } %>
 
     <h2>Export</h2>
     <p>
-      Firearms and many firearm parts are export controlled. Nothing in this catalogue is offered for export
-      unless the shop states so in writing for that specific order, with the licences that permit it.
+      Firearms and many firearm parts are export controlled under United States law. Nothing in this
+      catalogue is offered for export unless this shop states so in writing for that specific order, with the
+      licences that permit it.
     </p>
 
-    <h2>This is not legal advice</h2>
+    <h2>This page is not legal advice</h2>
     <p>
-      The pages on this site describe how the shop operates. They are not legal advice about your own
-      position. If you are unsure whether you may lawfully buy or possess an item, speak to a lawyer or to
-      the relevant authority before you order.
+      This page describes how the shop operates and summarises the rules it works under. It is a summary,
+      not legal advice about your own position, and the law changes. If you are unsure whether you may
+      lawfully buy or possess an item, speak to an attorney or to the
+      <%= jurisdiction.regulator %> before you order.
     </p>
 
-    <h2>Reporting a problem</h2>
+    <h2>Reporting a problem with a listing</h2>
     <p>
-      If you believe a listing on this site is inaccurate or should not be offered in your jurisdiction,
-      tell the shop through the <a href="/contact">contact form</a> and it will be reviewed.
+      If you believe a listing on this site is inaccurate or should not be offered in your state, tell the
+      shop through the <a href="/contact">contact form</a> and it will be reviewed.
     </p>
   </div>
 </div>

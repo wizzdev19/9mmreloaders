@@ -1,0 +1,17 @@
+<%
+/* Responsive product image.
+   Locals: filename, width, height, variants (comma separated widths), alt, sizes,
+           eager (boolean), fetchPriority (boolean).
+   Emits a WebP <source> with srcset plus the original file as the fallback <img>,
+   always with intrinsic width and height so nothing shifts while loading. */
+var base = filename.replace(/\.[^.]+$/, '');
+var widthList = (typeof variants === 'string' && variants ? variants.split(',') : []).filter(Boolean);
+var srcset = widthList.map(function (w) { return '/img/products/' + base + '-' + w + '.webp ' + w + 'w'; }).join(', ');
+var loading = (typeof eager !== 'undefined' && eager) ? 'eager' : 'lazy';
+%><picture>
+<% if (srcset) { %><source type="image/webp" srcset="<%= srcset %>" sizes="<%= sizes %>"><% } %>
+<img src="/img/products/<%= filename %>"
+     alt="<%= alt %>"
+     width="<%= width || 640 %>" height="<%= height || 480 %>"
+     loading="<%= loading %>" decoding="async"<% if (typeof fetchPriority !== 'undefined' && fetchPriority) { %> fetchpriority="high"<% } %>>
+</picture>

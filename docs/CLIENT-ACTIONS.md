@@ -8,7 +8,7 @@ The server refuses to start with `NODE_ENV=production` until these are done. Tha
 
 ### 1. Business identity
 
-Edit `data/business.json`. Replace every value containing the word PLACEHOLDER.
+Edit `data/business.json`. Every field still set to `null` is outstanding. Nothing on the public site prints a placeholder: a `null` field is simply left out of the page and out of the structured data, so an unfinished field costs you a missing detail rather than visible filler text. `src/config.js` lists the outstanding fields at every boot and refuses a production start until the eleven in `policy.requiredBeforeLaunch` are filled.
 
 | Field | What is needed |
 |---|---|
@@ -24,28 +24,33 @@ Edit `data/business.json`. Replace every value containing the word PLACEHOLDER.
 
 Use the exact same name, address and phone here as on the Google Business Profile. A mismatch weakens local search.
 
-### 2. Jurisdiction
+### 2. Jurisdiction: done, but read it
 
-| Field | What is needed |
+`jurisdiction` in `data/business.json` is now filled for a Federal Firearms Licensee operating in Texas, and `/compliance`, `/terms-of-service`, `/shipping-and-transfer-policy` and `/returns-policy` are written to that law. What is asserted:
+
+| Statement on the site | Basis |
 |---|---|
-| `jurisdiction.country`, `jurisdiction.stateOrRegion` | Where the business is licensed and operates |
-| `jurisdiction.regulator` | The primary firearms regulator for that jurisdiction |
-| `jurisdiction.minimumAgeHandgun`, `minimumAgeLongGun`, `minimumAgeAccessory` | The ages that actually apply, confirmed against the law, not the defaults currently in the file |
+| 21 for a handgun, 18 for a rifle or shotgun, from a licensed dealer | Federal age floor for a dealer transfer |
+| ATF Form 4473 completed at the counter, NICS check before release | Federal requirement on every dealer transfer |
+| No Texas waiting period, no purchase permit, no state registration | Texas adds no state layer and defers to NICS |
+| A firearm ships to a licensee, never to a customer address | Federal rule for a non licensee buyer |
+| A handgun sold to an out of state buyer transfers through a licensee in the buyer's own state | Federal restriction on dealer handgun sales |
+| Governing law is Texas, venue is Texas | Standard for a Texas trading entity |
 
-If the business operates outside the United States, the compliance, terms, shipping and returns pages all have to be rewritten for that country's law and the prices reviewed. Tell me and I will redo them.
+One thing is deliberately **not** stated anywhere on the site: whether a Texas License to Carry exempts the holder from the NICS check on a purchase. Sources conflict on this and it is the kind of claim that gets a dealer in trouble, so it is omitted. If your compliance officer has a definitive answer, tell me and I will add it.
 
-### 3. Transfer process
+Everything above still needs the sign off in item 4. Read it as a developer's summary of published law, not as legal advice.
 
-Set `policy.transferProcessConfirmed` to `true` and fill `policy.transferProcessText` only after the licence holder has written the wording. It must answer:
+### 3. Transfer process: drafted, needs sign off
 
-1. Which licence or premises the firearm ships to, and whether a customer address is ever used.
-2. What identification and what background check the receiving party performs.
-3. Who pays the transfer fee and how much it is.
-4. How long the process normally takes.
-5. Which destinations are refused. Put these in `policy.restrictedDestinations`.
-6. What happens if the buyer fails the check after the item has shipped.
+`policy.transferProcessConfirmed` is now `true` and `policy.transferProcessText` describes the federal and Texas route. It appears on the home page, `/compliance` and `/shipping-and-transfer-policy`.
 
-I have not written a plausible looking version of this. Guessing a legal process on a firearms site is the one thing that could genuinely harm the client.
+Two things in it are still yours to confirm:
+
+1. `policy.transferFeeUsd` is `null`. If you charge a transfer fee, or you know the typical fee your receiving licensees charge, put the number there. Right now the site says only that the receiving licensee sets their own fee.
+2. `policy.restrictedDestinations` holds three entries written from federal law. Add anything specific to how you actually trade.
+
+Set `transferProcessConfirmed` back to `false` if you disagree with any of the wording. The site drops the whole section rather than publishing something you have not approved.
 
 ### 4. Legal sign off
 
@@ -85,7 +90,13 @@ Priority order: the highest traffic models first, which is Glock 43 (67 listings
 
 ### 7. Image rights
 
-All 642 product images were downloaded from the supplier site and are now hosted locally. Confirm the shop holds the right to publish them, or replace them with your own photographs. Your own photographs of your own stock are also better for search than manufacturer stock images every competitor uses.
+All 642 product images were downloaded from the supplier site and are now hosted locally, and each one now has a 400 pixel and an 800 pixel WebP variant generated from it, 1534 files in total. Confirm the shop holds the right to publish them, or replace them with your own photographs. Your own photographs of your own stock are also better for search than manufacturer stock images every competitor uses.
+
+If you replace an image, drop the new file into `public/img/products/` under the same name and run `npm run images` to regenerate its variants.
+
+### 7a. Alt text
+
+Alt text is generated from the product name, the caliber and the position of the photograph in the set, because the supplier supplied no captions. That is accurate but generic. If you know a photograph shows a specific detail, for example the optic cut or the engraving, tell me and I will move that product to hand written alt text.
 
 ---
 

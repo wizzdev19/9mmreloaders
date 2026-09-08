@@ -12,17 +12,27 @@ const { verifyCsrf, formLimiter, honeypot } = require('../security');
 const router = express.Router();
 
 function page(res, view, meta, data = {}) {
+  const title = `${meta.title} | ${seo.brand()}`;
+  const trail = [{ label: 'Home', href: '/' }];
+  if (meta.parent) trail.push(meta.parent);
+  trail.push({ label: meta.crumb || meta.title, href: meta.path });
+
   res.locals.meta = {
-    title: `${meta.title} | ${seo.brand()}`,
+    title,
     description: meta.description,
     canonical: seo.absoluteUrl(meta.path),
     robots: meta.robots || null
   };
-  res.locals.jsonLd = [seo.breadcrumbLd([
-    { label: 'Home', href: '/' },
-    { label: meta.title, href: meta.path }
-  ])];
-  res.render(view, data);
+  res.locals.trail = trail;
+  res.locals.jsonLd = [
+    seo.breadcrumbLd(trail),
+    seo.webPageLd(meta.type || 'WebPage', {
+      name: meta.title,
+      description: meta.description,
+      pathname: meta.path
+    })
+  ];
+  res.render(view, Object.assign({ trail }, data));
 }
 
 router.get('/about', (req, res) => {
@@ -31,7 +41,8 @@ router.get('/about', (req, res) => {
   page(res, 'pages/about', {
     title: 'About the business',
     description: 'Who operates this shop, where the catalogue data comes from, and what this site deliberately does not claim.',
-    path: '/about'
+    path: '/about',
+    type: 'AboutPage'
   }, {
     stats: { total: q.countAll.get().c, modelCount: models.length, minPrice: range.lo, maxPrice: range.hi }
   });
@@ -69,7 +80,8 @@ router.get('/privacy-policy', (req, res) => {
     description: 'Exactly what personal data this website collects, why, who processes it and how long it is kept.',
     path: '/privacy-policy'
   }, {
-    reviewedOn: config.business?.policy?.complianceReviewedOn || 'not yet reviewed'
+    reviewedOn: config.business?.policy?.complianceReviewedOn || null,
+    dataController: config.business?.policy?.dataControllerName || null
   });
 });
 
@@ -108,11 +120,18 @@ function renderContact(req, res, { errors = [], values = {}, status = 200 } = {}
     canonical: seo.absoluteUrl('/contact'),
     robots: null
   };
-  res.locals.jsonLd = [seo.breadcrumbLd([
-    { label: 'Home', href: '/' },
-    { label: 'Contact', href: '/contact' }
-  ])];
+  const trail = [{ label: 'Home', href: '/' }, { label: 'Contact the shop', href: '/contact' }];
+  res.locals.trail = trail;
+  res.locals.jsonLd = [
+    seo.breadcrumbLd(trail),
+    seo.webPageLd('ContactPage', {
+      name: 'Contact the shop',
+      description: 'Ask about a SKU, availability or how a transfer would work for your location.',
+      pathname: '/contact'
+    })
+  ];
   res.status(status).render('contact', {
+    trail,
     errors,
     fieldErrors: Object.fromEntries(errors.map((e) => [e.field, e.message])),
     values

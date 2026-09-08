@@ -47,7 +47,7 @@ try { fs.chmodSync(appDbPath, 0o600); } catch { /* best effort on platforms with
 const PRODUCT_FIELDS = `id, slug, name, sku, price_cents, compare_cents, in_stock, product_class,
   model, caliber, caliber_slug, capacity, barrel_in, generation, optic_cut, summary, title_suffix,
   client_copy, has_client_copy, attr1_name, attr1_values, attr2_name, attr2_values,
-  primary_image, image_count`;
+  primary_image, primary_w, primary_h, primary_variants, image_count`;
 
 const SORTS = {
   featured: 'p.in_stock DESC, p.image_count DESC, p.id ASC',
@@ -64,7 +64,7 @@ const q = {
   categoryBySlug: catalog.prepare('SELECT * FROM categories WHERE slug = ?'),
   productBySlug: catalog.prepare(`SELECT ${PRODUCT_FIELDS} FROM products WHERE slug = ?`),
   productById: catalog.prepare(`SELECT ${PRODUCT_FIELDS} FROM products WHERE id = ?`),
-  imagesFor: catalog.prepare('SELECT filename, width, height, position FROM product_images WHERE product_id = ? ORDER BY position'),
+  imagesFor: catalog.prepare('SELECT filename, width, height, position, variants FROM product_images WHERE product_id = ? ORDER BY position'),
   variantsFor: catalog.prepare('SELECT * FROM variants WHERE product_id = ? ORDER BY id'),
   categoriesFor: catalog.prepare(`SELECT c.* FROM categories c JOIN product_categories pc ON pc.category_id = c.id
                                   WHERE pc.product_id = ? ORDER BY c.grp, c.sort`),
