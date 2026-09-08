@@ -4,7 +4,7 @@
       <% if (hasRealPhone) { %>
         Sales: <a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a>
       <% } else { %>
-        Phone number is published here once the licence holder confirms it.
+        Licensed dealer in <%= jurisdiction.stateOrRegion %>. <a href="/contact">Message the shop</a>.
       <% } %>
     </div>
     <nav class="utility-legal" aria-label="Compliance">

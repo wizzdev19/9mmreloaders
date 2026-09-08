@@ -12,7 +12,8 @@ const { verifyCsrf, formLimiter, honeypot } = require('../security');
 const router = express.Router();
 
 function page(res, view, meta, data = {}) {
-  const title = `${meta.title} | ${seo.brand()}`;
+  // A page whose own name already carries the brand does not get it a second time.
+  const title = meta.title.includes(seo.brand()) ? meta.title : `${meta.title} | ${seo.brand()}`;
   const trail = [{ label: 'Home', href: '/' }];
   if (meta.parent) trail.push(meta.parent);
   trail.push({ label: meta.crumb || meta.title, href: meta.path });
@@ -39,12 +40,19 @@ router.get('/about', (req, res) => {
   const range = q.priceRange.get();
   const models = q.categories.all().filter((c) => c.grp === 'Models');
   page(res, 'pages/about', {
-    title: 'About the business',
-    description: 'Who operates this shop, where the catalogue data comes from, and what this site deliberately does not claim.',
+    title: `About ${seo.brand()}`,
+    crumb: `About ${seo.brand()}`,
+    description: `${seo.brand()} is a licensed Glock dealer in Texas. What the catalogue holds, where the data comes from, and what this site deliberately does not claim.`,
     path: '/about',
     type: 'AboutPage'
   }, {
-    stats: { total: q.countAll.get().c, modelCount: models.length, minPrice: range.lo, maxPrice: range.hi }
+    stats: {
+      total: q.countAll.get().c,
+      modelCount: models.length,
+      nineMm: (q.calibers.all().find((c) => c.caliber_slug === '9mm') || {}).n || 0,
+      minPrice: range.lo,
+      maxPrice: range.hi
+    }
   });
 });
 
@@ -115,18 +123,18 @@ router.get('/accessibility', (req, res) => {
 
 function renderContact(req, res, { errors = [], values = {}, status = 200 } = {}) {
   res.locals.meta = {
-    title: `Contact the shop | ${seo.brand()}`,
-    description: 'Ask about a SKU, availability or how a transfer would work for your location.',
+    title: `Contact ${seo.brand()} | Glock Stock and Transfer Questions`,
+    description: `Contact ${seo.brand()}, a licensed Glock dealer in Texas, about stock, a specific SKU, or how a transfer would work to your state. No payment is taken on this site.`,
     canonical: seo.absoluteUrl('/contact'),
     robots: null
   };
-  const trail = [{ label: 'Home', href: '/' }, { label: 'Contact the shop', href: '/contact' }];
+  const trail = [{ label: 'Home', href: '/' }, { label: `Contact ${seo.brand()}`, href: '/contact' }];
   res.locals.trail = trail;
   res.locals.jsonLd = [
     seo.breadcrumbLd(trail),
     seo.webPageLd('ContactPage', {
-      name: 'Contact the shop',
-      description: 'Ask about a SKU, availability or how a transfer would work for your location.',
+      name: `Contact ${seo.brand()}`,
+      description: `Contact ${seo.brand()}, a licensed Glock dealer in Texas, about stock, a specific SKU, or how a transfer would work to your state.`,
       pathname: '/contact'
     })
   ];

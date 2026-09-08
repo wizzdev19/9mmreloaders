@@ -12,8 +12,7 @@ Edit `data/business.json`. Every field still set to `null` is outstanding. Nothi
 
 | Field | What is needed |
 |---|---|
-| `legalName` | The registered entity name |
-| `tradingName` | The name customers know |
+| `legalName` | The registered entity name. `tradingName` is now set to **9mmreloaders**, so this is the only naming field still open |
 | `fflLicenceNumber`, `fflLicenceType` | Licence number and type, as printed on the licence |
 | `businessRegistrationNumber`, `salesTaxId` | Company and tax registration |
 | `address.*` | The trading premises address |
@@ -105,6 +104,18 @@ Alt text is generated from the product name, the caliber and the position of the
 ### 8. Email notification
 
 Submissions are stored in `data/app.db` but nobody is told about them. Fill the SMTP variables in `.env` and I will wire the notification. Until then someone has to read the database.
+
+### 8a. The domain
+
+The trading name is set to `9mmreloaders` and the site renders it everywhere the brand appears: titles, footer, contact page, structured data, favicon, web manifest. When the matching domain is registered:
+
+1. set `SITE_ORIGIN=https://9mmreloaders.com` (or whichever exact host, including the `www` decision, since that is the canonical form every page will point at),
+2. set `NODE_ENV=production`,
+3. restart. Canonicals, the sitemap, robots.txt and llms.txt all read from `SITE_ORIGIN`, so nothing else needs editing.
+
+Pick the `www` or non `www` form once and never change it. Both are fine, but switching later costs you consolidated links.
+
+Read the brand note at the end of `docs/KEYWORD-MAP.md` before buying. In short: the name describes reloading equipment, which is not what this shop sells, and it signals neither Glock nor Texas. That is a real cost in search terms and it is worth accepting knowingly rather than by accident.
 
 ### 9. Hosting and domain
 

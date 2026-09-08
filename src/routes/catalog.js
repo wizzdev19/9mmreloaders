@@ -11,6 +11,7 @@ const express = require('express');
 const { q, listProducts, search, relatedProducts } = require('../db');
 const seo = require('../seo');
 const clean = require('../sanitize');
+const { config } = require('../config');
 
 const router = express.Router();
 const PER_PAGE = 24;
@@ -127,36 +128,86 @@ function renderListing(req, res, opts) {
 router.get('/', (req, res) => {
   const all = q.categories.all();
   const models = all.filter((c) => c.grp === 'Models').sort((a, b) => b.product_count - a.product_count);
-  const ranges = all.filter((c) => c.grp === 'Ranges').sort((a, b) => a.sort - b.sort);
+  const ranges = all.filter((c) => c.grp === 'Ranges').sort((a, b) => b.product_count - a.product_count);
+  const parts = all.filter((c) => c.grp === 'Parts').sort((a, b) => b.product_count - a.product_count);
   const calibers = q.calibers.all();
   const range = q.priceRange.get();
   const total = q.countAll.get().c;
+  const nineMm = (calibers.find((c) => c.caliber_slug === '9mm') || {}).n || 0;
 
   const recent = listProducts({ sort: 'newest', limit: 8 }).rows;
   const featured = recent.find((p) => p.primary_image) || null;
 
+  // Genuine questions with answers drawn from the same facts the policy pages use.
+  // Nothing here is invented for the sake of filling a section.
+  const faqs = [
+    {
+      q: 'How old do I have to be to buy a Glock here?',
+      a: `${config.business.jurisdiction.minimumAgeHandgun} or over for a handgun bought from a licensed dealer, which is what every complete pistol in this catalogue is. A rifle or shotgun is ${config.business.jurisdiction.minimumAgeLongGun}. Slides, triggers and other parts are ${config.business.jurisdiction.minimumAgeAccessory}.`,
+      link: { href: '/compliance', label: 'Compliance and eligibility' }
+    },
+    {
+      q: 'Can the pistol be shipped to my house?',
+      a: 'No. A complete firearm ships to a Federal Firearms Licensee and you collect it there after the paperwork and the background check. Parts that are not firearms, such as a slide or a trigger, can ship to a residential address.',
+      link: { href: '/shipping-and-transfer-policy', label: 'Shipping and transfers' }
+    },
+    {
+      q: 'Is there a waiting period in Texas?',
+      a: 'No. Texas sets no waiting period, no purchase permit and no state registration. The federal background check still runs on every transfer, and a delayed result holds the transfer until it clears.',
+      link: { href: '/compliance', label: 'How the check works' }
+    },
+    {
+      q: 'I live outside Texas. Can I still order?',
+      a: 'Yes, with one federal restriction. A handgun bought by a resident of another state has to be transferred through a licensed dealer in that state. Long guns can be sold to an out of state resident where the sale is lawful in both states.',
+      link: { href: '/compliance', label: 'Buying from outside Texas' }
+    },
+    {
+      q: 'Why can I not pay on the site?',
+      a: 'Because eligibility is checked by a person before a firearm changes hands, taking money first would be the wrong order. The cart submits an order request and a member of staff replies with availability, fees and the receiving dealer.',
+      link: { href: '/about', label: 'How the shop operates' }
+    },
+    {
+      q: 'Where do the specifications come from?',
+      a: 'Straight from the shop stock record. Where the record does not hold a barrel length or a capacity, the product page leaves the row out rather than filling it with a plausible number, and no supplier marketing copy is republished.',
+      link: { href: '/about', label: 'Where the data comes from' }
+    }
+  ];
+
   res.locals.meta = {
-    title: `${seo.brand()} | Glock Pistols, Slides and Triggers`,
+    title: `Glock Pistols, Slides and Triggers in Texas | ${seo.brand()}`,
     description: seo.truncate(
-      `Licensed dealer catalogue of ${total} Glock listings across ${models.length} models: factory, factory colored, custom and optic ready pistols plus slides and triggers.`, 155),
+      `${total} Glock listings from a licensed Texas dealer: ${nineMm} in 9mm, across ${models.length} models. Factory, colored, custom and optic ready pistols plus slides and triggers.`, 155),
     canonical: seo.absoluteUrl('/'),
     robots: null,
     image: featured ? seo.absoluteUrl('/img/products/' + featured.primary_image) : null
   };
-  res.locals.jsonLd = [seo.organizationLd(), seo.websiteLd()];
+  res.locals.jsonLd = [
+    seo.organizationLd(),
+    seo.websiteLd(),
+    seo.faqLd(faqs)
+  ];
 
   res.render('home', {
     stats: {
       total,
       modelCount: models.length,
       caliberCount: calibers.length,
+      nineMm,
       minPrice: range.lo,
       maxPrice: range.hi
     },
     topModels: models.slice(0, 8),
     ranges,
+    parts,
+    calibers,
     recent,
-    featured
+    featured,
+    // The answer text is escaped, then the one trusted link is appended. Nothing
+    // user supplied reaches this, and the templates never take raw HTML from data.
+    faqs: faqs.map((f) => ({
+      q: f.q,
+      aHtml: `${clean.escapeHtml(f.a)} <a href="${f.link.href}">${clean.escapeHtml(f.link.label)}</a>.`
+    }))
   });
 });
 

@@ -27,7 +27,7 @@ of these are used to set targets.
 
 | URL | Primary keyword | Angle that keeps it distinct | Indexable |
 | --- | --- | --- | --- |
-| `/` | glock retailer texas | Brand and entry point. Links out, ranks for the business itself. | yes |
+| `/` | 9mmreloaders glock dealer texas | Brand plus the dealer term. The hero H1 carries the descriptive phrase, the title carries both. | yes |
 | `/glock-pistols-for-sale` | glock pistols for sale | The complete index across every model, finish and caliber. | yes |
 | `/models` | glock models list | A directory of model collections, not a product listing. | yes |
 | `/calibers` | glock calibers | A directory of caliber cuts, not a product listing. | yes |
@@ -96,6 +96,18 @@ None of the three uses another's primary phrase in its title or H1.
 | `/contact/received`, `/order-request/received` | `noindex, nofollow` | Confirmation pages reachable only after a POST. |
 | thin non model collections | `noindex, follow` | Rule 5 above. |
 | `/404` responses | `noindex, follow` | Status code already tells a crawler to drop the URL. |
+
+## A note on the brand name
+
+The trading name is **9mmreloaders** and the domain will match it. Two things follow from that, and both are worth knowing before the domain is bought rather than after.
+
+**The name describes a different product than the catalogue sells.** A person searching `9mm reloaders` is almost always looking for reloading presses, dies, brass and powder. This shop sells Glock pistols, slides and triggers. Ranking for the brand name will bring in some visitors who wanted reloading equipment and will bounce. That is not fatal, but it means brand search volume is not the same thing as qualified traffic, and it will make the bounce rate on the home page look worse than the site deserves.
+
+**The name does not signal Glock, and it does not signal Texas.** Neither of the two things this catalogue is actually strong at appears in the brand. So the descriptive work has to be done by the title tag and the H1 rather than by the domain. That is why the home page title reads `Glock Pistols, Slides and Triggers in Texas | 9mmreloaders` and the H1 reads `Glock pistols, slides and triggers from a licensed Texas dealer`. Neither one leads with the brand.
+
+**What the name does help with.** 185 of 379 listings are chambered in 9mm, so the caliber in the name is at least true of the majority of the stock. `/calibers/9mm` is the natural landing page for anyone who arrives from the brand name expecting 9mm, and the home page links to it directly from the hero.
+
+If the domain is not yet bought, a name containing `glock` cannot be used, because Glock enforces its trademark on domains. Something built on the model or the state, for example a name containing `texas` and `pistols`, would carry more descriptive weight than `9mmreloaders`. That is a business decision, not a technical one, and the site works either way.
 
 ## Not targeted, and why
 

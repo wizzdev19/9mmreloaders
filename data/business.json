@@ -2,10 +2,10 @@
   "_README": "Single source of truth for business identity. Values set to null are not yet supplied by the licence holder. Nothing on the public site ever prints the word PLACEHOLDER: a null field is simply omitted from the page and from the structured data. src/config.js lists the outstanding nulls at boot and blocks a production start until the required ones are filled.",
 
   "legalName": null,
-  "tradingName": null,
-  "shortName": null,
+  "tradingName": "9mmreloaders",
+  "shortName": "9mmreloaders",
   "tagline": "Factory and custom Glock pistols, slides and triggers, transferred through a licensed dealer in Texas",
-  "fallbackBrand": "Texas Glock Catalogue",
+  "fallbackBrand": "9mmreloaders",
 
   "fflLicenceNumber": null,
   "fflLicenceType": "Type 01, Dealer in Firearms Other Than Destructive Devices",
@@ -75,7 +75,6 @@
 
     "requiredBeforeLaunch": [
       "legalName",
-      "tradingName",
       "fflLicenceNumber",
       "address.street",
       "address.locality",

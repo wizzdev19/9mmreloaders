@@ -18,6 +18,7 @@ data/*.db-wal
 data/*.db-shm
 data/reports/
 public/img/products/
+!public/img/brand/
 
 # Runtime
 node_modules/

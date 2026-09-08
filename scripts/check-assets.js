@@ -96,6 +96,15 @@ function assetsIn(html) {
       if (!/nonce="/.test(m[1])) errors.push(`${path} has an inline script with no nonce`);
     }
 
+    // Structured data can reference images too, and a 404 there is invisible in the
+    // page but very visible in Search Console.
+    for (const m of html.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)) {
+      for (const u of (m[1].match(/https?:\/\/[^"\\]+\.(?:png|jpe?g|webp|svg)/g) || [])) {
+        const info = await head(u);
+        if (info.status !== 200) errors.push(`${path} structured data references ${u} which returned ${info.status}`);
+      }
+    }
+
     let jsBytes = 0;
     let cssBytes = 0;
 

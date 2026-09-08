@@ -4,8 +4,11 @@
 
 <div class="pagehead">
   <div class="wrap">
-    <h1>Contact the shop</h1>
-    <p>Questions about a SKU, availability, or how a transfer would work for your location.</p>
+    <h1>Contact <%= brand %></h1>
+    <p>
+      Questions about a SKU, availability, or how a transfer would work for your state. A person reads
+      every message and replies by email.
+    </p>
   </div>
 </div>
 
@@ -71,28 +74,38 @@
 
       <div class="stack">
         <div class="note">
-          <h3>Business details</h3>
-          <p>
-            <strong><%= business.legalName %></strong><br>
+          <h3>Who you are writing to</h3>
+          <ul class="contact-detail">
+            <% if (hasRealLegalName) { %><li><strong>Registered name</strong><%= business.legalName %></li><% } %>
+            <li><strong>Trading as</strong><%= brand %></li>
+            <li><strong>Licence</strong>Federal Firearms Licensee<% if (hasRealFfl) { %>, <%= business.fflLicenceNumber %><% } %></li>
+            <li><strong>Operating state</strong><%= jurisdiction.stateOrRegion %>, <%= jurisdiction.country %></li>
             <% if (hasRealAddress) { %>
-              <%= business.address.street %><br>
-              <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %><br>
-              <%= business.address.country %>
-            <% } else { %>
-              <span class="meta-updated">Trading address is published once the licence holder confirms it.</span>
+              <li><strong>Premises</strong><%= business.address.street %>, <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %></li>
             <% } %>
-          </p>
-          <p>
-            <% if (hasRealPhone) { %>Phone: <a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a><br><% } %>
-            <% if (hasRealEmail) { %>Email: <a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><br><% } %>
-            <% if (hasRealHours) { %>Hours: <%= business.contact.supportHours %><% } %>
-          </p>
+            <% if (hasRealPhone) { %><li><strong>Phone</strong><a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a></li><% } %>
+            <% if (hasRealEmail) { %><li><strong>Email</strong><a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a></li><% } %>
+            <% if (hasRealHours) { %><li><strong>Hours</strong><%= business.contact.supportHours %></li><% } %>
+          </ul>
         </div>
+
+        <div class="note">
+          <h3>What this form is good for</h3>
+          <ul>
+            <li>Availability of a specific SKU, or whether more of an item is coming in.</li>
+            <li>How a transfer would work to your state and roughly what it would cost.</li>
+            <li>A specification the product page does not show, such as a barrel length the stock record does not hold.</li>
+            <li>A problem with an order request you already sent. Quote the reference number.</li>
+          </ul>
+          <p>For eligibility questions, read the <a href="/compliance">compliance page</a> first. It answers most of them.</p>
+        </div>
+
         <div class="note">
           <h3>Only what is needed</h3>
           <p>
             This form asks for a name, an email address and a message. It does not ask for an address,
             a date of birth or a licence number, because none of those are needed to answer a question.
+            What is stored, and for how long, is set out in the <a href="/privacy-policy">privacy policy</a>.
           </p>
         </div>
       </div>

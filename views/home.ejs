@@ -3,18 +3,29 @@
 <section class="hero">
   <div class="wrap">
     <div class="hero-grid">
-      <div>
-        <h1><%= stats.total %> Glock pistols, slides and triggers listed</h1>
+      <div class="hero-copy">
+        <p class="hero-eyebrow">Federal Firearms Licensee, State of Texas</p>
+        <h1>Glock pistols, slides and triggers from a licensed Texas dealer</h1>
         <p class="lede">
-          Factory, factory colored, custom build and optic ready configurations across
-          <%= stats.modelCount %> Glock models. Every listing carries the caliber, barrel length,
-          magazine capacity, SKU and price held against that stock record.
+          <%= stats.total %> listings across <%= stats.modelCount %> Glock models and
+          <%= stats.caliberCount %> calibers, with <%= stats.nineMm %> of them chambered in 9mm. Every
+          listing shows the caliber, barrel length, magazine capacity, SKU and price held in the stock
+          record, and nothing that is not in that record.
         </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="/glock-pistols-for-sale">Browse all <%= stats.total %> listings</a>
-          <a class="btn btn-secondary" href="/shipping-and-transfer-policy">How a firearm order is completed</a>
+          <a class="btn btn-secondary" href="/calibers/9mm">See the <%= stats.nineMm %> 9mm listings</a>
         </div>
+        <form class="hero-search" action="/search" method="get" role="search">
+          <label for="hero-q">Search by model, caliber or SKU</label>
+          <div class="hero-search-row">
+            <input type="search" id="hero-q" name="q" maxlength="60" autocomplete="off"
+                   placeholder="Glock 19, 10mm, GR-4767" enterkeyhint="search">
+            <button type="submit" class="btn btn-secondary">Search</button>
+          </div>
+        </form>
       </div>
+
       <% if (featured) { %>
       <figure class="hero-figure">
         <%- include('partials/product-image', {
@@ -26,6 +37,7 @@
               eager: true, fetchPriority: true
             }) %>
         <figcaption>
+          Most recently listed:
           <a href="/product/<%= featured.slug %>"><%= featured.name %></a>
           <% if (featured.caliber) { %> &middot; <%= featured.caliber %><% } %>
           <% if (featured.price_cents != null) { %> &middot; $<%= money(featured.price_cents) %><% } %>
@@ -47,8 +59,8 @@
   <div class="wrap">
     <div class="section-head">
       <div>
-        <h2>Browse by Glock model</h2>
-        <p>Model pages group every configuration of that frame size, including colored and custom versions.</p>
+        <h2>Shop Glock pistols by model</h2>
+        <p>Each model page groups every configuration of that frame, factory, colored and custom alike.</p>
       </div>
       <a class="btn btn-secondary btn-sm" href="/models">See all <%= stats.modelCount %> models</a>
     </div>
@@ -63,19 +75,20 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section section-alt">
   <div class="wrap">
     <div class="section-head">
       <div>
-        <h2>Ranges</h2>
-        <p>How the stock record classifies each build.</p>
+        <h2>Shop by caliber</h2>
+        <p>Compare barrel length and magazine capacity across models in one chambering.</p>
       </div>
+      <a class="btn btn-secondary btn-sm" href="/calibers">All <%= stats.caliberCount %> calibers</a>
     </div>
     <div class="grid grid-4">
-      <% ranges.forEach(function (c) { %>
-        <a class="tile" href="/collections/<%= c.slug %>">
-          <strong><%= c.name %></strong>
-          <span><%= c.product_count %> listing<%= c.product_count === 1 ? '' : 's' %></span>
+      <% calibers.forEach(function (c) { %>
+        <a class="tile" href="/calibers/<%= c.caliber_slug %>">
+          <strong><%= c.caliber %></strong>
+          <span><%= c.n %> listing<%= c.n === 1 ? '' : 's' %></span>
         </a>
       <% }); %>
     </div>
@@ -86,6 +99,25 @@
   <div class="wrap">
     <div class="section-head">
       <div>
+        <h2>Ranges and parts</h2>
+        <p>How the stock record classifies each build, plus the slides and triggers sold on their own.</p>
+      </div>
+    </div>
+    <div class="grid grid-4">
+      <% ranges.concat(parts).forEach(function (c) { %>
+        <a class="tile" href="/collections/<%= c.slug %>">
+          <strong><%= c.name %></strong>
+          <span><%= c.product_count %> listing<%= c.product_count === 1 ? '' : 's' %></span>
+        </a>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
         <h2>Recently added to the catalogue</h2>
         <p>The eight most recently created stock records.</p>
       </div>
@@ -93,7 +125,68 @@
     </div>
     <div class="grid grid-4">
       <% recent.forEach(function (p, i) { %>
-        <%- include('partials/product-card', { p: p, eager: i < 4 }) %>
+        <%- include('partials/product-card', { p: p, eager: false }) %>
+      <% }); %>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>How buying a firearm here works</h2>
+        <p>Four steps, no payment taken online, no firearm sent to a home address.</p>
+      </div>
+    </div>
+    <ol class="steps">
+      <li>
+        <h3>You send an order request</h3>
+        <p>
+          Add what you want to the request and submit it. No card details are asked for and no money moves.
+          A person checks the item is in stock and replies to you.
+        </p>
+      </li>
+      <li>
+        <h3>The shop confirms the receiving dealer</h3>
+        <p>
+          A firearm ships to a Federal Firearms Licensee near you, not to your door. Slides, triggers and
+          other parts are not firearms and normally ship straight to a residential address.
+        </p>
+      </li>
+      <li>
+        <h3>You complete the paperwork in person</h3>
+        <p>
+          At the counter you show government issued photo identification with your current address and
+          complete <%= jurisdiction.transactionRecordForm %>.
+        </p>
+      </li>
+      <li>
+        <h3>The background check clears and you collect</h3>
+        <p>
+          The dealer queries the <%= jurisdiction.backgroundCheckSystem %>. On a proceed result the firearm
+          is released. Texas sets no waiting period and no purchase permit, so that is normally same day.
+        </p>
+      </li>
+    </ol>
+    <p><a href="/shipping-and-transfer-policy">Read the full shipping and transfer policy</a>, or check the <a href="/compliance">eligibility rules</a> first.</p>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <h2>Questions people ask before ordering</h2>
+        <p>Short answers. Each one links to the page that covers it properly.</p>
+      </div>
+    </div>
+    <div class="faq">
+      <% faqs.forEach(function (f) { %>
+        <div class="faq-item">
+          <h3><%= f.q %></h3>
+          <p><%- f.aHtml %></p>
+        </div>
       <% }); %>
     </div>
   </div>
@@ -105,18 +198,17 @@
       <div class="note note-legal">
         <h3>Eligibility comes before checkout</h3>
         <p>
-          A firearm listed here is not shipped to a customer address on demand. Age limits, background
-          checks and state law apply. This shop is licensed in Texas and transfers run through a Federal
-          Firearms Licensee. Read the
+          A firearm listed here is not shipped to a customer address on demand. Age limits, the federal
+          background check and the law of your own state all apply. Read the
           <a href="/compliance">compliance notice</a> before you place an order.
         </p>
       </div>
       <div class="note">
-        <h3>How an order is completed</h3>
-        <% if (transferConfirmed) { %>
-          <p><%= business.policy.transferProcessText %></p>
-        <% } %>
-        <p><a href="/shipping-and-transfer-policy">Read the shipping and transfer policy</a>.</p>
+        <h3>What this catalogue does not do</h3>
+        <p>
+          It does not take payment, publish reviews or ratings, or print a specification the stock record
+          does not hold. <a href="/about">More about how the shop operates</a>.
+        </p>
       </div>
     </div>
   </div>

@@ -141,8 +141,10 @@ function organizationLd() {
     name: brand(),
     url: config.siteOrigin,
     description: biz.tagline,
-    image: absoluteUrl('/img/brand/storefront.png'),
-    logo: absoluteUrl('/img/brand/logo.png')
+    // Only the logo is published. There is no storefront photograph, and pointing
+    // structured data at a file that does not exist is worse than omitting it.
+    logo: absoluteUrl('/img/brand/logo.png'),
+    image: absoluteUrl('/img/brand/logo.png')
   };
   if (biz.legalName) node.legalName = biz.legalName;
   if (biz.contact?.phone) node.telephone = biz.contact.phone;
@@ -240,6 +242,26 @@ function productLd(product, images) {
  * rather than leaving Google to infer it. Also carries the last review date on
  * policy pages, which is the signal that they are maintained.
  */
+/**
+ * FAQPage for the home page questions.
+ *
+ * Note for the client: Google restricted FAQ rich results to government and health
+ * sites, so this will almost certainly not draw an expanded snippet. It is emitted
+ * because it is accurate structured data that other consumers read, not because it
+ * is expected to change how the result looks.
+ */
+function faqLd(faqs) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a }
+    }))
+  };
+}
+
 function webPageLd(type, { name, description, pathname, dateModified }) {
   const node = {
     '@context': 'https://schema.org',
@@ -315,5 +337,5 @@ module.exports = {
   absoluteUrl, money, truncate, brand,
   categoryMeta, caliberMeta, productMeta,
   organizationLd, websiteLd, breadcrumbLd, productLd, itemListLd,
-  webPageLd, legalName
+  webPageLd, faqLd, legalName
 };

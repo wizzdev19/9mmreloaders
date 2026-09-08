@@ -6,19 +6,19 @@
       <div>
         <h2><%= brand %></h2>
         <address class="foot-addr">
-          <%= business.legalName %><br>
+          <% if (hasRealLegalName) { %><%= business.legalName %><br><% } %>
           <% if (hasRealAddress) { %>
             <%= business.address.street %><br>
             <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %><br>
             <%= business.address.country %><br>
-          <% } else { %>
-            <span class="meta-updated">Trading address pending. See <a href="/contact">contact</a>.</span><br>
           <% } %>
           <% if (hasRealPhone) { %><a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a><br><% } %>
-          <% if (hasRealEmail) { %><a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><% } %>
+          <% if (hasRealEmail) { %><a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><br><% } %>
+          Federal Firearms Licensee<% if (hasRealFfl) { %>, licence <%= business.fflLicenceNumber %><% } %>, State of <%= jurisdiction.stateOrRegion %>
         </address>
         <p class="meta-updated">
-          Federal Firearms Licence: <%= hasRealFfl ? business.fflLicenceNumber : 'on file, published at launch' %>
+          Glock pistols, slides and triggers. Order requests are answered by a person, and no payment is
+          taken on this site.
         </p>
       </div>
 
@@ -57,7 +57,7 @@
     </div>
 
     <div class="foot-legal">
-      <span>&copy; <%= year %> <%= business.legalName %>. All rights reserved.</span>
+      <span>&copy; <%= year %> <%= hasRealLegalName ? business.legalName : brand %>. All rights reserved.</span>
       <span>GLOCK is a registered trademark of Glock Ges.m.b.H. This site is an independent dealer listing and is not affiliated with Glock Ges.m.b.H.</span>
     </div>
   </div>

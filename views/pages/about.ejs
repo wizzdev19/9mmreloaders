@@ -4,21 +4,38 @@
 
 <div class="pagehead">
   <div class="wrap">
-    <h1>About the business</h1>
-    <p>Who runs this shop and what it actually sells.</p>
+    <h1>About <%= brand %></h1>
+    <p>Who runs this catalogue, what is actually in it, and what this site will not tell you.</p>
   </div>
 </div>
 
 <div class="section">
   <div class="wrap prose">
+    <h2>What <%= brand %> is</h2>
+    <p>
+      <%= brand %> is the online catalogue of a Federal Firearms Licensee trading in the state of
+      <%= jurisdiction.stateOrRegion %>. It lists <%= stats.total %> Glock pistols, slides and triggers,
+      across <%= stats.modelCount %> models, with <%= stats.nineMm %> of those listings chambered in 9mm.
+      Everything on it is stock the shop holds a record for. It is not a marketplace, not a dropshipping
+      front and not an affiliate site.
+    </p>
+    <p>
+      The site takes order requests, not payments. That is a deliberate choice rather than a missing
+      feature: a firearm sale is completed in person by a licensed dealer against a verified buyer, so
+      collecting money before anyone has checked eligibility would put the transaction in the wrong order.
+      You send a request, a person answers it, and the transfer happens under the process on the
+      <a href="/shipping-and-transfer-policy">shipping and transfer page</a>.
+    </p>
+
     <h2>How the shop operates</h2>
     <p>
-      This is a Federal Firearms Licensee trading in the state of Texas. Every firearm sold here is
-      transferred through a licensed dealer, with <%= jurisdiction.transactionRecordForm %> completed at the
-      counter and a background check run through the <%= jurisdiction.backgroundCheckSystem %> before
-      anything is released. The
-      minimum age from a licensed dealer is <%= jurisdiction.minimumAgeHandgun %> for a handgun and
-      <%= jurisdiction.minimumAgeLongGun %> for a rifle or shotgun. The full detail is on the
+      Every firearm sold here is transferred through a licensed dealer, with
+      <%= jurisdiction.transactionRecordForm %> completed at the counter and a background check run through
+      the <%= jurisdiction.backgroundCheckSystem %> before anything is released. The minimum age from a
+      licensed dealer is <%= jurisdiction.minimumAgeHandgun %> for a handgun and
+      <%= jurisdiction.minimumAgeLongGun %> for a rifle or shotgun. Texas sets no waiting period, no
+      purchase permit and no state registration, but the federal check still runs on every transfer. The
+      full detail, including what happens if you live outside Texas, is on the
       <a href="/compliance">compliance page</a>.
     </p>
 
@@ -28,13 +45,20 @@
       configurations, factory colored finishes, custom slide and grip work, optic ready builds, spare slides
       and drop in triggers. Prices run from $<%= money(stats.minPrice) %> to $<%= money(stats.maxPrice) %>.
     </p>
+    <p>
+      The deepest inventory is in the compact and subcompact frames. If you are looking for a specific
+      model, the <a href="/models">model index</a> lists every one with its count, and the
+      <a href="/calibers">caliber index</a> cuts the same stock the other way.
+    </p>
 
     <h2>Where the data comes from</h2>
     <p>
       Every listing on this site is generated from the shop's own stock export. The caliber, barrel length,
       magazine capacity, SKU, price and availability shown on a product page are the values held in that
       record. Where a field is missing from the record, the product page leaves it out instead of filling it
-      with a plausible number.
+      with a plausible number. Barrel length is present for a little over half the source rows and capacity
+      for rather fewer, so you will see product pages with short specification tables. That is the data
+      being honest rather than the page being broken.
     </p>
 
     <h2>Marketing copy</h2>
@@ -47,8 +71,9 @@
     <h2>What this site is not</h2>
     <ul>
       <li>It is not affiliated with Glock Ges.m.b.H. GLOCK is their registered trademark.</li>
-      <li>It does not publish customer reviews or ratings, because none have been collected. No rating markup is emitted to search engines either.</li>
+      <li>It does not publish customer reviews or ratings, because none have been collected. No rating markup is sent to search engines either.</li>
       <li>It does not process payments or complete a firearm sale online.</li>
+      <li>It does not publish a specification, a delivery estimate or a fee that the shop cannot stand behind.</li>
     </ul>
 
     <h2>Contact</h2>

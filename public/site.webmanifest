@@ -1,6 +1,7 @@
 {
-  "name": "Glock Retailer",
-  "short_name": "Glock Retailer",
+  "name": "9mmreloaders",
+  "short_name": "9mmreloaders",
+  "description": "Glock pistols, slides and triggers from a licensed dealer in Texas.",
   "start_url": "/",
   "display": "minimal-ui",
   "background_color": "#f3f4f6",
