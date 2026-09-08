@@ -1,0 +1,9 @@
+{
+  "_README": "Client supplied overrides, keyed by the product id from the WooCommerce export. Anything here wins over the CSV. Run `npm run ingest` after editing. Keys: title (plain text), slug (url segment), description (HTML, sanitised on import to a tag allowlist with no attributes except href and title). See docs/CLIENT-ACTIONS.md section 6 and data/reports/content-gaps.csv for the list of products that need attention.",
+
+  "_EXAMPLE_5163": {
+    "title": "Glock 43X 9mm Pistol, Join or Die Slide Engraving",
+    "slug": "glock-43x-9mm-join-or-die-engraved",
+    "description": "<p>Factory Glock 43X with a laser engraved slide. Ships with two 10 round magazines.</p><ul><li>Barrel 3.41 in</li><li>Capacity 10+1</li></ul>"
+  }
+}

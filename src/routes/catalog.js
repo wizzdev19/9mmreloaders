@@ -125,12 +125,12 @@ function renderListing(req, res, opts) {
 router.get('/', (req, res) => {
   const all = q.categories.all();
   const models = all.filter((c) => c.grp === 'Models').sort((a, b) => b.product_count - a.product_count);
-  const ranges = all.filter((c) => c.grp === 'Ranges').sort((a, b) => a.sort - b.sort).slice(0, 4);
+  const ranges = all.filter((c) => c.grp === 'Ranges').sort((a, b) => a.sort - b.sort);
   const calibers = q.calibers.all();
   const range = q.priceRange.get();
   const total = q.countAll.get().c;
 
-  const recent = listProducts({ sort: 'featured', limit: 8 }).rows;
+  const recent = listProducts({ sort: 'newest', limit: 8 }).rows;
   const featured = recent.find((p) => p.primary_image) || null;
 
   res.locals.meta = {

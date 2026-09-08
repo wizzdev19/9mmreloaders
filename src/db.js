@@ -53,7 +53,10 @@ const SORTS = {
   featured: 'p.in_stock DESC, p.image_count DESC, p.id ASC',
   'price-asc': 'p.price_cents ASC, p.id ASC',
   'price-desc': 'p.price_cents DESC, p.id ASC',
-  'name-asc': 'p.name ASC, p.id ASC'
+  'name-asc': 'p.name ASC, p.id ASC',
+  // The WooCommerce id increments with creation order, so it is the only honest
+  // proxy for "newest" available in the export. There is no date column in it.
+  newest: 'p.id DESC'
 };
 
 const q = {
