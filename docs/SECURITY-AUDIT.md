@@ -275,4 +275,26 @@ Changes made after the first pass of this audit, each re-checked against the sam
 | `lastref` cookie documented | It was already signed, HttpOnly and ten minutes long. It was missing from the cookie policy table, which is a transparency defect rather than a technical one. Now listed |
 | Responsive `<picture>` markup | No new script. The gallery swap still runs from the existing nonce loaded `site.js` with no inline handler |
 
+| Home page colour work | Presentation only. No new script, no inline style, no third party asset. Contrast measured and recorded in `docs/DESIGN-NOTES.md` |
+| Audit bypass for the rate limiter | See below |
+
+### The rate limiter audit bypass
+
+The audit scripts fetch about 2,300 URLs in a few seconds, which is precisely the traffic shape the limiter exists to block, so a full `npm run audit:all` was tripping its own gate. Rather than weaken the limit for real visitors, the general and search limiters now skip a request that presents `x-audit-key` matching `AUDIT_KEY` from `.env`.
+
+Two conditions guard it and both must hold:
+
+1. `config.isProd` must be false. On a production host the check returns false before the header is even read, so the bypass cannot be reached no matter what a caller sends.
+2. `AUDIT_KEY` must be non empty and match exactly. It is absent from `.env.example`, so a deployment that copies the example has no key at all.
+
+Verified by running a server with `RATE_LIMIT_MAX=5`:
+
+| Request | Result |
+|---|---|
+| 8 requests, no header | 5 x 200 then 3 x 429 |
+| Request with the correct key | 200 |
+| Request with `x-audit-key: wrong` | 429 |
+
+`.env` is git ignored and the secret scanner covers it, so the key never enters the repository.
+
 `npm run audit:all` is the gate. All six checks pass as of this revision.

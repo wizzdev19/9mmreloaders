@@ -15,7 +15,10 @@
  *
  * Usage: node scripts/check-assets.js [origin]
  */
+require('dotenv').config();
+
 const ORIGIN = process.argv[2] || process.env.SITE_ORIGIN || 'http://localhost:8080';
+const AUDIT_HEADERS = process.env.AUDIT_KEY ? { 'x-audit-key': process.env.AUDIT_KEY } : {};
 
 const JS_CEILING_KB = 20;      // total JavaScript bytes allowed on a single page
 const CSS_CEILING_KB = 60;     // total CSS bytes allowed on a single page
@@ -43,7 +46,7 @@ const seen = new Map();
 
 async function head(url) {
   if (seen.has(url)) return seen.get(url);
-  const res = await fetch(url, { redirect: 'manual' });
+  const res = await fetch(url, { redirect: 'manual', headers: AUDIT_HEADERS });
   const buf = res.status === 200 ? Buffer.from(await res.arrayBuffer()) : Buffer.alloc(0);
   const info = { status: res.status, bytes: buf.length, type: res.headers.get('content-type') || '' };
   seen.set(url, info);
@@ -71,7 +74,7 @@ function assetsIn(html) {
 
 (async () => {
   for (const path of PAGES) {
-    const res = await fetch(ORIGIN + path, { redirect: 'manual' });
+    const res = await fetch(ORIGIN + path, { redirect: 'manual', headers: AUDIT_HEADERS });
     // /order-request redirects to the cart when the cart is empty, which is correct.
     const expected = path === '/this-page-does-not-exist' ? [404]
       : path === '/order-request' ? [200, 303]
@@ -124,10 +127,10 @@ function assetsIn(html) {
   }
 
   // A product page carries the largest image payload, so it is measured separately.
-  const listing = await (await fetch(ORIGIN + '/glock-pistols-for-sale')).text();
+  const listing = await (await fetch(ORIGIN + '/glock-pistols-for-sale', { headers: AUDIT_HEADERS })).text();
   const firstProduct = (listing.match(/href="(\/product\/[^"]+)"/) || [])[1];
   if (firstProduct) {
-    const html = await (await fetch(ORIGIN + firstProduct)).text();
+    const html = await (await fetch(ORIGIN + firstProduct, { headers: AUDIT_HEADERS })).text();
     for (const asset of assetsIn(html)) {
       const info = await head(new URL(asset, ORIGIN).toString());
       if (info.status !== 200) errors.push(`${firstProduct} references ${asset} which returned ${info.status}`);

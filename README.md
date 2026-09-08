@@ -61,7 +61,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 | `npm run audit:cannibal` | Check no two indexable URLs chase the same keyword |
 | `npm run audit:assets` | Check every referenced asset returns 200 and the payload ceilings hold |
 | `npm run images` | Regenerate responsive WebP variants |
-| `npm run audit:all` | All of the above |
+| `npm run audit:all` | All of the above. Set `AUDIT_KEY` in `.env` first, otherwise the crawl trips the rate limiter |
 
 The audits that crawl need the server running in another shell.
 

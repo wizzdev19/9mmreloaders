@@ -91,8 +91,25 @@ const baseLimiterOptions = {
   legacyHeaders: false
 };
 
+/**
+ * The audit scripts crawl 500 pages and fetch several hundred assets in a few
+ * seconds, which is exactly the traffic shape the limiter exists to stop. Rather
+ * than raise the limit for everyone, a local run can present a key that matches
+ * AUDIT_KEY from .env.
+ *
+ * Two conditions guard it, and both must hold: the build must not be production,
+ * and the key must be non empty and match exactly. On a production host the first
+ * condition is false, so the header is ignored no matter what it contains.
+ */
+function auditBypass(req) {
+  if (config.isProd) return false;
+  if (!config.auditKey) return false;
+  return req.get('x-audit-key') === config.auditKey;
+}
+
 const generalLimiter = rateLimit({
   ...baseLimiterOptions,
+  skip: auditBypass,
   windowMs: config.rateLimit.windowMs,
   limit: config.rateLimit.max,
   message: 'Too many requests. Please wait a few minutes and try again.'
@@ -100,6 +117,7 @@ const generalLimiter = rateLimit({
 
 const searchLimiter = rateLimit({
   ...baseLimiterOptions,
+  skip: auditBypass,
   windowMs: 60 * 1000,
   limit: 30,
   message: 'Too many searches. Please wait a minute.'

@@ -9,7 +9,10 @@
  *
  * Usage: node scripts/check-cannibalisation.js [origin]
  */
+require('dotenv').config();
+
 const ORIGIN = process.argv[2] || process.env.SITE_ORIGIN || 'http://localhost:8080';
+const AUDIT_HEADERS = process.env.AUDIT_KEY ? { 'x-audit-key': process.env.AUDIT_KEY } : {};
 
 /* The primary term each URL pattern is allowed to own. Mirrors docs/KEYWORD-MAP.md. */
 const PRIMARY = [
@@ -33,7 +36,7 @@ function primaryFor(pathname) {
 const norm = (s) => String(s || '').replace(/\s+/g, ' ').trim().toLowerCase();
 
 async function get(path) {
-  const res = await fetch(ORIGIN + path, { redirect: 'manual' });
+  const res = await fetch(ORIGIN + path, { redirect: 'manual', headers: AUDIT_HEADERS });
   const body = res.status === 200 ? await res.text() : '';
   return { status: res.status, body };
 }

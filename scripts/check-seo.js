@@ -10,7 +10,12 @@
  * Usage: npm run audit:seo   (with the server running)
  *        BASE=http://localhost:8080 MAX=400 npm run audit:seo
  */
+require('dotenv').config();
+
 const BASE = (process.env.BASE || 'http://localhost:8080').replace(/\/+$/, '');
+// A crawl of several hundred pages looks exactly like abuse to the rate limiter,
+// so a local run presents the dev only audit key. It is ignored in production.
+const AUDIT_HEADERS = process.env.AUDIT_KEY ? { 'x-audit-key': process.env.AUDIT_KEY } : {};
 const MAX_PAGES = Number(process.env.MAX || 250);
 
 const visited = new Map();
@@ -48,7 +53,7 @@ async function check(path) {
   const url = BASE + path;
   let res;
   try {
-    res = await fetch(url, { redirect: 'manual', headers: { 'User-Agent': 'seo-audit/1.0' } });
+    res = await fetch(url, { redirect: 'manual', headers: { 'User-Agent': 'seo-audit/1.0', ...AUDIT_HEADERS } });
   } catch (err) {
     add(path, 'error', 'request failed: ' + err.message);
     return;
@@ -173,16 +178,16 @@ async function check(path) {
 
   /* -------------------------------------------- site level checks */
 
-  const robotsRes = await fetch(BASE + '/robots.txt');
+  const robotsRes = await fetch(BASE + '/robots.txt', { headers: AUDIT_HEADERS });
   if (!robotsRes.ok) add('/robots.txt', 'error', 'robots.txt not served');
   const robotsBody = await robotsRes.text();
   if (robotsRes.ok && !/sitemap:/i.test(robotsBody) && !/Disallow: \/\s*$/.test(robotsBody.trim())) {
     add('/robots.txt', 'error', 'robots.txt does not reference a sitemap');
   }
 
-  const smRes = await fetch(BASE + '/sitemap.xml');
+  const smRes = await fetch(BASE + '/sitemap.xml', { headers: AUDIT_HEADERS });
   if (!smRes.ok) add('/sitemap.xml', 'error', 'sitemap index not served');
-  const productSm = await fetch(BASE + '/sitemap-products.xml');
+  const productSm = await fetch(BASE + '/sitemap-products.xml', { headers: AUDIT_HEADERS });
   const productXml = productSm.ok ? await productSm.text() : '';
   const sitemapUrls = [...productXml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 

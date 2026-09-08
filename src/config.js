@@ -51,6 +51,9 @@ const config = {
     max: int('RATE_LIMIT_MAX', 300),
     formMax: int('FORM_RATE_LIMIT_MAX', 5)
   },
+  // Local audit bypass for the rate limiter. Only ever consulted outside production,
+  // so setting it on a live host has no effect whatsoever.
+  auditKey: (process.env.AUDIT_KEY || '').trim(),
   robotsMode: ['auto', 'allow', 'disallow'].includes(String(process.env.ROBOTS_MODE || '').trim())
     ? String(process.env.ROBOTS_MODE).trim()
     : 'auto',
