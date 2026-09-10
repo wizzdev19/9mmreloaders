@@ -48,6 +48,11 @@
       writeCookie(COOKIE_CONSENT, 'required', SIX_MONTHS);
       bar.hidden = true;
     });
+    var cookieClose = document.getElementById('cookiebar-close');
+    if (cookieClose) cookieClose.addEventListener('click', function () {
+      writeCookie(COOKIE_CONSENT, 'required', SIX_MONTHS);
+      bar.hidden = true;
+    });
   }
 
   /**
@@ -68,15 +73,69 @@
     document.head.appendChild(s);
   }
 
-  /* --------------------------------------------------- eligibility notice */
+  /* --------------------------------------------------- age gate modal */
 
-  var agebar = document.getElementById('agebar');
-  if (agebar) {
-    if (!readCookie(COOKIE_AGE)) agebar.hidden = false;
-    var dismiss = document.getElementById('agebar-dismiss');
-    if (dismiss) dismiss.addEventListener('click', function () {
-      writeCookie(COOKIE_AGE, 'seen', SIX_MONTHS);
-      agebar.hidden = true;
+  var agegate = document.getElementById('agegate');
+  if (agegate) {
+    var ageCookie = readCookie(COOKIE_AGE);
+    if (!ageCookie) {
+      agegate.hidden = false;
+      // trap focus inside modal while open
+      document.body.style.overflow = 'hidden';
+    }
+    var ageYes = document.getElementById('agegate-yes');
+    var ageNo = document.getElementById('agegate-no');
+    var ageClose = document.getElementById('agegate-close');
+    var ageBackdrop = document.getElementById('agegate-backdrop');
+    var ageUnder = document.getElementById('agegate-under');
+
+    function closeAgeGate(value) {
+      writeCookie(COOKIE_AGE, value, SIX_MONTHS);
+      agegate.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    if (ageYes) ageYes.addEventListener('click', function () {
+      closeAgeGate('21plus');
+    });
+    if (ageNo) ageNo.addEventListener('click', function () {
+      // show under 21 message inside same modal, then allow close
+      if (ageUnder) ageUnder.hidden = false;
+      writeCookie(COOKIE_AGE, 'under21', SIX_MONTHS);
+      // keep modal open so user reads message, but change yes button to continue browsing
+      if (ageYes) {
+        ageYes.textContent = 'Continue browsing';
+        ageYes.focus();
+      }
+    });
+    if (ageClose) ageClose.addEventListener('click', function () {
+      // X closes as required cookies only for cookie bar, and as under21 for age gate if no choice yet
+      var current = readCookie(COOKIE_AGE);
+      if (!current) {
+        closeAgeGate('seen');
+      } else {
+        agegate.hidden = true;
+        document.body.style.overflow = '';
+      }
+    });
+    if (ageBackdrop) ageBackdrop.addEventListener('click', function () {
+      var current = readCookie(COOKIE_AGE);
+      if (current) {
+        agegate.hidden = true;
+        document.body.style.overflow = '';
+      }
+    });
+    // esc closes if already chosen, otherwise stores seen
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !agegate.hidden) {
+        var current = readCookie(COOKIE_AGE);
+        if (!current) {
+          closeAgeGate('seen');
+        } else {
+          agegate.hidden = true;
+          document.body.style.overflow = '';
+        }
+      }
     });
   }
 
