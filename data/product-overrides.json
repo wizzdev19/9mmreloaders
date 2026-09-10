@@ -1,9 +1,23 @@
 {
   "_README": "Client supplied overrides, keyed by the product id from the WooCommerce export. Anything here wins over the CSV. Run `npm run ingest` after editing. Keys: title (plain text), slug (url segment), description (HTML, sanitised on import to a tag allowlist with no attributes except href and title). See docs/CLIENT-ACTIONS.md section 6 and data/reports/content-gaps.csv for the list of products that need attention.",
-
-  "_EXAMPLE_5163": {
-    "title": "Glock 43X 9mm Pistol, Join or Die Slide Engraving",
-    "slug": "glock-43x-9mm-join-or-die-engraved",
-    "description": "<p>Factory Glock 43X with a laser engraved slide. Ships with two 10 round magazines.</p><ul><li>Barrel 3.41 in</li><li>Capacity 10+1</li></ul>"
+  "4769": {
+    "title": "Glock 19 Gen5 9mm Pistol - Compact 15 Round",
+    "description": "<p>Glock 19 Gen5 9mm compact pistol. Frame without finger grooves, Modular Backstrap System, reversible magazine catch, ambidextrous slide stop lever, Glock Marksman Barrel with recessed crown, nDLC finish, front serrations.</p><ul><li>Caliber: 9x19mm</li><li>System: Safe Action</li><li>Magazine capacity: Standard 15, optional 17 / 24 / 31 / 33</li><li>Barrel length: 102 mm | 4.02 inch</li><li>Overall length: 185 mm | 7.28 inch</li><li>Slide length: 174 mm | 6.85 inch</li><li>Width overall: 34 mm | 1.34 inch</li><li>Slide width: 25.5 mm | 1.00 inch</li><li>Height incl mag: 128 mm | 5.04 inch</li><li>Line of sight: Polymer 153 mm | 6.02 inch, Steel 152 mm | 5.98 inch, GNS 151 mm | 5.94 inch</li><li>Trigger distance: 70 mm | 2.76 inch</li><li>Trigger pull: 26 N | 5.5 lb</li><li>Weight without magazine: 610 g | 21.52 oz</li><li>Weight with empty magazine: 670 g | 23.63 oz</li><li>Weight with loaded magazine: 855 g | 30.16 oz</li></ul><p>Ships with two magazines. Specs from Glock official data for G19 Gen5.</p>"
+  },
+  "5110": {
+    "title": "Glock 43 9mm Subcompact - 6 Round Slimline",
+    "description": "<p>Glock 43 9mm subcompact slimline pistol, single stack. First single stack 9mm introduced 2015. Safe Action system, no accessory rail, beavertail grip extension.</p><ul><li>Caliber: 9x19mm</li><li>System: Safe Action</li><li>Magazine capacity: Standard 6, 6+1 with chamber</li><li>Barrel length: 86.5 mm | 3.41 inch</li><li>Overall length: 159 mm | 6.26 inch</li><li>Slide length: 154 mm | 6.06 inch</li><li>Width: 27 mm | 1.06 inch</li><li>Height incl mag: 108 mm | 4.25 inch</li><li>Trigger distance: 65 mm | 2.56 inch</li><li>Weight without magazine: 460 g | 16.23 oz</li><li>Weight with empty magazine: 510 g | 17.99 oz</li><li>Weight with loaded magazine: 585 g | 20.64 oz</li><li>Trigger pull: 26 N | 5.5 lb</li><li>Sights: Polymer, Steel or GNS</li></ul><p>Slim frame for concealed carry. Specs from Glock official data for G43.</p>"
+  },
+  "4806": {
+    "title": "Glock 42 .380 ACP Subcompact - 6 Round",
+    "description": "<p>Glock 42 .380 ACP subcompact, first Glock in .380 ACP introduced 2014. Slimline frame, Safe Action, fixed sights with white dot front and white outline rear.</p><ul><li>Caliber: .380 ACP</li><li>System: Safe Action</li><li>Magazine capacity: 6, 6+1 with chamber</li><li>Barrel length: 82.5 mm | 3.25 inch</li><li>Overall length: 151 mm | 5.94 inch</li><li>Slide length: 146 mm | 5.75 inch</li><li>Width: 25 mm | 0.98 inch</li><li>Height incl mag: 105 mm | 4.13 inch</li><li>Line of sight: 125 mm | 4.92 inch</li><li>Weight without magazine: 345 g | 12.17 oz</li><li>Weight with empty magazine: 390 g | 13.76 oz</li><li>Weight with loaded magazine: 450 g | 15.87 oz</li><li>Trigger pull: 24 N | 5.5 lb</li><li>Frame: Polymer, Slide: Steel nDLC</li><li>Accessory rail: No</li></ul><p>Smallest Glock frame for pocket carry. Specs from Glock and distributor data for G42.</p>"
+  },
+  "4970": {
+    "title": "Glock 48 MOS 9mm Slimline - 10 Round",
+    "description": "<p>Glock 48 MOS 9mm slimline compact. Full length grip with slim slide, MOS cut for optic, same 3.41 inch barrel as G43X but longer grip. Introduced 2019.</p><ul><li>Caliber: 9x19mm</li><li>System: Safe Action</li><li>Magazine capacity: Standard 10, 10+1 with chamber</li><li>Barrel length: 106 mm | 4.17 inch</li><li>Overall length: 185 mm | 7.28 inch</li><li>Slide length: 174 mm | 6.85 inch</li><li>Width: 28 mm | 1.10 inch</li><li>Height incl mag: 128 mm | 5.04 inch</li><li>Weight without magazine: 524 g | 18.48 oz</li><li>Weight with empty magazine: 580 g | 20.44 oz</li><li>Trigger pull: 26 N | 5.5 lb</li><li>Finish: nDLC</li><li>MOS: Modular Optic System cut</li></ul><p>Slim 10 round carry pistol with longer sight radius than G43. Specs from Glock official data for G48 MOS.</p>"
+  },
+  "4937": {
+    "title": "Glock 45 Gen5 9mm Crossover - 17 Round",
+    "description": "<p>Glock 45 Gen5 9mm crossover pistol. Full size G17 frame with compact G19 slide. Introduced 2018. Flared magwell, front serrations, ambi slide stop, nDLC finish, Glock Marksman Barrel.</p><ul><li>Caliber: 9x19mm</li><li>System: Safe Action</li><li>Magazine capacity: Standard 17, optional 19 / 24 / 31 / 33</li><li>Barrel length: 102 mm | 4.02 inch</li><li>Overall length: 189 mm | 7.44 inch</li><li>Slide length: 174 mm | 6.85 inch</li><li>Width overall: 34 mm | 1.34 inch</li><li>Slide width: 25.5 mm | 1.00 inch</li><li>Height incl mag: 139 mm | 5.47 inch</li><li>Weight without magazine: 616 g | 21.73 oz</li><li>Weight with empty magazine: 694 g | 24.48 oz</li><li>Weight with loaded magazine: 860 g | 30.34 oz</li><li>Trigger pull: 26 N | 5.5 lb</li><li>Finish: nDLC</li></ul><p>Crossover design for duty and carry. Specs from Glock official data for G45 Gen5 FS.</p>"
   }
 }

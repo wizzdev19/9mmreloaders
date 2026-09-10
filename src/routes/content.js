@@ -119,6 +119,30 @@ router.get('/accessibility', (req, res) => {
   });
 });
 
+router.get('/guides', (req, res) => {
+  page(res, 'pages/guides/index', {
+    title: 'Glock buying guides',
+    description: 'Two Texas focused guides: Glock 19 Gen3 vs Gen5 differences and how to pick a caliber from the 7 calibers in stock.',
+    path: '/guides'
+  });
+});
+
+router.get('/guides/glock-19-gen3-vs-gen5', (req, res) => {
+  page(res, 'pages/guides/glock-19-gen3-vs-gen5', {
+    title: 'Glock 19 Gen3 vs Gen5',
+    description: 'Technical differences between Glock 19 Gen3 and Gen5 from Glock official data: Marksman Barrel, nDLC finish, ambi controls, flared magwell and weights.',
+    path: '/guides/glock-19-gen3-vs-gen5'
+  });
+});
+
+router.get('/guides/what-caliber-glock-texas', (req, res) => {
+  page(res, 'pages/guides/what-caliber-glock-texas', {
+    title: 'What caliber Glock should you buy in Texas',
+    description: '7 calibers in stock explained for Texas buyers: 9mm, .380 ACP, .40 S&W, .45 ACP, 10mm Auto, .357 SIG and .22 LR with live counts, costs and use cases.',
+    path: '/guides/what-caliber-glock-texas'
+  });
+});
+
 /* -------------------------------------------------------------- contact */
 
 function renderContact(req, res, { errors = [], values = {}, status = 200 } = {}) {
