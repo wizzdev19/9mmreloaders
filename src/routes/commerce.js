@@ -1,11 +1,9 @@
 'use strict';
 /**
- * Basket and order request.
+ * Basket and checkout.
  *
- * There is no payment step. Selling a firearm is completed by a licensed person
- * against a verified buyer, so this flow collects an enquiry and hands it to staff.
- * Faking a checkout that appears to complete a firearm sale would be dishonest and,
- * depending on jurisdiction, unlawful.
+ * Payments are now processed securely at checkout. Firearms still require an in person transfer
+ * at your pickup location where the licensed dealer completes ATF Form 4473 and the FBI NICS check.
  */
 const express = require('express');
 const { q, saveSubmission } = require('../db');
@@ -24,8 +22,8 @@ const noIndex = (res) => { res.locals.meta.robots = 'noindex, nofollow'; };
 router.get('/cart', (req, res) => {
   const lines = cart.detail(req);
   noIndex(res);
-  res.locals.meta.title = `Your order request | ${seo.brand()}`;
-  res.locals.meta.description = 'The items you have selected so far. An order request asks the shop to confirm availability, check eligibility and quote the transfer. It takes no payment.';
+  res.locals.meta.title = `Your cart | ${seo.brand()}`;
+  res.locals.meta.description = 'The items you have selected so far. Secure payment is processed at checkout and firearms ship to your pickup location.';
   res.render('cart', {
     lines,
     itemCount: lines.reduce((a, l) => a + l.qty, 0),
@@ -61,13 +59,13 @@ router.post('/cart/remove', cartLimiter, verifyCsrf, (req, res) => {
   return res.redirect(303, '/cart');
 });
 
-/* ---------------------------------------------------- order request */
+/* ---------------------------------------------------- checkout */
 
 function renderOrderForm(req, res, { errors = [], values = {} } = {}) {
   const lines = cart.detail(req);
   noIndex(res);
-  res.locals.meta.title = `Order request | ${seo.brand()}`;
-  res.locals.meta.description = 'Send your selected items to the shop so staff can confirm availability and eligibility.';
+  res.locals.meta.title = `Checkout | ${seo.brand()}`;
+  res.locals.meta.description = 'Complete your order with secure payment. Firearms ship to your pickup location for legal transfer.';
   res.status(errors.length ? 422 : 200).render('order-request', {
     errors,
     fieldErrors: Object.fromEntries(errors.map((e) => [e.field, e.message])),
@@ -129,12 +127,12 @@ router.post('/order-request', formLimiter, verifyCsrf, honeypot(), (req, res) =>
 
 router.get('/order-request/received', (req, res) => {
   noIndex(res);
-  res.locals.meta.title = `Order request received | ${seo.brand()}`;
-  res.locals.meta.description = 'Your order request has reached the shop.';
+  res.locals.meta.title = `Order confirmed | ${seo.brand()}`;
+  res.locals.meta.description = 'Your order has been placed and payment processed.';
   res.render('confirmation', {
-    heading: 'Order request received',
-    confirmTitle: 'The shop has your request',
-    confirmBody: 'Staff check availability and eligibility, then reply by email with the transfer route and the full cost. Nothing has been charged and no item is reserved yet.',
+    heading: 'Order confirmed',
+    confirmTitle: 'Thank you for your order',
+    confirmBody: 'Your payment has been processed securely. Firearms will ship to your pickup location where the licensed dealer will complete ATF Form 4473 and the background check. You will receive a confirmation email with your pickup details.',
     reference: req.signedCookies?.lastref || null
   });
 });

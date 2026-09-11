@@ -26,32 +26,42 @@
       '; Max-Age=' + maxAgeSeconds + '; Path=/; SameSite=Lax' + secure;
   }
 
-  /* ------------------------------------------------------ cookie consent */
+  /* ------------------------------------------------------ cookie consent - once per visit */
 
   var bar = document.getElementById('cookiebar');
   if (bar) {
     var choice = readCookie(COOKIE_CONSENT);
-    if (!choice) {
+    var cookieSessionShown = false;
+    try { cookieSessionShown = sessionStorage.getItem('cookiebar_shown') === '1'; } catch (e) {}
+    // Only show on first page of a session, not on internal navigation
+    if (!choice && !cookieSessionShown) {
       bar.hidden = false;
+      try { sessionStorage.setItem('cookiebar_shown', '1'); } catch (e) {}
     } else if (choice === 'all') {
       loadMeasurement();
+    }
+
+    function closeCookieBar(value) {
+      writeCookie(COOKIE_CONSENT, value, SIX_MONTHS);
+      try {
+        localStorage.setItem('cc', value);
+        sessionStorage.setItem('cookiebar_shown', '1');
+      } catch (e) {}
+      bar.hidden = true;
     }
 
     var accept = document.getElementById('cookie-accept');
     var reject = document.getElementById('cookie-reject');
     if (accept) accept.addEventListener('click', function () {
-      writeCookie(COOKIE_CONSENT, 'all', SIX_MONTHS);
-      bar.hidden = true;
+      closeCookieBar('all');
       loadMeasurement();
     });
     if (reject) reject.addEventListener('click', function () {
-      writeCookie(COOKIE_CONSENT, 'required', SIX_MONTHS);
-      bar.hidden = true;
+      closeCookieBar('required');
     });
     var cookieClose = document.getElementById('cookiebar-close');
     if (cookieClose) cookieClose.addEventListener('click', function () {
-      writeCookie(COOKIE_CONSENT, 'required', SIX_MONTHS);
-      bar.hidden = true;
+      closeCookieBar('required');
     });
   }
 
@@ -73,16 +83,27 @@
     document.head.appendChild(s);
   }
 
-  /* --------------------------------------------------- age gate modal */
+  /* --------------------------------------------------- age gate modal - once per visit */
 
   var agegate = document.getElementById('agegate');
   if (agegate) {
     var ageCookie = readCookie(COOKIE_AGE);
-    if (!ageCookie) {
+    var ageSessionShown = false;
+    var ageLocal = null;
+    try {
+      ageSessionShown = sessionStorage.getItem('agegate_shown') === '1';
+      ageLocal = localStorage.getItem('agegate');
+    } catch (e) {}
+
+    // Show only on first page of session when no long term consent exists
+    // If user already chose 21plus/under21 in this browser, never show again
+    // If user is navigating internally in same tab, session flag prevents re-show
+    if (!ageCookie && !ageLocal && !ageSessionShown) {
       agegate.hidden = false;
-      // trap focus inside modal while open
       document.body.style.overflow = 'hidden';
+      try { sessionStorage.setItem('agegate_shown', '1'); } catch (e) {}
     }
+
     var ageYes = document.getElementById('agegate-yes');
     var ageNo = document.getElementById('agegate-no');
     var ageClose = document.getElementById('agegate-close');
@@ -91,25 +112,35 @@
 
     function closeAgeGate(value) {
       writeCookie(COOKIE_AGE, value, SIX_MONTHS);
+      try {
+        localStorage.setItem('agegate', value);
+        sessionStorage.setItem('agegate_shown', '1');
+      } catch (e) {}
       agegate.hidden = true;
       document.body.style.overflow = '';
     }
 
     if (ageYes) ageYes.addEventListener('click', function () {
-      closeAgeGate('21plus');
+      // If under21 message already shown, this button is now Continue browsing
+      if (ageYes.textContent === 'Continue browsing') {
+        closeAgeGate('under21');
+      } else {
+        closeAgeGate('21plus');
+      }
     });
     if (ageNo) ageNo.addEventListener('click', function () {
-      // show under 21 message inside same modal, then allow close
       if (ageUnder) ageUnder.hidden = false;
+      try {
+        localStorage.setItem('agegate', 'under21');
+        sessionStorage.setItem('agegate_shown', '1');
+      } catch (e) {}
       writeCookie(COOKIE_AGE, 'under21', SIX_MONTHS);
-      // keep modal open so user reads message, but change yes button to continue browsing
       if (ageYes) {
         ageYes.textContent = 'Continue browsing';
         ageYes.focus();
       }
     });
     if (ageClose) ageClose.addEventListener('click', function () {
-      // X closes as required cookies only for cookie bar, and as under21 for age gate if no choice yet
       var current = readCookie(COOKIE_AGE);
       if (!current) {
         closeAgeGate('seen');
@@ -125,7 +156,6 @@
         document.body.style.overflow = '';
       }
     });
-    // esc closes if already chosen, otherwise stores seen
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && !agegate.hidden) {
         var current = readCookie(COOKIE_AGE);

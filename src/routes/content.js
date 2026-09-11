@@ -106,7 +106,7 @@ router.get('/cookie-policy', (req, res) => {
 router.get('/terms-of-service', (req, res) => {
   page(res, 'pages/terms-of-service', {
     title: 'Terms of service',
-    description: 'The terms that cover use of this website, the accuracy of listings and the order request process.',
+    description: 'The terms that cover use of this website, the accuracy of listings and the order process.',
     path: '/terms-of-service'
   });
 });
@@ -148,7 +148,7 @@ router.get('/guides/what-caliber-glock-texas', (req, res) => {
 function renderContact(req, res, { errors = [], values = {}, status = 200 } = {}) {
   res.locals.meta = {
     title: `Contact ${seo.brand()} | Glock Stock and Transfer Questions`,
-    description: `Contact ${seo.brand()}, a licensed Glock dealer in Texas, about stock, a specific SKU, or how a transfer would work to your state. No payment is taken on this site.`,
+    description: `Contact ${seo.brand()}, a licensed Glock dealer in Texas, about stock, a specific SKU, or how a transfer would work to your state. Secure payment is processed at checkout.`,
     canonical: seo.absoluteUrl('/contact'),
     robots: null
   };

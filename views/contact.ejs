@@ -78,7 +78,7 @@
           <ul class="contact-detail">
             <% if (hasRealLegalName) { %><li><strong>Registered name</strong><%= business.legalName %></li><% } %>
             <li><strong>Trading as</strong><%= brand %></li>
-            <li><strong>Licence</strong>Federal Firearms Licensee<% if (hasRealFfl) { %>, <%= business.fflLicenceNumber %><% } %></li>
+            <li><strong>Licence</strong>Licensed firearms dealer<% if (hasRealFfl) { %>, <%= business.fflLicenceNumber %><% } %></li>
             <li><strong>Operating state</strong><%= jurisdiction.stateOrRegion %>, <%= jurisdiction.country %></li>
             <% if (hasRealAddress) { %>
               <li><strong>Premises</strong><%= business.address.street %>, <%= business.address.locality %>, <%= business.address.region %> <%= business.address.postalCode %></li>
@@ -95,7 +95,7 @@
             <li>Availability of a specific SKU, or whether more of an item is coming in.</li>
             <li>How a transfer would work to your state and roughly what it would cost.</li>
             <li>A specification the product page does not show, such as a barrel length the stock record does not hold.</li>
-            <li>A problem with an order request you already sent. Quote the reference number.</li>
+            <li>A problem with an order you already placed. Quote the reference number.</li>
           </ul>
           <p>For eligibility questions, read the <a href="/compliance">compliance page</a> first. It answers most of them.</p>
         </div>

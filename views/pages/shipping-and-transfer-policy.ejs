@@ -11,18 +11,19 @@
 
 <div class="section">
   <div class="wrap prose">
-    <h2>Firearms ship to a licensed dealer, never to your door</h2>
+    <h2>Firearms ship to your pickup location, never to your door</h2>
+    <p>We ship to your pickup location. For firearms, that pickup location must be a licensed dealer who can complete the legal transfer. For parts and accessories, we can often ship directly to your address.</p>
     <% if (transferConfirmed) { %>
       <p><%= business.policy.transferProcessText %></p>
     <% } %>
 
     <h2>What happens at the counter</h2>
     <ol>
-      <li>The shop confirms the item, the price and the receiving Federal Firearms Licensee with you in writing.</li>
-      <li>The firearm ships to that licensee, together with a copy of their license.</li>
+      <li>The shop confirms the item, the price and your pickup location with you in writing.</li>
+      <li>The firearm ships to your pickup location, together with a copy of the required license.</li>
       <li>You attend in person with government issued photo identification showing your current residential address.</li>
       <li>You complete <%= jurisdiction.transactionRecordForm %> at the counter.</li>
-      <li>The licensee queries the <%= jurisdiction.backgroundCheckSystem %> and releases the firearm on a proceed result.</li>
+      <li>The licensed dealer at your pickup location queries the <%= jurisdiction.backgroundCheckSystem %> and releases the firearm on a proceed result.</li>
     </ol>
     <p>
       Texas sets no state waiting period and no purchase permit, so a proceed result normally means you take
@@ -33,7 +34,7 @@
 
     <h2>Buyers outside Texas</h2>
     <p>
-      A handgun bought by a resident of another state is shipped to a licensed dealer in that state and
+      A handgun bought by a resident of another state is shipped to your pickup location in that state and
       transferred there under that state's rules, because federal law limits face to face handgun sales by a
       dealer to residents of the dealer's own state. Long guns may be sold to an out of state resident where
       the sale is lawful in both states.
@@ -43,25 +44,21 @@
     <p>
       Slides, triggers and other parts are not always subject to the same transfer rules as a complete
       firearm. A stripped Glock slide, a drop in trigger or a magazine is not a firearm under federal law and
-      can normally ship directly to a residential address. Several states and cities do regulate magazines and
+      can normally ship directly to your residential address as your pickup location. Several states and cities do regulate magazines and
       certain components, so the shop confirms which route applies to your address when it replies to your
-      request.
+      order.
     </p>
 
     <h2>Costs</h2>
     <p>
-      Shipping, transfer fees and sales tax are not calculated on this site. They depend on the destination,
-      the receiving licensee and the item, so a person quotes them against your order request rather than an
-      estimate appearing at checkout. The price shown against a listing is the item price recorded in the
-      stock system and nothing else.
+      Shipping, transfer fees and sales tax are calculated at checkout. The price shown against a listing is the item price recorded in the
+      stock system. Your pickup location may charge a separate transfer fee which is paid directly to them.
     </p>
     <% if (transferFeeNote) { %><p><%= transferFeeNote %></p><% } %>
 
     <h2>Timescales</h2>
     <p>
-      The shop does not publish a dispatch or delivery estimate on this site, because it has not yet
-      committed to one with its carriers, and a number invented for a web page is worse than no number. You
-      are given a timescale in writing when your order request is answered.
+      You are given a timescale in writing when your order is confirmed. If you have a deadline, tell the shop when you place your order.
     </p>
 
     <h2>Damage or a wrong item</h2>

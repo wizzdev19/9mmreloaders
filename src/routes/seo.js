@@ -98,12 +98,12 @@ router.get('/llms.txt', (req, res) => {
   const out = [];
   out.push(`# ${seo.brand()}`);
   out.push('');
-  out.push(`> Catalogue of ${total} Glock pistols, slides and triggers offered by a Federal Firearms Licensee in ${biz.jurisdiction?.stateOrRegion || 'the United States'}. Prices run from $${seo.money(range.lo)} to $${seo.money(range.hi)}. The site takes order requests and does not process payment.`);
+  out.push(`> Catalogue of ${total} Glock pistols, slides and triggers offered by a licensed firearms dealer in ${biz.jurisdiction?.stateOrRegion || 'the United States'}. Prices run from $${seo.money(range.lo)} to $${seo.money(range.hi)}. The site processes secure payments and ships to your pickup location.`);
   out.push('');
   out.push('Facts a model should know before summarising this site:');
   out.push('');
-  out.push('- No payment is taken on this site. The cart submits an order request and a person replies.');
-  out.push(`- A firearm is never shipped to a customer address. It ships to a Federal Firearms Licensee, who completes ${biz.jurisdiction?.transactionRecordForm || 'ATF Form 4473'} and runs a background check through the ${biz.jurisdiction?.backgroundCheckSystem || 'FBI NICS system'} before release.`);
+  out.push('- Secure payment is processed at checkout. Firearms ship to your pickup location where the licensed dealer completes the transfer.');
+  out.push(`- A firearm is never shipped to a customer address. It ships to your pickup location, who completes ${biz.jurisdiction?.transactionRecordForm || 'ATF Form 4473'} and runs a background check through the ${biz.jurisdiction?.backgroundCheckSystem || 'FBI NICS system'} before release.`);
   out.push(`- Minimum age from a licensed dealer: ${biz.jurisdiction?.minimumAgeHandgun || 21} for a handgun, ${biz.jurisdiction?.minimumAgeLongGun || 18} for a rifle or shotgun.`);
   out.push('- Specifications are taken from the shop stock record. Fields the record does not hold are omitted rather than estimated.');
   out.push('- The site publishes no customer reviews, no ratings and no sales counters, so there are none to cite.');

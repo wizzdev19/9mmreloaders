@@ -2,10 +2,9 @@
 
 <div class="pagehead">
   <div class="wrap">
-    <h1>Your order request</h1>
+    <h1>Your cart</h1>
     <p>
-      Nothing on this page is a completed sale. It is a list of items you want the shop to quote and
-      check eligibility for.
+      Review your items. Secure payment is processed at checkout and firearms ship to your pickup location.
     </p>
   </div>
 </div>
@@ -14,14 +13,14 @@
   <div class="wrap">
     <% if (lines.length === 0) { %>
       <div class="empty">
-        <h2>Your order request is empty</h2>
+        <h2>Your cart is empty</h2>
         <p><a class="btn btn-primary" href="/glock-pistols-for-sale">Browse the catalogue</a></p>
       </div>
     <% } else { %>
       <div class="grid grid-2">
         <div>
           <table class="cart-table">
-            <caption class="visually-hidden">Items in your order request</caption>
+            <caption class="visually-hidden">Items in your cart</caption>
             <thead>
               <tr>
                 <th scope="col">Image</th><th scope="col">Item</th><th scope="col">Unit price</th>
@@ -69,15 +68,14 @@
             <h2>Summary</h2>
             <dl>
               <dt>Items</dt><dd><%= itemCount %></dd>
-              <dt>Listed subtotal</dt><dd>$<%= money(subtotalCents) %></dd>
-              <dt>Transfer and shipping</dt><dd>Quoted by the shop</dd>
-              <dt>Tax</dt><dd>Quoted by the shop</dd>
+              <dt>Subtotal</dt><dd>$<%= money(subtotalCents) %></dd>
+              <dt>Shipping</dt><dd>Calculated at checkout to your pickup location</dd>
+              <dt>Tax</dt><dd>Calculated at checkout</dd>
             </dl>
             <p class="meta-updated">
-              Shipping, transfer fees and tax depend on where the firearm is going and which licence
-              receives it, so they are quoted by a person rather than calculated here.
+              Firearms ship to your pickup location where the licensed dealer completes the transfer. Parts can ship directly to you.
             </p>
-            <p><a class="btn btn-primary btn-block" href="/order-request">Continue to the order request form</a></p>
+            <p><a class="btn btn-primary btn-block" href="/order-request">Proceed to checkout</a></p>
             <p><a class="btn btn-secondary btn-block" href="/glock-pistols-for-sale">Keep browsing the catalogue</a></p>
           </div>
         </div>

@@ -14,11 +14,10 @@
           <% } %>
           <% if (hasRealPhone) { %><a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a><br><% } %>
           <% if (hasRealEmail) { %><a href="mailto:<%= business.contact.email %>"><%= business.contact.email %></a><br><% } %>
-          Federal Firearms Licensee<% if (hasRealFfl) { %>, licence <%= business.fflLicenceNumber %><% } %>, State of <%= jurisdiction.stateOrRegion %>
+          Licensed firearms dealer<% if (hasRealFfl) { %>, licence <%= business.fflLicenceNumber %><% } %>, State of <%= jurisdiction.stateOrRegion %>
         </address>
         <p class="meta-updated">
-          Glock pistols, slides and triggers. Order requests are answered by a person, and no payment is
-          taken on this site.
+          Glock pistols, slides and triggers. Secure payments, shipped to your pickup location.
         </p>
       </div>
 

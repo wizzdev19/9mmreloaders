@@ -4,7 +4,7 @@
       <% if (hasRealPhone) { %>
         Sales: <a href="tel:<%= business.contact.phone.replace(/[^\d+]/g, '') %>"><%= business.contact.phone %></a>
       <% } else { %>
-        Licensed dealer in <%= jurisdiction.stateOrRegion %>. <a href="/contact">Message the shop</a>.
+        Licensed dealer. <a href="/contact">Message the shop</a>.
       <% } %>
     </div>
     <nav class="utility-legal" aria-label="Compliance">
@@ -82,7 +82,7 @@
     </div>
     <p class="small">If you are under 21 you can still browse slides, triggers and compliance information. Handgun purchases require 21 plus. See the <a href="/compliance">compliance notice</a> for full rules.</p>
     <div id="agegate-under" hidden>
-      <div class="note note-legal" style="margin-top:16px">
+      <div class="note note-legal agegate-under-note">
         <h3>Under 21</h3>
         <p>You must be 21 or older to buy a handgun from a dealer. You must be 18 or older for long guns and parts. You can continue browsing, but you will not be able to submit a handgun order request.</p>
         <p><a href="/compliance">Read compliance rules</a> · <a href="/collections/glock-slides">Browse slides</a> · <a href="/collections/glock-triggers">Browse triggers</a></p>
