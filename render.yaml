@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: 9mmreloaders
+    env: node
+    plan: starter
+    branch: main
+    buildCommand: npm ci && npm run ingest:nodl
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SITE_ORIGIN
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: TRUST_PROXY
+        value: 1
+      - key: REQUIRE_BUSINESS
+        value: 0
+      - key: ROBOTS_MODE
+        value: auto
+      - key: DB_PATH
+        value: ./data/catalog.db
+      - key: DB_READONLY
+        value: 1
+    healthCheckPath: /
+    disk:
+      name: data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1
