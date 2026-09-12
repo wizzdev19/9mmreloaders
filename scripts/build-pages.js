@@ -34,9 +34,10 @@ function waitForServer(url, timeout = 30000) {
 
 async function main() {
   console.log('Starting server for static export...');
+  const auditKey = 'pages-build-' + Date.now();
   const server = spawn('node', ['server.js'], {
     cwd: ROOT,
-    env: { ...process.env, PORT: String(PORT), SITE_ORIGIN: `http://localhost:${PORT}`, NODE_ENV: 'development', REQUIRE_BUSINESS: '0', DEBUG_MODE: '0' },
+    env: { ...process.env, PORT: String(PORT), SITE_ORIGIN: `http://localhost:${PORT}`, NODE_ENV: 'development', REQUIRE_BUSINESS: '0', DEBUG_MODE: '0', AUDIT_KEY: auditKey },
     stdio: 'inherit'
   });
 
@@ -47,7 +48,7 @@ async function main() {
     // export-static runs on import? No, it has main() that runs when required? It has main() call at bottom, but we required it after server start
     // Actually export-static's main() is called when file is run directly, not when required. So we need to run it via child process
     const { execSync } = require('child_process');
-    execSync('node scripts/export-static.js', { cwd: ROOT, stdio: 'inherit', env: { ...process.env, EXPORT_BASE: `http://localhost:${PORT}` } });
+    execSync('node scripts/export-static.js', { cwd: ROOT, stdio: 'inherit', env: { ...process.env, EXPORT_BASE: `http://localhost:${PORT}`, AUDIT_KEY: auditKey } });
     console.log('Export done');
   } finally {
     console.log('Stopping server...');

@@ -52,7 +52,15 @@ const ROUTES = [
 
 function fetch(url) {
   return new Promise((resolve, reject) => {
-    http.get(url, (res) => {
+    const auditKey = process.env.AUDIT_KEY;
+    const urlObj = new URL(url);
+    const options = {
+      hostname: urlObj.hostname,
+      port: urlObj.port,
+      path: urlObj.pathname + urlObj.search,
+      headers: auditKey ? { 'x-audit-key': auditKey } : {}
+    };
+    http.get(options, (res) => {
       const chunks = [];
       res.on('data', c => chunks.push(c));
       res.on('end', () => {
