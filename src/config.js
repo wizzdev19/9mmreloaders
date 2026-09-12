@@ -41,6 +41,7 @@ const config = {
   siteOrigin: str('SITE_ORIGIN', 'http://localhost:' + int('PORT', 8080)).replace(/\/+$/, ''),
   trustProxy: bool('TRUST_PROXY', false),
   debugMode: bool('DEBUG_MODE', false),
+  requireBusiness: !bool('REQUIRE_BUSINESS', isProd) ? false : true,
   sessionSecret: str('SESSION_SECRET', ''),
   dbPath: path.resolve(ROOT, str('DB_PATH', './data/catalog.db')),
   dbReadonly: bool('DB_READONLY', isProd),
@@ -64,7 +65,11 @@ const config = {
     user: str('SMTP_USER', ''),
     pass: str('SMTP_PASS', '')
   },
-  inquiryNotifyEmail: str('INQUIRY_NOTIFY_EMAIL', '')
+  inquiryNotifyEmail: str('INQUIRY_NOTIFY_EMAIL', ''),
+  email: {
+    from: str('EMAIL_FROM', ''),
+    resendKey: str('RESEND_API_KEY', '')
+  }
 };
 
 /* ---------------- validation ---------------- */
@@ -118,6 +123,7 @@ try {
 }
 
 if (business) {
+  const requireBusiness = config.requireBusiness;
   const required = Array.isArray(business.policy?.requiredBeforeLaunch) ? business.policy.requiredBeforeLaunch : [];
   for (const field of required) {
     if (isEmpty(pick(business, field))) pendingFields.push(field);
@@ -131,7 +137,7 @@ if (business) {
 
   if (pendingFields.length) {
     const msg = `data/business.json is missing ${pendingFields.length} required value(s): ${pendingFields.join(', ')}`;
-    if (isProd) errors.push(msg + '. These are required before launch.');
+    if (isProd && requireBusiness) errors.push(msg + '. These are required before launch. Set REQUIRE_BUSINESS=0 to allow deploy without them.');
     else warnings.push(msg);
   }
 

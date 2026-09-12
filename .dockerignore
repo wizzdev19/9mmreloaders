@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+data/app.db
+data/app.db-*
+data/reports
+uploads
+*.log
+.arena
+.cache
