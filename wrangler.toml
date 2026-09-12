@@ -2,6 +2,9 @@
 # This solves Pages limitations: cart POST, images, sessions all work
 # Deploy: npx wrangler deploy
 # Requires: Cloudflare account with Workers Containers enabled (beta)
+# Also valid for Pages (pages_build_output_dir) so Pages build doesn't warn
+
+pages_build_output_dir = "dist"
 
 name = "9mmreloaders"
 main = "src/worker-container.js"
