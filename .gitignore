@@ -19,12 +19,6 @@ data/reports/
 !data/business.json
 !data/product-overrides.json
 
-# Product images - ignore by default but allow brand, about and payments for deploy
-public/img/products/
-!public/img/brand/
-!public/img/about/
-!public/img/payments/
-
 # Runtime
 node_modules/
 npm-debug.log*
