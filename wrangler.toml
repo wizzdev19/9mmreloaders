@@ -1,0 +1,28 @@
+# Future Cloudflare Workers + D1 + R2 deployment scaffold
+# This is NOT active now - backend runs on Fly.io/Render with Cloudflare in front (see docs/CLOUDFLARE.md)
+# To activate later: migrate catalog.db to D1 and images to R2, then rewrite src/db.js to use D1
+
+name = "9mmreloaders"
+main = "src/worker.js"
+compatibility_date = "2024-09-12"
+compatibility_flags = ["nodejs_compat"]
+
+# D1 - SQLite catalog (migrate via: wrangler d1 execute 9mmreloaders-catalog --file=./data/catalog.sql)
+# [[d1_databases]]
+# binding = "CATALOG_DB"
+# database_name = "9mmreloaders-catalog"
+# database_id = "replace-with-your-d1-id"
+
+# R2 - product images
+# [[r2_buckets]]
+# binding = "PRODUCT_IMAGES"
+# bucket_name = "9mmreloaders-images"
+
+# KV - for rate limiting / sessions if needed
+# [[kv_namespaces]]
+# binding = "SESSIONS"
+# id = "replace-with-kv-id"
+
+[vars]
+NODE_ENV = "production"
+REQUIRE_BUSINESS = "0"

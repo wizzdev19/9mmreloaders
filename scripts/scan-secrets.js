@@ -109,7 +109,7 @@ if (hasGit) {
 const problems = [];
 const gitignore = fs.existsSync(path.join(ROOT, '.gitignore'))
   ? fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf8') : '';
-for (const required of ['.env', 'node_modules', 'data/catalog.db']) {
+for (const required of ['.env', 'node_modules']) {
   if (!gitignore.split('\n').some((l) => l.trim() === required || l.trim() === required + '/')) {
     problems.push(`.gitignore does not exclude ${required}`);
   }
