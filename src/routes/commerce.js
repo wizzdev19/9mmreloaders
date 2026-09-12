@@ -85,6 +85,7 @@ router.post('/order-request', formLimiter, verifyCsrf, honeypot(), (req, res) =>
     email: clean.text(req.body.email, 254),
     phone: clean.text(req.body.phone, 32),
     message: clean.multiline(req.body.message, 1500),
+    paymentMethod: clean.oneOf(req.body.paymentMethod, ['paypal', 'chime', 'cashapp', 'applepay', 'crypto'], ''),
     attest: clean.checked(req.body.attest),
     consent: clean.checked(req.body.consent),
     marketing: clean.checked(req.body.marketing)
@@ -94,6 +95,7 @@ router.post('/order-request', formLimiter, verifyCsrf, honeypot(), (req, res) =>
   if (values.name.length < 2) errors.push({ field: 'name', message: 'Enter the name the shop should reply to.' });
   const email = clean.email(values.email);
   if (!email) errors.push({ field: 'email', message: 'Enter an email address in the form name@example.com.' });
+  if (!values.paymentMethod) errors.push({ field: 'paymentMethod', message: 'Choose a payment method: PayPal, Chime, Cash App, Apple Pay or Crypto.' });
   if (!values.attest) errors.push({ field: 'attest', message: 'Confirm your age and eligibility before sending the request.' });
   if (!values.consent) errors.push({ field: 'consent', message: 'Agree to the shop storing your details so it can reply.' });
 
@@ -106,15 +108,26 @@ router.post('/order-request', formLimiter, verifyCsrf, honeypot(), (req, res) =>
     return res.redirect(303, '/order-request/received');
   }
 
+  const subtotal = lines.reduce((a, l) => a + l.lineCents, 0);
+  const discountCents = values.paymentMethod === 'crypto' ? Math.round(subtotal * 0.15) : 0;
+  const totalCents = subtotal - discountCents;
+
   const id = saveSubmission({
     kind: 'order-request',
     name: values.name,
     email,
     phone: clean.phone(values.phone),
-    message: values.message,
-    cartJson: JSON.stringify(lines.map((l) => ({
-      sku: l.product.sku, name: l.product.name, variant: l.variantLabel, qty: l.qty, unit: l.unitCents
-    }))),
+    paymentMethod: values.paymentMethod,
+    message: values.message + (discountCents ? ` [Payment: ${values.paymentMethod} -15% discount $${(discountCents/100).toFixed(2)} applied, total $${(totalCents/100).toFixed(2)}]` : ` [Payment: ${values.paymentMethod}]`),
+    cartJson: JSON.stringify({
+      items: lines.map((l) => ({
+        sku: l.product.sku, name: l.product.name, variant: l.variantLabel, qty: l.qty, unit: l.unitCents
+      })),
+      subtotalCents: subtotal,
+      discountCents,
+      totalCents,
+      paymentMethod: values.paymentMethod
+    }),
     consentMarketing: values.marketing,
     consentTerms: values.consent,
     attestedEligible: values.attest

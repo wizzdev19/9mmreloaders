@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS submissions (
 CREATE INDEX IF NOT EXISTS idx_sub_created ON submissions(created_at);
 `);
 try { appDb.exec('ALTER TABLE submissions ADD COLUMN state TEXT'); } catch { /* column already exists */ }
+try { appDb.exec('ALTER TABLE submissions ADD COLUMN payment_method TEXT'); } catch { /* column already exists */ }
 try { fs.chmodSync(appDbPath, 0o600); } catch { /* best effort on platforms without chmod */ }
 
 /* ------------------------------------------------------------------ reads */
@@ -129,8 +130,8 @@ function relatedProducts(product, limit = 4) {
 /* ----------------------------------------------------------------- writes */
 
 const insertSubmission = appDb.prepare(`INSERT INTO submissions
-  (kind, created_at, name, email, phone, state, message, cart_json, consent_marketing, consent_terms, attested_eligible, purge_after)
-  VALUES (@kind, @created_at, @name, @email, @phone, @state, @message, @cart_json, @consent_marketing, @consent_terms, @attested_eligible, @purge_after)`);
+  (kind, created_at, name, email, phone, state, payment_method, message, cart_json, consent_marketing, consent_terms, attested_eligible, purge_after)
+  VALUES (@kind, @created_at, @name, @email, @phone, @state, @payment_method, @message, @cart_json, @consent_marketing, @consent_terms, @attested_eligible, @purge_after)`);
 
 function saveSubmission(rec) {
   const now = new Date();
@@ -144,6 +145,7 @@ function saveSubmission(rec) {
     email: rec.email,
     phone: rec.phone || null,
     state: rec.state || null,
+    payment_method: rec.paymentMethod || rec.payment_method || null,
     message: rec.message || null,
     cart_json: rec.cartJson || null,
     consent_marketing: rec.consentMarketing ? 1 : 0,

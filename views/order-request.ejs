@@ -73,6 +73,40 @@
             </fieldset>
 
             <fieldset>
+              <legend>Payment method (required)</legend>
+              <p class="hint no-top">Choose how you want to pay. Crypto payments receive 15 percent off the order total.</p>
+              <% if (fieldErrors.paymentMethod) { %><span class="field-error" id="err-payment"><%= fieldErrors.paymentMethod %></span><% } %>
+              <div class="payment-methods">
+                <label class="payment-option<%= values.paymentMethod === 'paypal' ? ' selected' : '' %>">
+                  <input type="radio" name="paymentMethod" value="paypal" <%= values.paymentMethod === 'paypal' ? 'checked' : '' %> required>
+                  <img src="/img/payments/paypal.svg" alt="PayPal" width="48" height="32" loading="lazy">
+                  <span class="payment-name">PayPal</span>
+                </label>
+                <label class="payment-option<%= values.paymentMethod === 'chime' ? ' selected' : '' %>">
+                  <input type="radio" name="paymentMethod" value="chime" <%= values.paymentMethod === 'chime' ? 'checked' : '' %>>
+                  <img src="/img/payments/chime.svg" alt="Chime" width="48" height="32" loading="lazy">
+                  <span class="payment-name">Chime</span>
+                </label>
+                <label class="payment-option<%= values.paymentMethod === 'cashapp' ? ' selected' : '' %>">
+                  <input type="radio" name="paymentMethod" value="cashapp" <%= values.paymentMethod === 'cashapp' ? 'checked' : '' %>>
+                  <img src="/img/payments/cashapp.svg" alt="Cash App" width="48" height="32" loading="lazy">
+                  <span class="payment-name">Cash App</span>
+                </label>
+                <label class="payment-option<%= values.paymentMethod === 'applepay' ? ' selected' : '' %>">
+                  <input type="radio" name="paymentMethod" value="applepay" <%= values.paymentMethod === 'applepay' ? 'checked' : '' %>>
+                  <img src="/img/payments/applepay.svg" alt="Apple Pay" width="48" height="32" loading="lazy">
+                  <span class="payment-name">Apple Pay</span>
+                </label>
+                <label class="payment-option payment-crypto<%= values.paymentMethod === 'crypto' ? ' selected' : '' %>">
+                  <input type="radio" name="paymentMethod" value="crypto" <%= values.paymentMethod === 'crypto' ? 'checked' : '' %>>
+                  <img src="/img/payments/crypto.svg" alt="Crypto" width="48" height="32" loading="lazy">
+                  <span class="payment-name">Crypto <span class="badge badge-discount">-15%</span></span>
+                  <span class="hint">Bitcoin, Ethereum and others, 15 percent off</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <fieldset>
               <legend>Confirmations</legend>
               <div class="check">
                 <input type="checkbox" id="attest" name="attest" value="yes"
@@ -115,9 +149,19 @@
           </p>
         </div>
         <div class="note">
+          <h3>Payment options</h3>
+          <ul>
+            <li><strong>PayPal</strong>, secure checkout via PayPal balance or linked card.</li>
+            <li><strong>Chime</strong>, pay from your Chime account.</li>
+            <li><strong>Cash App</strong>, instant transfer via Cash App.</li>
+            <li><strong>Apple Pay</strong>, fast checkout on iPhone and Mac.</li>
+            <li><strong>Crypto</strong>, Bitcoin, Ethereum and others. <strong>15 percent off</strong> the order total when you pay with crypto.</li>
+          </ul>
+        </div>
+        <div class="note">
           <h3>What is stored</h3>
           <p>
-            Your name, email address, optional phone number, your message and the list of items. Nothing
+            Your name, email address, optional phone number, your message, chosen payment method and the list of items. Nothing
             else. It is kept for <%= retentionMonths %> months and then deleted automatically.
           </p>
         </div>
