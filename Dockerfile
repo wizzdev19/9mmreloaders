@@ -8,15 +8,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends python3 make g+
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# app files
+# app files - copy everything that is in repo (catalog.db is now committed)
 COPY server.js ./
 COPY src ./src
 COPY views ./views
 COPY public ./public
 COPY scripts ./scripts
-COPY data/business.json ./data/business.json
-COPY data/product-overrides.json ./data/product-overrides.json
-COPY data/catalog.db ./data/catalog.db
+COPY data ./data
+COPY render.yaml fly.toml ./
 
 # ensure data dir writable for app.db and image variants
 RUN mkdir -p data/reports public/img/products && chown -R node:node /app

@@ -9,16 +9,21 @@
 credentials.json
 service-account*.json
 
-# Data / generated
-data/catalog.db
+# Data / generated - allow catalog.db for deploy, ignore app.db and reports
 data/app.db
-data/*.db
 data/*.db-journal
 data/*.db-wal
 data/*.db-shm
 data/reports/
+!data/catalog.db
+!data/business.json
+!data/product-overrides.json
+
+# Product images - ignore by default but allow brand, about and payments for deploy
 public/img/products/
 !public/img/brand/
+!public/img/about/
+!public/img/payments/
 
 # Runtime
 node_modules/
