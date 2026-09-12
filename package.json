@@ -34,11 +34,11 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.7.0",
     "helmet": "^8.3.0",
+    "hono": "^4.7.0",
     "sanitize-html": "^2.17.7",
-    "sharp": "^0.35.4",
-    "hono": "^4.7.0"
+    "sharp": "^0.35.4"
   },
   "devDependencies": {
-    "wrangler": "^3.90.0"
+    "wrangler": "^4.131.1"
   }
 }
