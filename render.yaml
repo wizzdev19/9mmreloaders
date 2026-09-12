@@ -4,7 +4,7 @@ services:
     env: node
     plan: starter
     branch: main
-    buildCommand: npm ci && npm run ingest:nodl
+    buildCommand: npm ci
     startCommand: npm start
     envVars:
       - key: NODE_ENV
