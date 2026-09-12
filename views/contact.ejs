@@ -49,6 +49,23 @@
               </div>
             </div>
 
+            <div class="formgrid formgrid-2">
+              <div class="field">
+                <label for="state">State (optional)</label>
+                <input type="text" id="state" name="state" maxlength="40" autocomplete="address-level1" placeholder="TX, Texas, etc."
+                       value="<%= values.state || '' %>" <%= fieldErrors.state ? 'aria-invalid="true" aria-describedby="err-state"' : '' %>>
+                <span class="hint" id="state-hint">Helps the shop answer transfer questions for your location.</span>
+                <% if (fieldErrors.state) { %><span class="field-error" id="err-state"><%= fieldErrors.state %></span><% } %>
+              </div>
+              <div class="field">
+                <label for="phone">Phone number (optional)</label>
+                <input type="tel" id="phone" name="phone" maxlength="32" autocomplete="tel" inputmode="tel" placeholder="(555) 123-4567"
+                       value="<%= values.phone || '' %>" <%= fieldErrors.phone ? 'aria-invalid="true" aria-describedby="err-phone"' : '' %>>
+                <span class="hint" id="phone-hint">Only if you want a callback about stock or transfer.</span>
+                <% if (fieldErrors.phone) { %><span class="field-error" id="err-phone"><%= fieldErrors.phone %></span><% } %>
+              </div>
+            </div>
+
             <div class="field">
               <label for="message">Your message (required)</label>
               <textarea id="message" name="message" rows="7" required maxlength="1500" aria-describedby="message-hint"
@@ -103,7 +120,7 @@
         <div class="note">
           <h3>Only what is needed</h3>
           <p>
-            This form asks for a name, an email address and a message. It does not ask for an address,
+            This form asks for a name, an email address and a message. State and phone are optional and help the shop answer transfer and availability questions. It does not ask for a home address,
             a date of birth or a licence number, because none of those are needed to answer a question.
             What is stored, and for how long, is set out in the <a href="/privacy-policy">privacy policy</a>.
           </p>

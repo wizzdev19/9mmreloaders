@@ -181,6 +181,8 @@ router.post('/contact', formLimiter, verifyCsrf, honeypot(), (req, res) => {
   const values = {
     name: clean.text(req.body.name, 80),
     email: clean.text(req.body.email, 254),
+    state: clean.text(req.body.state, 40),
+    phone: clean.text(req.body.phone, 32),
     message: clean.multiline(req.body.message, 1500),
     consent: clean.checked(req.body.consent)
   };
@@ -189,6 +191,12 @@ router.post('/contact', formLimiter, verifyCsrf, honeypot(), (req, res) => {
   if (values.name.length < 2) errors.push({ field: 'name', message: 'Enter the name the shop should reply to.' });
   const email = clean.email(values.email);
   if (!email) errors.push({ field: 'email', message: 'Enter an email address in the form name@example.com.' });
+  if (values.state && values.state.length < 2) errors.push({ field: 'state', message: 'Enter a valid state, for example TX or Texas.' });
+  if (values.phone) {
+    const p = clean.phone(values.phone);
+    if (!p) errors.push({ field: 'phone', message: 'Enter a valid phone number with at least 7 digits, or leave it blank.' });
+    else values.phone = p;
+  }
   if (values.message.length < 10) errors.push({ field: 'message', message: 'Write at least a sentence so the shop knows what you need.' });
   if (!values.consent) errors.push({ field: 'consent', message: 'Agree to the shop storing your details so it can reply.' });
 
@@ -199,7 +207,8 @@ router.post('/contact', formLimiter, verifyCsrf, honeypot(), (req, res) => {
       kind: 'contact',
       name: values.name,
       email,
-      phone: null,
+      phone: values.phone || null,
+      state: values.state || null,
       message: values.message,
       cartJson: null,
       consentMarketing: false,
