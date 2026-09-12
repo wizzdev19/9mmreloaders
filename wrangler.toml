@@ -1,6 +1,7 @@
 # Cloudflare Workers with Container - runs Express backend (better-sqlite3) on Cloudflare
 # Deploy: npx wrangler deploy
 # Requires: Cloudflare account with Workers Containers enabled (beta)
+# Also valid for Pages (pages_build_output_dir) so Pages build doesn't warn
 
 pages_build_output_dir = "dist"
 
@@ -17,11 +18,21 @@ enabled = true
 head_sampling_rate = 1
 invocation_logs = true
 
+# Container that runs the Express app - new syntax
 [[containers]]
-name = "BACKEND"
+class_name = "Backend"
 image = "./Dockerfile"
-port = 8080
-instances = 1
+max_instances = 1
+
+# Durable Object binding for container
+[[durable_objects.bindings]]
+name = "BACKEND"
+class_name = "Backend"
+
+# Migration for Durable Object
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Backend"]
 
 [vars]
 NODE_ENV = "production"
