@@ -19,7 +19,9 @@
     "audit:all": "npm run audit:deps && npm run audit:secrets && npm run audit:claims && npm run audit:seo && npm run audit:cannibal && npm run audit:assets",
     "audit:cannibal": "node scripts/check-cannibalisation.js",
     "audit:assets": "node scripts/check-assets.js",
-    "images": "node scripts/make-image-variants.js"
+    "images": "node scripts/make-image-variants.js",
+    "export": "node scripts/export-static.js",
+    "build:pages": "node scripts/build-pages.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1",
