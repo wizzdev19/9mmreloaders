@@ -2,49 +2,47 @@
 <%- include('partials/breadcrumbs', { trail: trail }) %>
 
 <div class="wrap">
-  <div class="listing">
-    <%- include('partials/facets', { groups: groups, calibers: calibers, activeSlug: activeSlug, activeCaliber: activeCaliber }) %>
-
+  <div class="listing-head">
     <div>
-      <div class="listing-head">
-        <div>
-          <h1><%= h1 %></h1>
-          <p><%= intro %></p>
-        </div>
-        <form class="sortform" action="<%= basePath %>" method="get">
-          <label for="sort">Sort by</label>
-          <select id="sort" name="sort">
-            <option value="featured"<%= sort === 'featured' ? ' selected' : '' %>>Catalogue order</option>
-            <option value="price-asc"<%= sort === 'price-asc' ? ' selected' : '' %>>Price, low to high</option>
-            <option value="price-desc"<%= sort === 'price-desc' ? ' selected' : '' %>>Price, high to low</option>
-            <option value="name-asc"<%= sort === 'name-asc' ? ' selected' : '' %>>Name, A to Z</option>
-          </select>
-          <button type="submit" class="btn btn-secondary btn-sm">Apply sort order</button>
-        </form>
-      </div>
-
-      <p class="meta-updated">
-        Showing <%= rangeFrom %> to <%= rangeTo %> of <%= total %> listing<%= total === 1 ? '' : 's' %>.
-      </p>
-
-      <% if (products.length === 0) { %>
-        <div class="empty">
-          <h2>No listings match this filter</h2>
-          <p>Try the <a href="/glock-pistols-for-sale">full catalogue</a>.</p>
-        </div>
-      <% } else { %>
-        <div class="grid grid-3">
-          <% products.forEach(function (p, i) { %>
-            <%- include('partials/product-card', { p: p, eager: i < 3 }) %>
-          <% }); %>
-        </div>
-        <%- include('partials/pagination', { page: page, totalPages: totalPages, pages: pageList, pageUrl: pageUrl }) %>
-      <% } %>
-
-      <% if (typeof footNote !== 'undefined' && footNote) { %>
-        <div class="note"><p><%= footNote %></p></div>
-      <% } %>
+      <h1><%= h1 %></h1>
+      <p><%= intro %></p>
     </div>
+    <form class="sortform" action="<%= basePath %>" method="get">
+      <label for="sort">Sort by</label>
+      <select id="sort" name="sort">
+        <option value="featured"<%= sort === 'featured' ? ' selected' : '' %>>Catalogue order</option>
+        <option value="price-asc"<%= sort === 'price-asc' ? ' selected' : '' %>>Price, low to high</option>
+        <option value="price-desc"<%= sort === 'price-desc' ? ' selected' : '' %>>Price, high to low</option>
+        <option value="name-asc"<%= sort === 'name-asc' ? ' selected' : '' %>>Name, A to Z</option>
+      </select>
+      <button type="submit" class="btn btn-secondary btn-sm">Apply sort order</button>
+    </form>
+  </div>
+
+  <p class="meta-updated">
+    Showing <%= rangeFrom %> to <%= rangeTo %> of <%= total %> listing<%= total === 1 ? '' : 's' %>.
+  </p>
+
+  <% if (products.length === 0) { %>
+    <div class="empty">
+      <h2>No listings match this filter</h2>
+      <p>Try the <a href="/glock-pistols-for-sale">full catalogue</a>.</p>
+    </div>
+  <% } else { %>
+    <div class="grid grid-3">
+      <% products.forEach(function (p, i) { %>
+        <%- include('partials/product-card', { p: p, eager: i < 3 }) %>
+      <% }); %>
+    </div>
+    <%- include('partials/pagination', { page: page, totalPages: totalPages, pages: pageList, pageUrl: pageUrl }) %>
+  <% } %>
+
+  <% if (typeof footNote !== 'undefined' && footNote) { %>
+    <div class="note"><p><%= footNote %></p></div>
+  <% } %>
+
+  <div class="facets-below-wrap">
+    <%- include('partials/facets', { groups: groups, calibers: calibers, activeSlug: activeSlug, activeCaliber: activeCaliber }) %>
   </div>
 </div>
 
