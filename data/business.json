@@ -1,17 +1,14 @@
 {
   "_README": "Single source of truth for business identity. Values set to null are not yet supplied by the licence holder. Nothing on the public site ever prints the word PLACEHOLDER: a null field is simply omitted from the page and from the structured data. src/config.js lists the outstanding nulls at boot and blocks a production start until the required ones are filled.",
-
   "legalName": null,
   "tradingName": "9mmreloaders",
   "shortName": "9mmreloaders",
   "tagline": "Factory and custom Glock pistols, slides and triggers, transferred through a licensed dealer in Texas",
   "fallbackBrand": "9mmreloaders",
-
   "fflLicenceNumber": null,
   "fflLicenceType": "Type 01, Dealer in Firearms Other Than Destructive Devices",
   "businessRegistrationNumber": null,
   "salesTaxId": null,
-
   "jurisdiction": {
     "country": "United States",
     "countryCode": "US",
@@ -28,7 +25,6 @@
     "transactionRecordForm": "ATF Form 4473",
     "notes": "Confirmed for a licensed dealer operating in Texas. Federal law sets the age floor at 21 for a handgun bought from a licensed dealer and 18 for a rifle or shotgun. Texas adds no purchase permit, no waiting period and no state registration. These values must be re-checked if the law changes or if the business begins trading in another state."
   },
-
   "address": {
     "street": null,
     "locality": null,
@@ -36,43 +32,36 @@
     "postalCode": null,
     "country": "US"
   },
-
-  "geo": { "latitude": null, "longitude": null },
-
+  "geo": {
+    "latitude": null,
+    "longitude": null
+  },
   "contact": {
     "phone": null,
     "email": null,
     "privacyEmail": null,
     "supportHours": null
   },
-
   "openingHours": [],
-
   "social": {
     "website": null,
     "profiles": []
   },
-
   "policy": {
     "dataControllerName": null,
     "dataRetentionMonths": 24,
     "returnsWindowDays": 30,
-
     "transferProcessConfirmed": true,
-    "transferProcessText": "A firearm bought here is never shipped to a customer address. It ships to a Federal Firearms Licensee, and the buyer completes the transfer in person at that licensee's premises. At the counter the buyer presents a valid government issued photo ID showing their current residential address, completes ATF Form 4473, and the licensee runs a background check through the FBI National Instant Criminal Background Check System. The firearm is released only on a proceed result. Texas imposes no state waiting period, no purchase permit and no state registration, so a proceed result normally means the transfer completes the same day. Federal law limits handgun sales by a licensed dealer to residents of that dealer's state, so a handgun bought by an out of state customer is shipped to a licensee in the customer's own state and transferred there.",
-
+    "transferProcessText": "We ship to your dropoff location. For firearms, your dropoff location must be a Federal Firearms Licensee, and the buyer completes the transfer in person at that licensee's premises. At the counter the buyer presents a valid government issued photo ID showing their current residential address, completes ATF Form 4473, and the licensee runs a background check through the FBI National Instant Criminal Background Check System. The firearm is released only on a proceed result. Texas imposes no state waiting period, no purchase permit and no state registration, so a proceed result normally means the transfer completes the same day. Federal law limits handgun sales by a licensed dealer to residents of that dealer's state, so a handgun bought by an out of state customer is shipped to a licensee in the customer's own state and transferred there.",
     "transferFeeUsd": null,
     "transferFeeNote": "The receiving licensee sets their own transfer fee. It is paid by the buyer directly to that licensee and is not included in the price shown on this site.",
-
     "restrictedDestinations": [
       "Any address that is not a Federal Firearms Licensee, for any complete firearm",
       "Any jurisdiction where the specific model, magazine capacity or feature is unlawful",
       "Outside the United States, unless an export licence is issued in writing for that order"
     ],
-
     "complianceReviewedBy": null,
     "complianceReviewedOn": null,
-
     "requiredBeforeLaunch": [
       "legalName",
       "fflLicenceNumber",
