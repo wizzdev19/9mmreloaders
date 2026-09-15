@@ -1,0 +1,13 @@
+name = "9mmreloaders"
+main = "src/worker-static.js"
+compatibility_date = "2024-09-12"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[vars]
+NODE_ENV = "production"
+ROBOTS_MODE = "auto"

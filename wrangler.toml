@@ -1,16 +1,12 @@
-# Cloudflare Workers with Containers - runs Express backend (better-sqlite3) on Cloudflare
+# Cloudflare Workers with Containers + Static Assets fallback
 # Deploy with: npx wrangler deploy
-# Requires: Cloudflare account with Workers Containers enabled (beta)
+# - Without Docker: deploys static dist/ to Workers (functional)
+# - With Docker: also builds container for dynamic Express backend
 #
 # For Cloudflare Pages (static export):
 # - Build command: npm run build
 # - Output directory: dist
-# - Do NOT set deploy command to wrangler deploy in Pages dashboard
-# Pages will deploy dist/ as static files, no wrangler needed
-#
-# For Workers Containers:
-# - This wrangler.toml is used
-# - Run: npx wrangler deploy (needs Docker for image build, or --containers-rollout=none)
+# - Deploy command: empty
 
 name = "9mmreloaders"
 main = "src/worker-container.js"
@@ -24,6 +20,13 @@ enabled = true
 enabled = true
 head_sampling_rate = 1
 invocation_logs = true
+
+# Static assets - makes Workers URL functional even without container
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
+# binding = "ASSETS" is automatic in new wrangler, but we can name it
+binding = "ASSETS"
 
 # Container that runs the Express app - new syntax (wrangler >=4.131)
 [[containers]]

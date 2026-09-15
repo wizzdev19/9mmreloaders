@@ -148,7 +148,7 @@ router.get('/', (req, res) => {
     },
     {
       q: 'Can the pistol be shipped to my house?',
-      a: 'No. A complete firearm ships to your pickup location where the licensed dealer completes the transfer. Parts that are not firearms, such as a slide or a trigger, can ship directly to your address.',
+      a: 'No. A complete firearm ships to your dropoff location where the licensed dealer completes the transfer. Parts that are not firearms, such as a slide or a trigger, can ship directly to your address.',
       link: { href: '/shipping-and-transfer-policy', label: 'Shipping and transfers' }
     },
     {
@@ -163,7 +163,7 @@ router.get('/', (req, res) => {
     },
     {
       q: 'How does payment work?',
-      a: 'Payment is processed securely at checkout. Firearms ship to your pickup location where the licensed dealer completes ATF Form 4473 and the FBI NICS background check before release.',
+      a: 'Payment is processed securely at checkout. Firearms ship to your dropoff location.',
       link: { href: '/shipping-and-transfer-policy', label: 'Shipping and pickup' }
     },
     {
