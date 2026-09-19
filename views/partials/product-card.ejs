@@ -24,7 +24,10 @@
         <% if (p.price_cents != null) { %>$<%= money(p.price_cents) %><% } else { %>Price on request<% } %>
         <% if (p.compare_cents) { %><span class="price-was">$<%= money(p.compare_cents) %></span><% } %>
       </span>
-      <a class="btn btn-secondary btn-sm" href="/product/<%= p.slug %>">View <%= p.model ? 'Glock ' + p.model : 'details' %></a>
+      <div style="display:flex;gap:6px">
+        <a class="btn btn-secondary btn-sm" href="/product/<%= p.slug %>">View</a>
+        <button class="btn btn-primary btn-sm" data-add-to-cart data-product-id="<%= p.id %>" data-name="<%= p.name.replace(/"/g, '&quot;') %>" data-sku="<%= p.sku %>" data-price="<%= p.price_cents || 0 %>" data-image="/img/products/<%= p.primary_image || '' %>" data-slug="<%= p.slug %>">Add</button>
+      </div>
     </div>
   </div>
 </article>

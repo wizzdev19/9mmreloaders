@@ -146,6 +146,66 @@ async function main() {
     if (fs.existsSync(src)) copyRecursive(src, dest);
   }
 
+  // Generate search-index.json for client-side search (all product names)
+  try {
+    const allProducts = q.allSlugs ? q.allSlugs.all() : [];
+    // Get full product data for search
+    const products = [];
+    const db = require('../src/db');
+    const rows = db.q.productsForSearch ? db.q.productsForSearch.all() : db.q.allProducts ? db.q.allProducts.all() : [];
+    // Fallback: query directly
+    const sqlite = require('better-sqlite3');
+    const path = require('path');
+    const dbPath = path.join(__dirname, '..', 'data', 'catalog.db');
+    const sdb = new sqlite(dbPath, { readonly: true });
+    const prods = sdb.prepare('SELECT id, slug, name, sku, model, caliber, product_class, price_cents, primary_image FROM products').all();
+    sdb.close();
+    const index = prods.map(p => ({
+      id: p.id,
+      slug: p.slug,
+      name: p.name,
+      sku: p.sku,
+      model: p.model,
+      caliber: p.caliber,
+      product_class: p.product_class,
+      price_cents: p.price_cents,
+      image: p.primary_image,
+      searchText: [p.name, p.sku, p.model ? 'Glock '+p.model : '', p.caliber, p.product_class].filter(Boolean).join(' ').toLowerCase()
+    }));
+    fs.writeFileSync(path.join(DIST, 'search-index.json'), JSON.stringify(index));
+    console.log(`Search index: ${index.length} products`);
+  } catch (e) {
+    console.log('Search index generation failed:', e.message);
+    // Fallback minimal index
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const sqlite = require('better-sqlite3');
+      const dbPath = path.join(__dirname, '..', 'data', 'catalog.db');
+      const sdb = new sqlite(dbPath, { readonly: true });
+      const prods = sdb.prepare('SELECT id, slug, name, sku, model, caliber, product_class, price_cents, primary_image FROM products').all();
+      sdb.close();
+      const index = prods.map(p => ({
+        id: p.id,
+        slug: p.slug,
+        name: p.name,
+        sku: p.sku,
+        model: p.model,
+        caliber: p.caliber,
+        product_class: p.product_class,
+        price_cents: p.price_cents,
+        image: p.primary_image,
+        searchText: [p.name, p.sku, p.model ? 'Glock '+p.model : '', p.caliber, p.product_class].filter(Boolean).join(' ').toLowerCase()
+      }));
+      const DIST = path.join(__dirname, '..', 'dist');
+      fs.mkdirSync(DIST, { recursive: true });
+      fs.writeFileSync(path.join(DIST, 'search-index.json'), JSON.stringify(index));
+      console.log(`Search index fallback: ${index.length} products`);
+    } catch (e2) {
+      console.log('Fallback also failed:', e2.message);
+    }
+  }
+
   // Create _headers for Cloudflare Pages caching
   fs.writeFileSync(path.join(DIST, '_headers'), `
 /css/*
