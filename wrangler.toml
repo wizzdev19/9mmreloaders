@@ -24,8 +24,7 @@ invocation_logs = true
 # Static assets - makes Workers URL functional even without container
 [assets]
 directory = "./dist"
-not_found_handling = "single-page-application"
-# binding = "ASSETS" is automatic in new wrangler, but we can name it
+not_found_handling = "404-page"
 binding = "ASSETS"
 
 # Container that runs the Express app - new syntax (wrangler >=4.131)
