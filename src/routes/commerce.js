@@ -146,7 +146,7 @@ router.get('/order-request/received', (req, res) => {
   res.render('confirmation', {
     heading: 'Order confirmed',
     confirmTitle: 'Thank you for your order',
-    confirmBody: 'Your payment has been processed securely. Firearms will ship to your pickup location where the licensed dealer will complete ATF Form 4473 and the background check. You will receive a confirmation email with your pickup details.',
+    confirmBody: 'Your payment has been processed securely. Firearms will ship to your dropoff location where the licensed dealer completes the transfer. You will receive a confirmation email with your dropoff details. Crypto orders receive 15% off the total.',
     reference: req.signedCookies?.lastref || null
   });
 });
